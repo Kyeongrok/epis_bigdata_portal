@@ -7,7 +7,7 @@
 2020.02.09
 --%>
 <head>
-	<title>귀농의사결정 지원 서비스</title>
+	<title>데이터 기반 귀농 지역·품목 안내 서비스</title>
 </head>
     <link rel="stylesheet" href="<c:url value='/css/bigdata/retnFmlg/info/layout.css'/>">
     <script src="<c:url value='/js/vendor/jquery/jquery-2.1.4.min.js'/>"></script>

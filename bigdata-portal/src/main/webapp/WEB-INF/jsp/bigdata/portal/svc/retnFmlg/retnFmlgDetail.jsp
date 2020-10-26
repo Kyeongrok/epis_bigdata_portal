@@ -201,7 +201,7 @@
 			                				</div>
 			                			</div>
 			                		</div>
-			                		<div class="tabcontent">
+			                		<%-- <div class="tabcontent">
 				                		<div class="row">
 			                				<div class="w34p">
 			                					<div class="h4wrap">
@@ -244,7 +244,7 @@
 			                			</div>
 				                		<div>
 			                			</div>
-			                		</div>
+			                		</div> --%>
 			                		<div class="tabcontent">
 				                		<div class="row">
 					                			<div class="w48p">

@@ -1,6 +1,65 @@
+/*
+	@title : 상단바 변경시 색깔변경(강조) 시작 
+	@author : jhok
+	@date   : 2020.10.19
+	@content :
+	@histoty : 최초작성
+*/	
+	$(document).ready( function() {
+	 	$('#resultColor02').click(function(){
+			$('#resultColor02').addClass('tabon');
+			$('#resultColor04').removeClass('tabon');
+			$('#resultColor05').removeClass('tabon');
+			$('#resultColor03').removeClass('tabon');
+			$('#resultColor01').removeClass('tabon');
+			$('#resultColor06').removeClass('tabon');
+		});
+		$('#resultColor04').click(function(){
+			$('#resultColor02').removeClass('tabon');
+			$('#resultColor04').addClass('tabon');
+			$('#resultColor05').removeClass('tabon');
+			$('#resultColor03').removeClass('tabon');
+			$('#resultColor01').removeClass('tabon');
+			$('#resultColor06').removeClass('tabon');
+		});
+		$('#resultColor05').click(function(){
+			$('#resultColor02').removeClass('tabon');
+			$('#resultColor04').removeClass('tabon');
+			$('#resultColor05').addClass('tabon');
+			$('#resultColor03').removeClass('tabon');
+			$('#resultColor01').removeClass('tabon');
+			$('#resultColor06').removeClass('tabon');
+		});
+		$('#resultColor03').click(function(){
+			$('#resultColor02').removeClass('tabon');
+			$('#resultColor04').removeClass('tabon');
+			$('#resultColor05').removeClass('tabon');
+			$('#resultColor03').addClass('tabon');
+			$('#resultColor01').removeClass('tabon');
+			$('#resultColor06').removeClass('tabon');
+		});
+		$('#resultColor01').click(function(){
+			$('#resultColor02').removeClass('tabon');
+			$('#resultColor04').removeClass('tabon');
+			$('#resultColor05').removeClass('tabon');
+			$('#resultColor03').removeClass('tabon');
+			$('#resultColor01').addClass('tabon');
+			$('#resultColor06').removeClass('tabon');
+		});
+		$('#resultColor06').click(function(){
+			$('#resultColor02').removeClass('tabon');
+			$('#resultColor04').removeClass('tabon');
+			$('#resultColor05').removeClass('tabon');
+			$('#resultColor03').removeClass('tabon');
+			$('#resultColor01').removeClass('tabon');
+			$('#resultColor06').addClass('tabon');
+		});
+ }); 
+
 /**
  * 상세화면
  */
+ 
 
 /** 발표를 위해 만듦. 지원정책 검색용*/
 let PolicySrchObj = (function(){
@@ -37,7 +96,7 @@ let DataObj = (function(){
 	/**서버에 저장된 DataObj 데이터를 불러온다.*/
 	DataObj.prototype.refreshDataObj = function(){
 		$.post("./retnFmlgDetail.json", function(json){
-//			console.log(json);
+			console.log(json);
 			if(json.result == "success"){
 				dataObj.form = json.dataObj;
 				dataObj.areaInfo = json.areaInfo.datas;
@@ -441,7 +500,8 @@ let PageObj = (function(){
 	PageObj.prototype.setFixesCtvtTitle = function(){
 		console.log(dataObj);
 		let recomendArea = this.getSelectedAreaInfo();
-
+		console.log("셋팅!!!");
+		console.log(dataObj.areaInfo[recomendArea.index]);
 		for(let i=0; i<dataObj.areaInfo[recomendArea.index].fixesCtvt.length; i++){
 			let fixesCtvt = dataObj.areaInfo[recomendArea.index].fixesCtvt[i].prdlstNm;
 			$($(".fixesCtvt > .tablinks")[i]).find('span').text(fixesCtvt);
@@ -549,7 +609,7 @@ let PageObj = (function(){
 	PageObj.prototype.setAdiInfo = function(){
 		let selectAreaInfo = pageObj.getSelectedAreaInfo();
 
-		let uninhbhousInfoArr = dataObj.areaInfo[selectAreaInfo.index].uninhbhousInfo.hitsHits; //빈집정보
+		//let uninhbhousInfoArr = dataObj.areaInfo[selectAreaInfo.index].uninhbhousInfo.hitsHits; // MK 빈집정보 삭제
 		let jbhntInfoArr = dataObj.areaInfo[selectAreaInfo.index].jbhntInfo.hitsHits; //일자리정보
 		let altrvSchulArr = dataObj.areaInfo[selectAreaInfo.index].altrvSchul; //대안학교
 
@@ -566,12 +626,13 @@ let PageObj = (function(){
 			return emptyHtml;
 		}
 
-
-		if(uninhbhousInfoArr.length == 0 ) { uninhbhousInfoHtml += getEmptyHtml(4); }
+		/* MK 빈집정보 제거 */
+		/*if(uninhbhousInfoArr.length == 0 ) { uninhbhousInfoHtml += getEmptyHtml(4); }*/
 		if(jbhntInfoArr.length == 0 ) { jbhntInfoHtml += getEmptyHtml(5); }
 		if(altrvSchulArr.length == 0 ) { altrvSchulHtml += getEmptyHtml(3); }
 
-		uninhbhousInfoArr.forEach(function(uninhbhousInfo, index){
+		/* MK 빈집정보 제거 */
+		/*uninhbhousInfoArr.forEach(function(uninhbhousInfo, index){
 			uninhbhousInfo = uninhbhousInfo['_source'];
 			let regDt = uninhbhousInfo.REG_DT; // 등록날짜
 			regDt = regDt.substring(0,4) + "." + regDt.substring(4,6) + "." + regDt.substring(6,8);
@@ -587,7 +648,7 @@ let PageObj = (function(){
 				+ '<td class="txtC">'+ dealYype +'</td>'
 				+ '<td class="txtC">'+ lotArea +'</td>'
 				+ '</tr>';
-		});
+		});*/
 
 		jbhntInfoArr.forEach(function(jbhntInfo, index){
 			jbhntInfo = jbhntInfo['_source'];

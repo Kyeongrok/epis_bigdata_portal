@@ -36,24 +36,25 @@
     <section class="cntWrap">
 
     	<div class="description">
- 		<h1>귀농의사결정 <br><span>지원 서비스</span></h1>
+ 		<h1>데이터 기반<br><span>귀농 지역·<br>품목 안내<br>서비스</span></h1>
          <p class="web_ex">
-         	귀농의사결정 지원 서비스는<br> 입력하신 정보를 기반으로<br> 빅데이터 분석 및<br> 귀농지원 알고리즘<br> 적용을 통해<br> 적합한 귀농정보를<br> 제공해 드립니다.
+         	데이터 기반 귀농 지역·품목 안내<br> 서비스는 입력하신 정보와 유사한<br> 귀농인 13,930명의 데이터를<br> 분석한 결과를 기반으로<br> 귀농 지역 및 품목, 부가정보를<br> 제공하는 서비스입니다.<br><br> (유사귀농인데이터:19.12월기준)
          </p>
  	</div>
 
  	<div class="formWrap">
      	<h2>정보입력</h2>
      	<p>귀농 의사결정을 위해 귀농 희망자의 정보를 입력하는 화면입니다.</p>
-     	<div class="resultBox btnWrap">
+     	<!-- MK 버튼 삭제 -->
+     	<!-- <div class="resultBox btnWrap">
 			<button type="button" id="showResultBtn" class="showResultBtn"><span>결과보기</span></button>
-		</div>
+		</div> -->
          <div class="formBox">
              <p>1. 본인 정보를 입력하세요.(<span class="filsu">필수</span>)</p>
              <div id="selfDiv" class="rowWrap">
 	             <div class="row">
 	             	<input type="text" name="mvtRdNmAdr" class="w80p" placeholder="현거주지 정보를 입력하세요.">
-	             	<button type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="mvt" ><span>검색하기</span></button>
+	             	<button id="mvtSrchAddr" type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="mvt" ><span>검색하기</span></button>
 	             </div>
 	             <div class="row">
 	             	<p class="w20p">성별</p>
@@ -105,7 +106,7 @@
              <div id="hopeAreaDiv" class="rowWrap">
 	             <div class="row">
 	             	<input type="text" class="w80p" name="hopeRdNmAdr" placeholder="희망 귀농지역을 입력하세요.">
-	             	<button type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="hope"><span>검색하기</span></button>
+	             	<button id="hopeSrchAddr" type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="hope"><span>검색하기</span></button>
 	             </div>
              </div>
              <div class="txtR fs11">
@@ -117,7 +118,7 @@
              <div id="hopeCtvtDiv" class="rowWrap">
 	             <div class="row">
 	             	<input type="text" class="w80p" name="hopeCtvt" placeholder="희망 재배품목을 입력하세요.">
-	             	<button class="srchCtvt layPopBtn w20p" type="button" data-target="hopeCtvtModal"><span>검색하기</span></button>
+	             	<button id="srchCtvt" class="srchCtvt layPopBtn w20p" type="button" data-target="hopeCtvtModal"><span>검색하기</span></button>
 	             </div>
 	         </div>
          </div><!-- //formBox -->
@@ -156,7 +157,7 @@
 
 
 <!--  하단 검색 영역 -->
-    <div class="schWrap">
+    <!-- <div class="schWrap">
     	<div class="row">
     		<p class="w25p">귀농/귀촌/창업</p>
     		<input type="text" id="fixesSportSrchKwrd" placeholder="맞춤 지원정책 안내입니다. 검색 키워드를 입력하세요." class="w65p">
@@ -164,13 +165,13 @@
     	</div>
     </div>
 
-</div><!-- //wrap -->
+</div>//wrap
 
 <form id="fixesSportSrchForm">
 <input type='hidden' name='searchGbn' value='frmer'/>
 <input type='hidden' name='searchKeyword' value=''/>
 <input type='hidden' name='searchSportRelmCode' value='귀농/귀촌/창업'/>
-</form>
+</form> -->
 
 
 

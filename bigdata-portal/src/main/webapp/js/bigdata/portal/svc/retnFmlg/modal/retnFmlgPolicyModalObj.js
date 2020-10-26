@@ -52,7 +52,8 @@ let FixesSportPolicyObj = (function(){
 		p.searchSportRelmCode = searchSportRelmCode;
 
 		//데이터 요청
-		$.cs.submitAjax('../getFixesSportPolicyDatasForRetnFmlg.json', p, function(res){
+		$.cs.submitAjax('/bdp/svc/getFixesSportPolicyDatasForRetnFmlg.json', p, function(res){
+		//$.cs.submitAjax('../getFixesSportPolicyDatasForRetnFmlg.json', p, function(res){
 //			console.log('<<FixesSportPolicyObj.getDatasAsync', res.datas.length);
 
 			//
@@ -80,7 +81,7 @@ let FixesSportPolicyObj = (function(){
 		p.bsnsCode = bsnsCode.trim();
 
 		//
-		$.cs.submitAjax('../getFixesSportPolicyDatasByMlsfcNmCode.json', p, function(res){
+		$.cs.submitAjax('/bdp/svc/getFixesSportPolicyDatasByMlsfcNmCode.json', p, function(res){
 //			console.log('<<FixesSportPolicyObj.getDetailDataAsync', res.datas.length);
 
 			//

@@ -258,6 +258,10 @@ h3+.myBox{border-top:0;margin-top:0;padding-top:10px;}
 .menuTop li a:link,
 .menuTop li a:visited{text-decoration:none;color:#6F7A80;}
 /*
+	상단메뉴바 색깔표시 클래스 추가
+*/
+.tabon{color:#00BAAE;}
+/*
 .menuTop li.on a,
 .menuTop li a:hover{border-bottom: 5px solid #599F56;}*/
 
@@ -278,10 +282,12 @@ h4+.addEx{font-size:12px;margin-top:-8px;margin-bottom:15px;text-align:center;}
 .h4wrap{}
 .h4wrap h4 p{display:inline-block;vertical-align:middle;}
 .help{position:relative;}
-.help>em{background-color:#14B1E7;font-weight:bold;border-radius:50%;color:#fff;width:16px;height:16px;display:block;font-size:12px;line-height:16px;cursor:pointer;}
-.help>span{background-color:#14B1E7;color:#fff;border-radius:10px;padding:10px 15px;position:absolute;font-size:10px;font-weight:bold;top:-16px;left:36px;width:220px;line-height:1.6em;text-align:left;display:none;}
+/* .help>em{background-color:#14B1E7;font-weight:bold;border-radius:50%;color:#fff;width:16px;height:16px;display:block;font-size:12px;line-height:16px;cursor:pointer;}
+.help>span{background-color:#14B1E7;color:#fff;border-radius:10px;padding:10px 15px;position:absolute;font-size:10px;font-weight:bold;top:-16px;left:36px;width:220px;line-height:1.6em;text-align:left;display:none;} */
+.help>em{background-color:rgba(0, 0, 0, 0.7);font-weight:bold;border-radius:50%;color:#fff;width:16px;height:16px;display:block;font-size:12px;line-height:16px;cursor:pointer;}
+.help>span{background-color:rgba(0, 0, 0, 0.7);color:#fff;border-radius:10px;padding:10px 15px;position:absolute;font-size:10px;font-weight:bold;top:-16px;left:36px;width:220px;line-height:1.6em;text-align:left;display:none;}
 .help.on>span{display:block;}
-.help span:before{content:'';display:block;border:10px solid #14B1E7;position:absolute;}
+.help span:before{content:'';display:block;border:10px solid rgba(0, 0, 0, 0.7);position:absolute;}
 .help.right span:before{border-left:0;border-right-width:15px;border-top-color:transparent;border-bottom-color:transparent;left:-15px;top:50%;margin-top:-10px;}
 .help.lower>span{top: 34px;left: -101px;}
 .help.lower>span:before{border-top:0;border-bottom-width:15px;border-left-color:transparent;border-right-color:transparent;top:-15px;left:50%;margin-left:-10px;}
@@ -299,7 +305,11 @@ h4+.addEx{font-size:12px;margin-top:-8px;margin-bottom:15px;text-align:center;}
 .tabWrap{position:relative;}
 .tabWrap.has3Tab li{width:33.3%;}
 .tabWrap.has5Tab li{width:20%;}
-.tabWrap.has8Tab li{width:12.46%;}
+/* MK 메뉴 추가에 따른 width 추가 */
+.tabWrap.has4Tab li{width:25%;}
+/* .tabWrap.has8Tab li{width:12.46%;} */
+/* MK 메뉴 추가에 따른 width 변경 */
+.tabWrap.has8Tab li{width:11.1%;}
 .tabWrap .tabTitle{}
 .tabWrap .tabTitle li{float:left;padding:0 5px;}
 .tabWrap .tabTitle li:first-child{padding-left:0;}

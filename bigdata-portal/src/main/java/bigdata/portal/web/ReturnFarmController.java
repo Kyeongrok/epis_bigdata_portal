@@ -40,7 +40,7 @@ import kr.co.ucsit.web.util.CsWebUtil;
  *
  */
 @Controller
-@RequestMapping("/bdp/svc/retnFmlg/")
+/* @RequestMapping("/bdp/svc/retnFmlg/") */
 public class ReturnFarmController extends BigdataController {
 
 	private static Logger log = LoggerFactory.getLogger(ReturnFarmController.class);
@@ -52,7 +52,7 @@ public class ReturnFarmController extends BigdataController {
 	/**
 	 * 귀농인 정보 입력 화면 이동
 	 * */
-	@RequestMapping(value = "retnFmlgInfo.do", method = RequestMethod.GET)
+	@RequestMapping(value = "ReturnFarm", method = RequestMethod.GET)
 	public String retnFmlgInfo() {
 		return P_BIGDATA_PORTAL + P_BIGDATA_RETURNFARM + "retnFmlgInfo";
 	}

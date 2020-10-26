@@ -29,6 +29,10 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/ReturnFarm</url-pattern>
+    </filter-mapping>
 
     <!--
     HTMLTagFilter의 경우는 파라미터에 대하여 XSS 오류 방지를 위한 변환을 처리합니다.
@@ -149,6 +153,10 @@
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>/ReturnFarm</url-pattern>
+    </servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
@@ -239,7 +247,11 @@
         <filter-name>EgovSpringSecurityLoginFilter</filter-name>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
-
+    <filter-mapping>
+        <filter-name>EgovSpringSecurityLoginFilter</filter-name>
+        <url-pattern>/ReturnFarm</url-pattern>
+    </filter-mapping>
+  
 
 
     <!-- 서비스 부분에서 HttpServletRequest 정보 얻기 -->

@@ -17,8 +17,12 @@ let AreaSetlCndChart = (function() {
 		this.upperFarmerCtvtChart(); // 귀농인 지역별 재배 품목
 		this.edcAccesPosbltyChart(); // 교육 접근성
 		this.upperEdcAccesPosbltyChart(); // 읍면동별 교육 접근성
+		this.edcCoChart(); // MK 교육 시설 수
+		this.upperEdcCoChart(); // MK 읍면동별 교육 시설 수
 		this.trnsportAccesPosbltyChart(); // 교통 접근성
 		this.upperTrnsportAccesPosbltyChart(); // 읍면동별 교통 접근성
+		this.hsptlAccesPosbltyChart(); // MK 의료 접근성
+		this.upperHsptlAccesPosbltyChart(); // MK 읍면동별 의료 접근성
 		this.cnvncAccesPosbltyChart(); // 편의 접근성
 		this.upperCnvncAccesPosbltyChart(); // 읍면동별 편의 접근성
 		this.cnvncCoChart(); // 편의 시설 수
@@ -235,7 +239,8 @@ let AreaSetlCndChart = (function() {
 			p.datas.push(dataObj.areaInfo[selectAreaInfo.index].upperAreaMvtInfo[i].mvtCtprvnCnt)
 		}
 		p.colors = [ "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)" ];
-
+		console.log("sc_a_1_1!!!");
+		console.log(dataObj.areaInfo[selectAreaInfo.index].upperAreaMvtInfo);
 		pageObj.drawChart(p);
 	}
 	/**귀농인 > 재배작물*/
@@ -256,7 +261,8 @@ let AreaSetlCndChart = (function() {
 			p.datas.push(dataObj.areaInfo[selectAreaInfo.index].upperAreaCtvtInfo[i].itemNmCnt)
 		}
 		p.colors = [ "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)" ];
-
+		console.log("sc_a_1_2!!!");
+		console.log(dataObj.areaInfo[selectAreaInfo.index].upperAreaCtvtInfo);
 		pageObj.drawChart(p);
 	}
 
@@ -310,6 +316,55 @@ let AreaSetlCndChart = (function() {
 		p.innerColors = ["rgb(136, 210, 206)","rgb(163, 186, 224)","rgb(247, 179, 184)"];
 		pageObj.drawChart(p);
 	}
+	
+	/**교육 > 학원 및 교습소 시설 수*/
+	AreaSetlCndChart.prototype.edcCoChart = function(){
+		console.log("학원및교습소!!!");
+		let selectAreaInfo = pageObj.getSelectedAreaInfo();
+		let p = {};
+		p.ctx = "sc_a_2_2"
+		p.type = "bar";
+		p.width = 270;
+		p.height = 200;
+		p.deli = 0;
+		p.labels = ["학원 및 교습소"];
+		p.datas = [
+			dataObj.areaInfo[selectAreaInfo.index].areaSetlCnd.instutCo			
+
+			];
+		p.colors  = ["rgb(136, 210, 206)"];
+
+		pageObj.drawChart(p);
+	}
+
+	/**교육 > 읍면동별 학원 및 교습소 시설 수*/
+	AreaSetlCndChart.prototype.upperEdcCoChart = function(){
+		let selectAreaInfo = pageObj.getSelectedAreaInfo();
+		let p = {};
+		p.ctx = "sc_a_2_3";
+		p.type    = "bar";
+		p.width   = 570;
+		p.height  = 200;
+//		p.showText = 'N';
+		p.legend = true;
+		p.deli    = 1;
+		p.labels = [];
+		for(let i=0; i<dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea.length; i++){
+			if(i<8){
+				p.labels.push(dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea[i].emd);
+			}
+		}
+		p.innerLabels = ["학원 및 교습소"];
+		p.innerDatas  = [];
+		for(let i=0; i<dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea.length; i++){
+			if(i<8){
+				p.innerDatas.push(dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea[i].instutCo);				
+
+			}
+		}
+		p.innerColors  = ["rgb(136, 210, 206)"];
+		pageObj.drawChart(p);
+	}
 
 	/**교통 > 지역 접근성*/
 	AreaSetlCndChart.prototype.trnsportAccesPosbltyChart = function(){
@@ -358,6 +413,57 @@ let AreaSetlCndChart = (function() {
 				p.innerDatas.push(dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea[i].arprtAccesPosblty.toFixed(0));
 			}
 		}
+		p.innerColors = ["rgb(136, 210, 206)","rgb(163, 186, 224)","rgb(247, 179, 184)"];
+		pageObj.drawChart(p);
+	}
+
+/** MK 의료 > 지역 접근성*/
+	AreaSetlCndChart.prototype.hsptlAccesPosbltyChart = function(){
+		let selectAreaInfo = pageObj.getSelectedAreaInfo();
+		let p = {};
+		p.ctx = "sc_a_6_0"
+			p.type = "bar";
+		p.width = 270;
+		p.height = 200;
+		p.deli = 0;
+		p.labels = ["공공의료","일반병원","종합병원"];
+		p.datas = [
+			dataObj.areaInfo[selectAreaInfo.index].areaSetlCnd.publicMlfltAccesPosblty.toFixed(0)
+			, dataObj.areaInfo[selectAreaInfo.index].areaSetlCnd.gnrlHsptlAccesPosblty.toFixed(0)
+			, dataObj.areaInfo[selectAreaInfo.index].areaSetlCnd.gnrlzHsptlAccesPosblty.toFixed(0)
+
+			];
+		p.colors = [ "rgb(136, 210, 206)","rgb(163, 186, 224)","rgb(247, 179, 184)" ];
+
+		pageObj.drawChart(p);
+	}
+
+/** MK 의료 > 읍면동별 지역 접근성*/
+	AreaSetlCndChart.prototype.upperHsptlAccesPosbltyChart = function(){
+		let selectAreaInfo = pageObj.getSelectedAreaInfo();
+		let p = {};
+		p.ctx = "sc_a_6_1";
+		p.type    = "bar";
+		p.width   = 570;
+		p.height  = 200;
+//		p.showText = 'N';
+		p.legend = true;
+		p.deli    = 3;
+		p.labels = [];
+		for(let i=0; i<dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea.length; i++){
+			if(i<8){
+				p.labels.push(dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea[i].emd);
+			}
+		}
+		p.innerLabels = ["공공의료","일반병원","종합병원"];
+		p.innerDatas  = [];
+		for(let i=0; i<dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea.length; i++){
+			if(i<8){
+				p.innerDatas.push(dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea[i].publicMlfltAccesPosblty.toFixed(0));
+				p.innerDatas.push(dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea[i].gnrlHsptlAccesPosblty.toFixed(0));
+				p.innerDatas.push(dataObj.areaInfo[selectAreaInfo.index].upperRecomendArea[i].gnrlzHsptlAccesPosblty.toFixed(0));
+			}
+		}		
 		p.innerColors = ["rgb(136, 210, 206)","rgb(163, 186, 224)","rgb(247, 179, 184)"];
 		pageObj.drawChart(p);
 	}
@@ -613,7 +719,7 @@ let AreaSetlCndChart = (function() {
 
 	/**재배 품목 > 도매시장 경락가격 현황*/
 	AreaSetlCndChart.prototype.wholeSaleChart = function(){
-		let selectAreaInfo = pageObj.getSelectedAreaInfo();
+		let selectAreaInfo = pageObj.getSelectedAreaInfo(); 
 		let pageSelectCtvtInfo = pageObj.getSelectCtvtInfo();
 		let selectCtvtInfo = dataObj.areaInfo[selectAreaInfo.index].fixesCtvt[pageSelectCtvtInfo.index];
 
@@ -621,12 +727,16 @@ let AreaSetlCndChart = (function() {
 		let areaAvgWholeSale2018 = selectCtvtInfo.areaAvgWholeSale2018.aggregations.avg.value;
 		let allAvgWholeSale2019 = selectCtvtInfo.allAvgWholeSale2019.aggregations.avg.value;
 		let areaAvgWholeSale2019 = selectCtvtInfo.areaAvgWholeSale2019.aggregations.avg.value;
+		let allAvgWholeSale2020 = selectCtvtInfo.allAvgWholeSale2020.aggregations.avg.value;
+		let areaAvgWholeSale2020 = selectCtvtInfo.areaAvgWholeSale2020.aggregations.avg.value;
 
 		//값이 null이면 숫자 0을 입력한다(toFixed 함수를 사용하기 위함)
 		allAvgWholeSale2018 = (allAvgWholeSale2018 == null) ? 0 : allAvgWholeSale2018;
 		areaAvgWholeSale2018 = (areaAvgWholeSale2018 == null) ? 0 : areaAvgWholeSale2018;
 		allAvgWholeSale2019 = (allAvgWholeSale2019 == null) ? 0 : allAvgWholeSale2019;
 		areaAvgWholeSale2019 = (areaAvgWholeSale2019 == null) ? 0 : areaAvgWholeSale2019;
+		allAvgWholeSale2020 = (allAvgWholeSale2020 == null) ? 0 : allAvgWholeSale2020;
+		areaAvgWholeSale2020 = (areaAvgWholeSale2020 == null) ? 0 : areaAvgWholeSale2020;
 
 
 		let p = {};
@@ -637,7 +747,7 @@ let AreaSetlCndChart = (function() {
 //		p.showText = 'N';
 		p.legend = true;
 		p.deli    = 2;
-		p.labels = ['2018', '2019'];
+		p.labels = ['2018', '2019' , '2020'];
 		p.innerLabels = ["전체", selectCtvtInfo.signgu];
 		p.innerDatas  = [];
 
@@ -645,6 +755,9 @@ let AreaSetlCndChart = (function() {
 		p.innerDatas.push(areaAvgWholeSale2018.toFixed(0));
 		p.innerDatas.push(allAvgWholeSale2019.toFixed(0));
 		p.innerDatas.push(areaAvgWholeSale2019.toFixed(0));
+		p.innerDatas.push(allAvgWholeSale2020.toFixed(0));
+		p.innerDatas.push(areaAvgWholeSale2020.toFixed(0));
+		
 
 		p.innerColors  = ["rgb(136, 210, 206)","rgb(163, 186, 224)"];
 		pageObj.drawChart(p);
@@ -1074,7 +1187,7 @@ let SelectAreaCtvtChart = (function(){
 				   selectAreaCtvtInfo.beginRetnSttusEtcAreaCnt[0].cnt,
 				   (selectAreaCtvtInfo.beginRetnSttusThisAreaCnt[0].cnt+selectAreaCtvtInfo.beginRetnSttusEtcAreaCnt[0].cnt)
 					];
-
+		
 		p.colors  = ["rgb(136, 210, 206)"];
 		pageObj.drawChart(p);
 	}
@@ -1093,7 +1206,7 @@ let SelectAreaCtvtChart = (function(){
 		p.deli = 0;
 		p.labels = [ ];
 		p.datas = [];
-
+				
 		for(let i=0; i<selectAreaCtvtInfo.beginRetnSttusCtvt.length; i++){
 			p.labels.push(selectAreaCtvtInfo.beginRetnSttusCtvt[i].sclas);
 			p.datas.push(selectAreaCtvtInfo.beginRetnSttusCtvt[i].sclasCnt);

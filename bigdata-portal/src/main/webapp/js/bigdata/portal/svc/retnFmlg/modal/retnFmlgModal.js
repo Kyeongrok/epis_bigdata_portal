@@ -392,18 +392,31 @@ let HopeCtvtModalObj = (function(){
 			let rowObj = $(this).closest('.row');
 			rowObj.siblings('div').css('border-color', '#d9d9da');
 			rowObj.css('border-color', 'red');
-			hopeCtvtModal.selectCtvt = $(this).val();
+			hopeCtvtModal.selectCtvt = $(this).val();			
 		});
 
 		/**
 		 * 희망재배 품목 데이터 '등록하기' 버튼 클릭 시 이벤트
 		 * */
 		$("#setCtvtBtn").on("click",function(){
+			let props = Object.keys(hopeCtvtModal);
+			let targetTag = hopeCtvtModal.targetTag;
+			props.forEach(function(prop){
+				if(prop == "prefix" || prop == "modal"){
+					return;
+				}
+				dataObj.form[hopeCtvtModalObj.prefix + prop] = hopeCtvtModalObj[prop];
+				$("input[name='"+ hopeCtvtModalObj.prefix + prop+"']").val(hopeCtvtModalObj[prop]);				
+			});
 			$("input[name='hopeCtvt']").val(hopeCtvtModal.selectCtvt);
+			/*console.log("품목 등록!!!")
+			console.log($("input[name='hopeCtvt']").val(hopeCtvtModal.selectCtvt));
+			dataObj.form.hopeCtvt = hopeCtvtModal.selectCtvt;
+			console.log("옵젝!!!")
+			console.log(dataObj.form);*/
 			$('#hopeCtvtModal').removeClass("on"); // 모달 창 닫기
 		})
-
-
+				
 		/**희망재배품목 수정 모달에서 '수정하기' 버튼 클릭시 이벤트*/
 		$("#updtHopeCtvtModalBtn").on("click", function(){
 			dataObj.form.hopeCtvt = hopeCtvtModalObj.updtModal.find("[name='hopeCtvt']").val();
@@ -418,7 +431,6 @@ let HopeCtvtModalObj = (function(){
 	HopeCtvtModalObj.prototype.srchCtvt = function(keyword){
 		let jsonData = JSON.stringify({keyword : keyword});
 		$.post("./srchCtvt.json", jsonData, function(json){
-
 			dataObj.srchCtvtList = json.ctvtList.datas;
 			hopeCtvtModalObj.showCtvtData();
 		}.bind(this));
@@ -704,6 +716,33 @@ let JusoModalObj = (function(){
 			jusoModalObj.prefix = $(this).attr('data-addrPrefix');
 			jusoObj.setKeyword(keyword);
 			jusoObj.reqAddrLinkApi();
+			// MK 주소 강제 입력, API 사용가능시 삭제 필요
+			/*jusoModalObj.RdNmAdr = '서울특별시 강북구 미아동 3-9';
+			jusoModalObj.Ctprvn = '서울특별시';
+			jusoModalObj.Signgu = '강북구';
+			jusoModalObj.Emd = '미아동';
+			jusoModalObj.AdmCd = '11305101';
+			console.log(jusoModalObj.RdNmAdr);
+			console.log(jusoModalObj.AdmCd);*/
+			
+			if(jusoModalObj.prefix == 'mvt'){
+				jusoModalObj.RdNmAdr = '서울특별시 강동구 길동 42';
+				jusoModalObj.Ctprvn = '서울특별시';
+				jusoModalObj.Signgu = '강동구';
+				jusoModalObj.Emd = '길동';
+				jusoModalObj.AdmCd = '11740105';
+				console.log(jusoModalObj.RdNmAdr);
+				console.log("주소!!!");
+			}
+			if(jusoModalObj.prefix == 'hope'){
+				jusoModalObj.RdNmAdr = '경상북도 상주시 사벌국면 덕담리 1008';
+				jusoModalObj.Ctprvn = '경상북도';
+				jusoModalObj.Signgu = '상주시';
+				jusoModalObj.Emd = '사벌국면';
+				jusoModalObj.AdmCd = '47250325';
+				console.log(jusoModalObj.RdNmAdr);
+				console.log("희망지역!!!");
+			}
 		});
 
 		// 주소 데이터 클릭 시 jusoModalObj 객체 속성에 값을 셋팅한다.
@@ -721,7 +760,6 @@ let JusoModalObj = (function(){
 			jusoModalObj.Signgu = $(this).siblings('.signgu').val();
 			jusoModalObj.Emd = $(this).siblings('.emd').val();
 			jusoModalObj.AdmCd = $(this).siblings('.admCd').val();
-
 		});
 
 		// 주소 등록 버튼 클릭 시
@@ -735,8 +773,37 @@ let JusoModalObj = (function(){
 				}
 				dataObj.form[jusoModalObj.prefix + prop] = jusoModalObj[prop];
 				$("input[name='"+ jusoModalObj.prefix + prop+"']").val(jusoModalObj[prop]);
-			});
-
+			});			
+			
+			/*if(jusoModalObj.prefix == 'mvt'){
+				jusoModalObj.RdNmAdr = '서울특별시 강동구 길동 42';
+				jusoModalObj.Ctprvn = '서울특별시';
+				jusoModalObj.Signgu = '강동구';
+				jusoModalObj.Emd = '길동';
+				jusoModalObj.AdmCd = '11740105';
+				console.log(jusoModalObj.RdNmAdr);
+				console.log("주소!!!");
+			}
+			if(jusoModalObj.prefix == 'hope'){
+				jusoModalObj.RdNmAdr = '경상북도 상주시 사벌국면 덕담리 1008';
+				jusoModalObj.Ctprvn = '경상북도';
+				jusoModalObj.Signgu = '상주시';
+				jusoModalObj.Emd = '사벌국면';
+				jusoModalObj.AdmCd = '47250325';
+				console.log(jusoModalObj.RdNmAdr);
+				console.log("희망지역!!!");
+			}	*/		
+			
+			// MK 주소 강제 입력, API 사용가능시 삭제 필요
+			/*jusoModalObj.RdNmAdr = '서울특별시 강북구 미아동 3-9';
+			jusoModalObj.Ctprvn = '서울특별시';
+			jusoModalObj.Signgu = '강북구';
+			jusoModalObj.Emd = '미아동';
+			jusoModalObj.AdmCd = '11305101';
+			console.log(jusoModalObj.RdNmAdr);
+			console.log(jusoModalObj.AdmCd);*/
+			
+			
 
 			jusoModalObj.init(); // 초기화
 
@@ -835,6 +902,25 @@ let ModalPageObj = (function(){
 		hopeAreaObj.init();
 		hopeCtvtModalObj.init();
 		cnsdrObj.init();
+	}
+});
+
+/* MK Input Box 엔터키 입력시 이벤트 실행 추가 */
+$("input[type=text]").keydown(function(e){
+	if(e.keyCode==13){		
+	console.log("팝팝!!!");
+		if($(this).attr("name") == 'mvtRdNmAdr'){
+			console.log("주소!!!");
+			$("#mvtSrchAddr").trigger("click");
+		}
+		if($(this).attr("name") == 'hopeRdNmAdr'){
+			console.log("희망지역!!!");
+			$("#hopeSrchAddr").trigger("click");			
+		}
+		if($(this).attr("name") == 'hopeCtvt'){
+			console.log("희망품목!!!");
+			$("#srchCtvt").trigger("click");
+		}		
 	}
 });
 

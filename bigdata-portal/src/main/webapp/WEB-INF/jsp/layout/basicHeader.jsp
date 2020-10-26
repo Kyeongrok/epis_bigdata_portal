@@ -72,7 +72,8 @@
 						<li>
 							<a href="javascript:;">모델 및 서비스</a>
 							<ul class="smenu">
-									<li><a href="/bdp/svc/retnFmlg/retnFmlgInfo.do" target="_blank">귀농의사결정지원</a></li>
+									<!-- <li><a href="/bdp/svc/retnFmlg/retnFmlgInfo.do" target="_blank">귀농의사결정지원</a></li> -->
+									<li><a href="/ReturnFarm" target="_blank">귀농의사결정지원</a></li>
 									<li><a href="/bdp/svc/fixesSportPolicySearchList.do" target="_blank">맞춤 지원정책 안내</a></li>
 
 								<c:if test="${isRoleAdmin == true}">

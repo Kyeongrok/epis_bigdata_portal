@@ -8,7 +8,7 @@
 --%>
 
 <head>
-	<title>귀농의사결정 지원 서비스</title>
+	<title>데이터 기반 귀농 지역·품목 안내 서비스</title>
 </head>
 	<link rel="stylesheet" href="<c:url value='/css/bigdata/retnFmlg/info/layout.css'/>">
 	<link rel="stylesheet" href="<c:url value='/css/bigdata/retnFmlg/detail/layout.css'/>">
@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="<c:url value="/js/bigdata/portal/jquery-cs-0.9a.js" />" ></script>
 
 	<script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+	<!-- <script type="text/javascript"	src="/js/bigdata/portal/svc/Chart.bundle.min.js"></script> -->
 
     <script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/retnFmlg/retnFmlgCommon.js'/>" defer></script>
     <script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/retnFmlg/retnDetailChart.js'/>" defer></script>
@@ -50,31 +51,33 @@
 
         	<!-- 상단고정 -->
         	<div class="description">
-	    		<h2><strong>귀농의사결정</strong>지원 서비스</h2>
+	    		<h2><strong>데이터 기반</strong> 귀농 지역·품목 안내 서비스</h2>
 	            <p class="web_ex">
-	            	<strong>귀농의사결정지원 서비스에 오신것을 환영합니다.</strong><br>
-	            	<span>입력하신 정보를 기반으로 빅데이터 분석 및 귀농지원 알고리즘 적용을 통해 적합한 귀농정보를 제공해 드립니다.</span>
+	            	<strong>데이터 기반 귀농 지역·품목 안내 서비스에 오신것을 환영합니다.</strong><br>
+	            	<!-- MK 상세 설명 제거 -->
+	            	<span>&nbsp;</span>
+	            	<!-- <span>입력하신 정보를 기반으로 빅데이터 분석 및 귀농지원 알고리즘 적용을 통해 적합한 귀농정보를 제공해 드립니다.</span> -->
 	            </p>
 	    	</div>
 
 	    	<div class="menuTop" id="menu_top">
 	    		<ul>
-	    			<li id="menu_topNav" style="display:none;"><a href=""<span>더미(정렬할때 사용)</span></a></li>
-	    			<li id="result02Nav" class="on"><a href="#result02" class="scrollMove"><span>지역정보</span></a></li>
-	    			<li id="result05Nav"><a href="#result05" class="scrollMove"><span>지원정책</span></a></li>
-	    			<li id="result03Nav"><a href="#result03" class="scrollMove"><span>정주여건</span></a></li>
-	    			<li id="result04Nav"><a href="#result04" class="scrollMove"><span>품목정보</span></a></li>
-	    			<li id="result01Nav"><a href="#result01" class="scrollMove"><span>귀농인정보</span></a></li>
-	    			<li id="result06Nav"><a href="#result06" class="scrollMove"><span>품목분석</span></a></li>
+	    			<li id="menu_topNav" style="display:none;"><a href=""><span>더미(정렬할때 사용)</span></a></li>
+	    			<li id="result02Nav"><a href="#result02" class="scrollMove"><span id="resultColor02" class="tabon">지역정보</span></a></li>
+	    			<li id="result04Nav"><a href="#result04" class="scrollMove"><span id="resultColor04" >품목정보</span></a></li>
+	    			<li id="result05Nav"><a href="#result05" class="scrollMove"><span id="resultColor05">지원정책</span></a></li>
+	    			<li id="result03Nav"><a href="#result03" class="scrollMove"><span id="resultColor03">정주여건</span></a></li>
+	    			<li id="result01Nav"><a href="#result01" class="scrollMove"><span id="resultColor01">귀농인정보</span></a></li>
+	    			<li id="result06Nav"><a href="#result06" class="scrollMove"><span id="resultColor06">품목분석</span></a></li>
 	    		</ul>
 	    	</div>
 	    	<!-- //상단고정 -->
 
 	    	<div class="resultBox" id="result02">
-	        	<h3>맞춤 귀농 지역 정보</h3>
+	        	<h3>귀농 지역 정보 안내</h3>
 	        	<div class="row mt20">
         			<div class="areaList w65p">
-        				<p>귀하와 적합한 <strong>맞춤 귀농 지역</strong>입니다. <br>아래의 <strong>지역명을 클릭</strong>하시면역 <strong>지역맞춤 귀농교육 및 지원정책</strong>과 지역 <strong>정주 여건 정보, 귀농 지역 맞춤 품목 정보</strong>를 비롯하여 <strong>유사 귀농인 정보</strong>를 보여드립니다. </p>
+        				<p>귀하와 적합한 <strong>귀농 지역</strong>입니다. <br>아래의 <strong>지역명을 클릭</strong>하시면 <strong>지역 귀농교육 및 지원정책</strong>과 지역 <strong>정주 여건 정보, 귀농 지역 품목 정보</strong>를 비롯하여 <strong>유사 귀농인 정보</strong>를 보여드립니다. </p>
 						<!--
 							선택된 버튼에 class = on
 						-->
@@ -103,391 +106,8 @@
         		</div>
 	        </div><!-- //resultBox result02 -->
 
-
-	        <div class="resultBox spprtPolicy" id="result05">
-	        	<h3>지역맞춤 귀농교육 및 지원정책 - </h3>
-	        	<p class="mt20">귀하와 적합한 <strong>맞춤 귀농 지역</strong> 및 요건에 맞는 <br><strong>지역맞춤 귀농교육 및 지원정책 결과를 요약</strong>하여 아래와 같이 알려드립니다. <br>정보를 클릭하시면 정보의 리스트 및 상세정보를 확인하실 수 있습니다.</p>
-	        	<div class="row">
-		        	<div class="w100p roundBx graphArea">
-		        		<h4>귀농지원사업정보</h4>
-		        		<ul>
-		        			<li>
-		        				<span>농업교육포털 : <a href="https://agriedu.net" target="_blank">https://agriedu.net</a></span><br/>
-		        				<span>귀농귀촌종합센터 교육정보 : <a href="http://www.returnfarm.com" target="_blank">http://www.returnfarm.com</a></span>
-		        			</li>
-		        			<li>정책 <strong></strong><br/>&nbsp;</li>
-		        		</ul>
-		        	</div>
-		        </div>
-		        <p class="cmmnt"></p>
-		        <button type="button" id="btn_popup_open"><span>정책 상세보기</span></button>
-	        </div><!-- //resultBox result05 -->
-
-
-	        <div class="resultBox" id="result03">
-	        	<h3>지역 정주 여건 정보 - </h3>
-		    	<div class="tabWrap has8Tab">
-                	<ul class="tabTitle">
-                		<li class="tablinks on"><button type="button"><span>농지가격</span></button></li>
-                		<li class="tablinks"><button type="button"><span>귀농인</span></button></li>
-                		<li class="tablinks"><button type="button"><span>교육</span></button></li>
-                		<li class="tablinks"><button type="button"><span>교통</span></button></li>
-                		<li class="tablinks"><button type="button"><span>편의</span></button></li>
-                		<li class="tablinks"><button type="button"><span>문화</span></button></li>
-                		<li class="tablinks"><button type="button"><span>유통</span></button></li>
-                		<li class="tablinks"><button type="button"><span>부가정보</span></button></li>
-                	</ul>
-                	<div class="tabContWrap">
-                		<div class="tabcontent on">
-                			<div class="row">
-                				<div class="w30p">
-                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 농지 평균 실거래가격</strong>
-		                				<span class="unit">기준년도: 2018~2019년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_0" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w70p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 농지 평균 실거래가격 비교</strong>
-		                				<span class="unit">기준년도: 2018~2019년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_1" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-                			<div class="row">
-                				<div class="w30p">
-                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 농지 평균 임대가격</strong>
-		                				<span class="unit">기준년도: 2018~2019년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_2" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w70p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 농지 평균 임대가격 비교</strong>
-		                				<span class="unit">기준년도: 2018~2019년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_3" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-                		</div>
-                		<div class="tabcontent">
-            				<div class="row">
-                				<div class="w34p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 연령대별 귀농인</strong>
-		                				<span class="unit">기준년도: 2018년 &nbsp;&nbsp;(단위 : 명)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_1_0" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w33p">
-                					<h4 class="hasUnit"><strong>귀농인 전출 지역</strong>
-		                				<span class="unit">기준년도: 2015~2018년 &nbsp;&nbsp;(단위 : 명)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_1_1" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w33p">
-                					<h4 class="hasUnit"><strong>귀농인 재배 품목</strong>
-		                				<span class="unit">기준년도: 2015~2018년 (단위 : 명)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_1_2" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-                		</div>
-                		<div class="tabcontent">
-            				<div class="row">
-                				<div class="w30p">
-                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 교육시설별 접근시간</strong>
-                						<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_2_0" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w70p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 교육시설 접근성비교</strong>
-		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_2_1" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-                		</div>
-                		<div class="tabcontent">
-            				<div class="row">
-                				<div class="w30p">
-                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 교통시설 접근시간</strong>
-		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_3_0" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w70p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 교통시설 접근성비교</strong>
-		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_3_1" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-            				<div>
-                			</div>
-                		</div>
-                		<div class="tabcontent">
-            				<div class="row">
-                				<div class="w30p">
-                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 마트시설 접근시간</strong>
-		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_0" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w70p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 마트시설 접근성비교</strong>
-		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_1" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-                			<div class="row">
-                				<div class="w30p">
-                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 편의시설 수</strong>
-		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_2" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w70p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 편의시설 비교</strong>
-		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_3" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-                		</div>
-                		<div class="tabcontent">
-            				<div class="row">
-                				<div class="w40p">
-                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 문화시설 수</strong>
-		                				<span class="unit">기준년도: 2018년 &nbsp;&nbsp;(단위 : 개)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_5_0" ></canvas></div>
-		                			</div>
-                				</div>
-                				<div class="w60p">
-                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 문화시설 수 비교</strong>
-		                				<span class="unit">기준년도: 2018년 &nbsp;&nbsp;(단위 : 개)</span>
-		                			</h4>
-		                			<div class="graph">
-		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_5_1" ></canvas></div>
-		                			</div>
-                				</div>
-                			</div>
-                		</div>
-                		<div class="tabcontent">
-            				<h4 class="txtC"><strong>농산물산지유통센터 정보</strong><span class="unit">기준년도: 2019년 &nbsp;&nbsp;</span></h4>
-            				<div class="distbInfoApc gridWrap">
-				        		<table class="grid typeA">
-				        			<caption>농산물산지유통센터 정보</caption>
-				        			<colgroup>
-				        				<col width="8%">
-				        				<col width="25%">
-				        				<col width="25%">
-				        				<col width="*">
-					        		</colgroup>
-				        			<thead>
-				        				<tr>
-				        					<th scope="col">No</th>
-				        					<th scope="col">사업자명</th>
-				        					<th scope="col">취급품목</th>
-				        					<th scope="col">주소지</th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        				<tr>
-				        					<th scope="row">1</th>
-				        					<td class="txtC"></td>
-				        					<td class="txtC"></td>
-				        					<td class="txtC"></td>
-				        				</tr>
-				        				<tr>
-				        					<th scope="row">2</th>
-				        					<td class="txtC"></td>
-				        					<td class="txtC"></td>
-				        					<td class="txtC"></td>
-				        				</tr>
-				        			</tbody>
-				        		</table>
-				        	</div>
-				        	<h4 class="txtC"><strong>로컬푸드 직매장 현황</strong><span class="unit">기준년도: 2019년 &nbsp;&nbsp;</span></h4>
-            				<div class="distbInfoLocal gridWrap">
-				        		<table class="grid typeA">
-				        			<caption>로컬푸드 직매장 현황</caption>
-				        			<colgroup>
-				        				<col width="8%">
-				        				<col width="25%">
-				        				<col width="45%">
-				        				<col width="*">
-					        		</colgroup>
-				        			<thead>
-				        				<tr>
-				        					<th scope="col">No</th>
-				        					<th scope="col">매장명</th>
-				        					<th scope="col">주소지</th>
-				        					<th scope="col">전화번호</th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        				<tr>
-				        					<th scope="row">1</th>
-				        					<td class="txtC"></td>
-				        					<td class="txtC"></td>
-				        					<td class="txtC"></td>
-				        				</tr>
-				        			</tbody>
-				        		</table>
-				        	</div><!-- //gridWrap -->
-                		</div>
-                		<div class="tabcontent">
-            				<h4 class="txtC"><strong>빈집정보</strong><span class="unit">기준년도: 실시간 &nbsp;&nbsp;</span></h4>
-            				<div class="uninhbhous gridWrap">
-				        		<table class="grid typeA">
-				        			<caption>빈집정보</caption>
-				        			<colgroup>
-				        				<col width="8%">
-				        				<col width="20%">
-				        				<col width="*">
-				        				<col width="20%">
-				        				<col width="20%">
-					        		</colgroup>
-				        			<thead>
-				        				<tr>
-				        					<th scope="col">No</th>
-				        					<th scope="col">등록일</th>
-				        					<th scope="col">소재지</th>
-				        					<th scope="col">거래유형</th>
-				        					<th scope="col">면적<span class="unit">(단위 : 3.3m<em>2</em>)</span></th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        			</tbody>
-				        		</table>
-				        		<div class="pagingWrap">
-<!-- 						        	<ul class="paging2"> -->
-<!-- 						        		선택된 li의 class="on" -->
-<!-- 						        		<li class="on"><button type="button"><span>1</span></button></li> -->
-<!-- 						        		<li><button type="button"><span>2</span></button></li> -->
-<!-- 						        		<li><button type="button"><span>3</span></button></li> -->
-<!-- 						        	</ul> -->
-						        </div>
-				        	</div><!-- //gridWrap -->
-				        	<h4 class="txtC"><strong>일자리 정보</strong><span class="unit">기준년도: 실시간 &nbsp;&nbsp;</span></h4>
-            				<div class="jbhnt gridWrap">
-				        		<table class="grid typeA">
-				        			<caption>일자리 정보</caption>
-				        			<colgroup>
-				        				<col width="8%">
-				        				<col width="16%">
-				        				<col width="16%">
-				        				<col width="*">
-				        				<col width="12%">
-				        				<col width="12%">
-					        		</colgroup>
-				        			<thead>
-				        				<tr>
-				        					<th scope="col">No</th>
-				        					<th scope="col">등록일</th>
-				        					<th scope="col">회사명</th>
-				        					<th scope="col">채용공고</th>
-				        					<th scope="col">근무조건</th>
-				        					<th scope="col">마감일</th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        				<tr>
-				        					<th scope="row">1</th>
-				        					<td class="txtC">20.02.17</td>
-				        					<td class="txtC">(주)농림</td>
-				        					<td class="txtC">농림에서 배달기사님을 모십니다.</td>
-				        					<td class="txtC">월 180</td>
-				        					<td class="txtC">D-10</td>
-				        				</tr>
-				        				<tr>
-				        					<th scope="row">1</th>
-				        					<td class="txtC">20.02.17</td>
-				        					<td class="txtC">(주)농림</td>
-				        					<td class="txtC">농림에서 배달기사님을 모십니다.</td>
-				        					<td class="txtC">월 180</td>
-				        					<td class="txtC">D-10</td>
-				        				</tr>
-				        				<tr>
-				        					<th scope="row">1</th>
-				        					<td class="txtC">20.02.17</td>
-				        					<td class="txtC">(주)농림</td>
-				        					<td class="txtC">농림에서 배달기사님을 모십니다.</td>
-				        					<td class="txtC">월 180</td>
-				        					<td class="txtC">D-10</td>
-				        				</tr>
-				        			</tbody>
-				        		</table>
-				        		<div class="pagingWrap">
-<!-- 						        	<ul class="paging2"> -->
-<!-- 						        		선택된 li의 class="on" -->
-<!-- 						        		<li class="on"><button type="button"><span>1</span></button></li> -->
-<!-- 						        		<li><button type="button"><span>2</span></button></li> -->
-<!-- 						        		<li><button type="button"><span>3</span></button></li> -->
-<!-- 						        	</ul> -->
-						        </div>
-				        	</div><!-- //gridWrap -->
-				        	<h4 class="txtC"><strong>대안학교 정보</strong><span class="unit">기준년도: 2019년 &nbsp;&nbsp;</span></h4>
-            				<div class="altrvSchul gridWrap">
-				        		<table class="grid typeA">
-				        			<caption>대안학교 정보</caption>
-				        			<colgroup>
-				        				<col width="8%">
-				        				<col width="24%">
-				        				<col width="*">
-				        				<col width="24%">
-					        		</colgroup>
-				        			<thead>
-				        				<tr>
-				        					<th scope="col">No</th>
-				        					<th scope="col">학교명</th>
-				        					<th scope="col">주소</th>
-				        					<th scope="col">분야</th>
-				        				</tr>
-				        			</thead>
-				        			<tbody>
-				        			</tbody>
-				        		</table>
-				        	</div><!-- //gridWrap -->
-                		</div>
-                	</div>
-                </div>
-	        </div><!-- //resultBox result03 -->
-
 	        <div class="resultBox" id="result04">
-	        	<h3>귀농 지역 맞춤 품목 정보 - </h3>
+	        	<h3>귀농 지역 품목 정보 - </h3>
 	        	<div class="tabWrap">
 		        	<ul class="fixesCtvt tabTitle itemList">
             			<!--
@@ -505,12 +125,12 @@
                 	</ul>
                 	<div class="tabContWrap">
                 		<div class="tabcontent on">
-            				<div class="tabWrap has5Tab">
+            				<div class="tabWrap has4Tab">
 			                	<ul class="tabTitle">
 			                		<li class="tablinks on"><button type="button"><span>재배면적추이</span></button></li>
 			                		<li class="tablinks"><button type="button"><span>도매시장 경락 가격</span></button></li>
 			                		<li class="tablinks"><button type="button"><span>연령대별 재배농가현황</span></button></li>
-			                		<li class="tablinks"><button type="button"><span>생산/유통 안정성</span></button></li>
+			                		<!-- <li class="tablinks"><button type="button"><span>생산/유통 안정성</span></button></li> -->
 			                		<li class="tablinks"><button type="button"><span>품목부가정보</span></button></li>
 			                	</ul>
 			                	<div class="tabContWrap">
@@ -535,7 +155,7 @@
 			                		<div class="tabcontent">
 				                		<div class="h4wrap">
 				            				<h4 class="hasUnit"><strong>도매시장 경락가격 현황</strong>
-				                				<span class="unit">기준년도: 2018~2019년 &nbsp;&nbsp;(단위 : 원/kg)</span>
+				                				<span class="unit">기준년도: 2018~2020년 &nbsp;&nbsp;(단위 : 원/kg)</span>
 				                				<p class="help right">
 					            					<em>?</em>
 					            					<span>도매시장 경락가격 추이 (해당품목 전국 평균, 출하시군 평균 가격)</span>
@@ -714,6 +334,435 @@
                 </div><!-- //tabWrap - 배포도양파 -->
 	        </div><!-- //resultBox result04 -->
 
+	        <div class="resultBox spprtPolicy" id="result05">
+	        	<h3>지역 귀농교육 및 지원정책 - </h3>
+	        	<p class="mt20">귀하와 적합한 <strong>귀농 지역</strong> 및 요건에 맞는 <br><strong>지역 귀농교육 및 지원정책 결과를 요약</strong>하여 아래와 같이 알려드립니다. <br>정보를 클릭하시면 정보의 리스트 및 상세정보를 확인하실 수 있습니다.</p>
+	        	<div class="row">
+		        	<div class="w100p roundBx graphArea">
+		        		<h4>귀농지원사업정보</h4>
+		        		<ul>
+		        			<li>
+		        				<!-- <span>농업교육포털 : <a href="https://agriedu.net" target="_blank">https://agriedu.net</a></span><br/>
+		        				<span>귀농귀촌종합센터 교육정보 : <a href="http://www.returnfarm.com" target="_blank">http://www.returnfarm.com</a></span> -->
+		        				<a href="https://agriedu.net" target="_blank"><span>농업교육포털 바로가기</span></a><br/>
+		        				<a href="http://www.returnfarm.com" target="_blank"><span>귀농귀촌종합센터 교육정보 바로가기</span></a>
+		        			</li>
+		        			<li>정책 <strong></strong><br/>&nbsp;</li>
+		        		</ul>
+		        	</div>
+		        </div>
+		        <p class="cmmnt"></p>
+		        <button type="button" id="btn_popup_open"><span>정책 상세보기</span></button>
+	        </div><!-- //resultBox result05 -->
+
+
+	        <div class="resultBox" id="result03">
+	        	<h3>지역 정주 여건 정보 - </h3>
+		    	<div class="tabWrap has8Tab">
+                	<ul class="tabTitle">
+                	<!-- MK 의료 추가 및 메뉴 순서 변경 -->
+                		<li class="tablinks on"><button type="button"><span>농지가격</span></button></li>
+                		<li class="tablinks"><button type="button"><span>귀농인</span></button></li>
+                		<li class="tablinks"><button type="button"><span>교통</span></button></li>
+                		<li class="tablinks"><button type="button"><span>교육</span></button></li>
+                		<li class="tablinks"><button type="button"><span>의료</span></button></li>                		
+                		<li class="tablinks"><button type="button"><span>편의</span></button></li>
+                		<li class="tablinks"><button type="button"><span>문화</span></button></li>
+                		<li class="tablinks"><button type="button"><span>유통</span></button></li>
+                		<li class="tablinks"><button type="button"><span>부가정보</span></button></li>
+                	</ul>
+                	<div class="tabContWrap">
+                		<div class="tabcontent on">
+                			<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 농지 평균 실거래가격</strong>
+		                				<span class="unit">기준년도: 2018~2020년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_0" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 농지 평균 실거래가격 비교</strong>
+		                				<span class="unit">기준년도: 2018~2020년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_1" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                			<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 농지 평균 임대가격</strong>
+		                				<span class="unit">기준년도: 2018~2020년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_2" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 농지 평균 임대가격 비교</strong>
+		                				<span class="unit">기준년도: 2018~2020년 평균 &nbsp;&nbsp;(단위 : 원/3.3m<em>2</em>)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_0_3" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                		</div>
+                		<div class="tabcontent">
+            				<div class="row">
+                				<div class="w34p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 연령대별 귀농인</strong>
+		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 명)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_1_0" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w33p">
+                					<h4 class="hasUnit"><strong>귀농인 전출 지역</strong>
+		                				<span class="unit">기준년도: 2015~2019년 &nbsp;&nbsp;(단위 : 명)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_1_1" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w33p">
+                					<h4 class="hasUnit"><strong>귀농인 재배 품목</strong>
+		                				<span class="unit">기준년도: 2015~2019년 (단위 : 명)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_1_2" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                		</div>
+                		<!-- MK 의료탭 추가 및 탭 순서 변경 -->
+                		<div class="tabcontent">
+            				<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 교통시설 접근시간</strong>
+		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_3_0" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 교통시설 접근성비교</strong>
+		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_3_1" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+            				<div>
+                			</div>
+                		</div>
+                		<div class="tabcontent">
+            				<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 교육시설별 접근시간</strong>
+                						<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_2_0" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 교육시설 접근성비교</strong>
+		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_2_1" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                			<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 교육시설 수</strong>
+		                				<span class="unit">기준년도: 2020년 &nbsp;&nbsp;(단위 : 개)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_2_2" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 교육시설 비교</strong>
+		                				<span class="unit">기준년도: 2020년 &nbsp;&nbsp;(단위 : 개)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_2_3" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                		</div>
+                		<!-- MK 의료 탭 추가 -->
+                		<div class="tabcontent">
+            				<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 의료시설 접근시간</strong>
+		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_6_0" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 의료시설 접근성비교</strong>
+		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_6_1" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+            				<div>
+                			</div>
+                		</div>
+                		<div class="tabcontent">
+            				<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 마트시설 접근시간</strong>
+		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_0" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 마트시설 접근성비교</strong>
+		                				<span class="unit">기준년도: 2017년 &nbsp;&nbsp;(단위 : 자가용이용시 소요시간. 분)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_1" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                			<div class="row">
+                				<div class="w30p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 편의시설 수</strong>
+		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_2" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w70p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 편의시설 비교</strong>
+		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_3" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                		</div>
+                		<div class="tabcontent">
+            				<div class="row">
+                				<div class="w40p">
+                					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 문화시설 수</strong>
+		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_5_0" ></canvas></div>
+		                			</div>
+                				</div>
+                				<div class="w60p">
+                					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면동별 문화시설 수 비교</strong>
+		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
+		                			</h4>
+		                			<div class="graph">
+		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_5_1" ></canvas></div>
+		                			</div>
+                				</div>
+                			</div>
+                		</div>
+                		<div class="tabcontent">
+            				<h4 class="txtC"><strong>농산물산지유통센터 정보</strong><span class="unit">기준년도: 2020년 &nbsp;&nbsp;</span></h4>
+            				<div class="distbInfoApc gridWrap">
+				        		<table class="grid typeA">
+				        			<caption>농산물산지유통센터 정보</caption>
+				        			<colgroup>
+				        				<col width="8%">
+				        				<col width="25%">
+				        				<col width="25%">
+				        				<col width="*">
+					        		</colgroup>
+				        			<thead>
+				        				<tr>
+				        					<th scope="col">No</th>
+				        					<th scope="col">사업자명</th>
+				        					<th scope="col">취급품목</th>
+				        					<th scope="col">주소지</th>
+				        				</tr>
+				        			</thead>
+				        			<tbody>
+				        				<tr>
+				        					<th scope="row">1</th>
+				        					<td class="txtC"></td>
+				        					<td class="txtC"></td>
+				        					<td class="txtC"></td>
+				        				</tr>
+				        				<tr>
+				        					<th scope="row">2</th>
+				        					<td class="txtC"></td>
+				        					<td class="txtC"></td>
+				        					<td class="txtC"></td>
+				        				</tr>
+				        			</tbody>
+				        		</table>
+				        	</div>
+				        	<h4 class="txtC"><strong>로컬푸드 직매장 현황</strong><span class="unit">기준년도: 2020년 &nbsp;&nbsp;</span></h4>
+            				<div class="distbInfoLocal gridWrap">
+				        		<table class="grid typeA">
+				        			<caption>로컬푸드 직매장 현황</caption>
+				        			<colgroup>
+				        				<col width="8%">
+				        				<col width="25%">
+				        				<col width="45%">
+				        				<col width="*">
+					        		</colgroup>
+				        			<thead>
+				        				<tr>
+				        					<th scope="col">No</th>
+				        					<th scope="col">매장명</th>
+				        					<th scope="col">주소지</th>
+				        					<th scope="col">전화번호</th>
+				        				</tr>
+				        			</thead>
+				        			<tbody>
+				        				<tr>
+				        					<th scope="row">1</th>
+				        					<td class="txtC"></td>
+				        					<td class="txtC"></td>
+				        					<td class="txtC"></td>
+				        				</tr>
+				        			</tbody>
+				        		</table>
+				        	</div><!-- //gridWrap -->
+                		</div>
+                		<div class="tabcontent">
+                		<!-- MK 빈집정보 삭제 -->
+                		<%-- 
+            				<h4 class="txtC"><strong>빈집정보</strong><span class="unit">기준년도: 실시간 &nbsp;&nbsp;</span></h4>
+            				<div class="uninhbhous gridWrap">
+				        		<table class="grid typeA">
+				        			<caption>빈집정보</caption>
+				        			<colgroup>
+				        				<col width="8%">
+				        				<col width="20%">
+				        				<col width="*">
+				        				<col width="20%">
+				        				<col width="20%">
+					        		</colgroup>
+				        			<thead>
+				        				<tr>
+				        					<th scope="col">No</th>
+				        					<th scope="col">등록일</th>
+				        					<th scope="col">소재지</th>
+				        					<th scope="col">거래유형</th>
+				        					<th scope="col">면적<span class="unit">(단위 : 3.3m<em>2</em>)</span></th>
+				        				</tr>
+				        			</thead>
+				        			<tbody>
+				        			</tbody>
+				        		</table>
+				        		<div class="pagingWrap">
+<!-- 						        	<ul class="paging2"> -->
+<!-- 						        		선택된 li의 class="on" -->
+<!-- 						        		<li class="on"><button type="button"><span>1</span></button></li> -->
+<!-- 						        		<li><button type="button"><span>2</span></button></li> -->
+<!-- 						        		<li><button type="button"><span>3</span></button></li> -->
+<!-- 						        	</ul> -->
+						        </div>
+				        	</div><!-- //gridWrap --> --%>
+				        	<h4 class="txtC"><strong>일자리 정보</strong><span class="unit">기준년도: 실시간 &nbsp;&nbsp;</span></h4>
+            				<div class="jbhnt gridWrap">
+				        		<table class="grid typeA">
+				        			<caption>일자리 정보</caption>
+				        			<colgroup>
+				        				<col width="8%">
+				        				<col width="16%">
+				        				<col width="16%">
+				        				<col width="*">
+				        				<col width="12%">
+				        				<col width="12%">
+					        		</colgroup>
+				        			<thead>
+				        				<tr>
+				        					<th scope="col">No</th>
+				        					<th scope="col">등록일</th>
+				        					<th scope="col">회사명</th>
+				        					<th scope="col">채용공고</th>
+				        					<th scope="col">근무조건</th>
+				        					<th scope="col">마감일</th>
+				        				</tr>
+				        			</thead>
+				        			<tbody>
+				        				<tr>
+				        					<th scope="row">1</th>
+				        					<td class="txtC">20.02.17</td>
+				        					<td class="txtC">(주)농림</td>
+				        					<td class="txtC">농림에서 배달기사님을 모십니다.</td>
+				        					<td class="txtC">월 180</td>
+				        					<td class="txtC">D-10</td>
+				        				</tr>
+				        				<tr>
+				        					<th scope="row">1</th>
+				        					<td class="txtC">20.02.17</td>
+				        					<td class="txtC">(주)농림</td>
+				        					<td class="txtC">농림에서 배달기사님을 모십니다.</td>
+				        					<td class="txtC">월 180</td>
+				        					<td class="txtC">D-10</td>
+				        				</tr>
+				        				<tr>
+				        					<th scope="row">1</th>
+				        					<td class="txtC">20.02.17</td>
+				        					<td class="txtC">(주)농림</td>
+				        					<td class="txtC">농림에서 배달기사님을 모십니다.</td>
+				        					<td class="txtC">월 180</td>
+				        					<td class="txtC">D-10</td>
+				        				</tr>
+				        			</tbody>
+				        		</table>
+				        		<div class="pagingWrap">
+<!-- 						        	<ul class="paging2"> -->
+<!-- 						        		선택된 li의 class="on" -->
+<!-- 						        		<li class="on"><button type="button"><span>1</span></button></li> -->
+<!-- 						        		<li><button type="button"><span>2</span></button></li> -->
+<!-- 						        		<li><button type="button"><span>3</span></button></li> -->
+<!-- 						        	</ul> -->
+						        </div>
+				        	</div><!-- //gridWrap -->
+				        	<h4 class="txtC"><strong>대안학교 정보</strong><span class="unit">기준년도: 2020년 &nbsp;&nbsp;</span></h4>
+            				<div class="altrvSchul gridWrap">
+				        		<table class="grid typeA">
+				        			<caption>대안학교 정보</caption>
+				        			<colgroup>
+				        				<col width="8%">
+				        				<col width="24%">
+				        				<col width="*">
+				        				<col width="24%">
+					        		</colgroup>
+				        			<thead>
+				        				<tr>
+				        					<th scope="col">No</th>
+				        					<th scope="col">학교명</th>
+				        					<th scope="col">주소</th>
+				        					<th scope="col">분야</th>
+				        				</tr>
+				        			</thead>
+				        			<tbody>
+				        			</tbody>
+				        		</table>
+				        	</div><!-- //gridWrap -->				        	
+                		</div>
+                	</div>
+                </div>
+	        </div><!-- //resultBox result03 -->
 
 
 	        <div class="resultBox" id="result01">
@@ -745,7 +794,7 @@
                 				<div class="w70p">
                 					<h4 class="hasUnit">
 	                					<strong>귀농인 상위 전입지역</strong>
-		                				<span class="unit">기준년도: 2015~2018년 &nbsp;&nbsp;(단위 : 명)</span>
+		                				<span class="unit">기준년도: 2015~2019년 &nbsp;&nbsp;(단위 : 명)</span>
 		                			</h4>
 			            			<div class="graph">
 		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_c_0_1" ></canvas></div>
@@ -772,7 +821,7 @@
                 				<div class="w70p">
                 					<h4 class="hasUnit">
 	                					<strong>유사 귀농인 상위 전입지역</strong>
-		                				<span class="unit">기준년도: 2015~2018년 &nbsp;&nbsp;(단위 : 명)</span>
+		                				<span class="unit">기준년도: 2015~2019년 &nbsp;&nbsp;(단위 : 명)</span>
 		                			</h4>
 			            			<div class="graph">
 		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_c_1_0" ></canvas></div>
@@ -784,7 +833,7 @@
                 			<div class="h4wrap">
 	                			<h4 class="hasUnit">
 	            					<strong>초기 영농인 상위 10개 재배품목</strong>
-	                				<span class="unit">기준년도: 2015~2018년 &nbsp;&nbsp;(단위 : 명)</span>
+	                				<span class="unit">기준년도: 2015~2019년 &nbsp;&nbsp;(단위 : 명)</span>
 	                				<p class="help right">
 		            					<em>?</em>
 		            					<span>영농기간이 5년 이내인 초기영농인의 재배품목 정보</span>
@@ -799,7 +848,7 @@
                 			<div class="h4wrap">
 	                			<h4 class="hasUnit">
 	            					<strong>유사 귀농인 상위 10개 재배품목</strong>
-	                				<span class="unit">기준년도: 2015~2018년 &nbsp;&nbsp;(단위 : 명)</span>
+	                				<span class="unit">기준년도: 2015~2019년 &nbsp;&nbsp;(단위 : 명)</span>
 	                				<p class="help right">
 		            					<em>?</em>
 		            					<span>빅데이터 분석을 통해 이용자와 유사한 귀농인이 재배하고 있는 품목에 대한 정보</span>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.SportBsnsFrmerSqlMapper">
+	
+	
+	<select id="getCountsByBsnsCode" resultType="java.util.Map">
+		SELECT	SPORT_BSNS_CODE
+			,COUNT(*) AS CNT
+		FROM	FS_SPORT_BSNS_FRMER
+		WHERE	1=1
+		AND	SPORT_BSNS_CODE IN <foreach collection="bsnsCodes" item="item" open="(" separator="," close=")">#{item}</foreach>
+		
+		<if test="null != sexdstn and '' != sexdstn">
+			/*성별*/
+			AND	SEXDSTN = #{sexdstn}
+		</if>
+		
+		<if test="null != minBrthYyyy and '' != minBrthYyyy">
+			/*나이*/
+			AND	BRTH_YYYY &gt;= #{minBrthYyyy} and BRTH_YYYY &lt; #{maxBrthYyyy}
+		</if>
+		
+		<if test="null != minFarmBeginYm and '' != minFarmBeginYm">
+			/*경력*/
+			AND	FARM_BEGIN_YM &gt;= #{minFarmBeginYm} AND FARM_BEGIN_YM &lt; #{maxFarmBeginYm}
+		</if>
+		
+		<if test="null != prdlstCode and '' != prdlstCode">
+			/*품목*/
+			AND	PRDLST_CODE = #{prdlstCode}
+		</if>
+		
+		<if test="(null == ctvtTyCode or '' == ctvtTyCode) and (null != minArOrCo and '' != minArOrCo)">
+			/*면적 or 두수*/
+			AND	CTVT_AR &gt;= #{minArOrCo} AND CTVT_AR &lt; #{maxArOrCo}
+		</if>
+		
+		<if test="null != ctvtTyCode and '' != ctvtTyCode">
+			/*면적 or 두수*/
+			<if test='"noji" == ctvtTyCode'>
+				/*노지*/
+				AND	ROADSD_LAD_CTVT_AR &gt;= #{minArOrCo} AND ROADSD_LAD_CTVT_AR &lt; #{maxArOrCo}
+			</if>
+			
+			<if test='"sisul" == ctvtTyCode'>
+				/*시설*/
+				AND	FCLTY_CTVT_AR &gt;= #{minArOrCo} AND FCLTY_CTVT_AR &lt; #{maxArOrCo}
+			</if>
+		</if>		
+		
+		
+		GROUP BY	SPORT_BSNS_CODE
+	</select>
+</mapper>

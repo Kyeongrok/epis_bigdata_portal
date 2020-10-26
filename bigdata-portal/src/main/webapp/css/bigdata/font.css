@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+/* Nanum Gothic
+Light(200)
+Regular(400)
+Bold(700)
+ExtraBold(800)
+*/
+@import url(../font/nanumgothic.css);
+
+/* Noto Sans
+Light(300)
+Regular(400)
+medium(500)
+Bold(700)
+*/
+@import url(../font/notokr.css);
+
+body { font-family: 'Noto Sans', 'Nanum Gothic', 'dotum', '돋움', 'Tahoma', 'sans-serif'; }
+em,em:lang(en) { font-family: 'Noto Sans', 'Nanum Gothic', 'Arial'; }
+input[type="text"],
+input[type="number"],
+input[type="tel"] { font-family: 'Nanum Gothic', 'dotum', '돋움'; }

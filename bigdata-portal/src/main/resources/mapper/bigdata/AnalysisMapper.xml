@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.AnalysisMapper">
+
+	<sql id="sqlSearchAnalysisList">
+		<if test="anaUserId != null and !anaUserId.equals('')">
+			AND ANA_USER_ID = #{anaUserId}
+		</if>
+		<if test="searchKeyword != null and !searchKeyword.equals('')">
+			AND ANA_TITLE LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+	</sql>
+	
+	<sql id="sqlSearchAnalysisDataMergeList">
+		<if test="anadmUserId != null and !anadmUserId.equals('')">
+			AND ANADM_USER_ID = #{anadmUserId}
+		</if>
+		<if test="searchKeyword != null and !searchKeyword.equals('')">
+			AND ANADM_TITLE LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="anadmMergeStat != null and !anadmMergeStat.equals('')">
+			AND ANADM_MERGE_STAT = #{anadmMergeStat}
+		</if>
+	</sql>
+
+	<!-- 데이터 분석 설정 저장 -->
+	<insert id="insertBdpAnalysis" parameterType="hashmap" useGeneratedKeys="true" keyProperty="anaIdx">
+		INSERT INTO BDP_ANALYSIS SET
+			ANA_USER_ID = #{anaUserId},
+			ANA_TITLE = #{anaTitle},
+			ANA_TABLE = #{anaTable},
+			ANA_TABLE_STAT = #{anaTableStat},
+			ANA_AND_TERMS = #{anaAndTerms},
+			ANA_OR_TERMS = #{anaOrTerms},
+			ANA_DATA_KIND = #{anaDataKind},
+			ANA_DATA_COLUMN = #{anaDataColumn},
+			ANA_DATA_CLUSTERING = #{anaDataClustering},
+			ANA_STA_PARAM_REQ = #{anaStaParamReq},
+			ANA_PNU_KIND = #{anaPnuKind}
+	</insert>
+	
+	<!-- 데이터 분석 목록 갯수 리턴 -->
+	<select id="selectBdpAnalysisCount" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) AS totalCount
+		FROM BDP_ANALYSIS
+		WHERE 1 = 1
+	]]>
+	<include refid="sqlSearchAnalysisList"></include>
+	</select>
+	
+	
+	<!-- 데이터 분석 목록 리턴 -->
+	<select id="selectBdpAnalysisList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_ANALYSIS WHERE 1=1
+	]]>
+	<include refid="sqlSearchAnalysisList"></include>
+	<![CDATA[
+		ORDER BY REG_DATE DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+	
+	<delete id="deleteBdpAnalysisRow" parameterType="string">
+		DELETE FROM BDP_ANALYSIS WHERE ANA_IDX=#{anaIdx}		
+	</delete>
+	
+	<select id="selectBdpAnalysisRow" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_ANALYSIS WHERE ANA_IDX = #{anaIdx}
+	]]>
+	<include refid="sqlSearchAnalysisList"></include>
+	</select>
+	
+	<!-- 분석 row 정보 갯수 리턴-->
+	<select id="selectBdpAnalysisRowCnt" parameterType="hashmap" resultType="int">
+		SELECT count(ANA_IDX) AS CNT FROM BDP_ANALYSIS WHERE ANA_IDX = #{anaIdx}
+	</select>
+	
+	<!-- 데이터 분석 결합하기 저장 -->
+	<insert id="insertBdpAnalysisDataMerge" parameterType="hashmap" useGeneratedKeys="true" keyProperty="anadmIdx">
+		INSERT INTO BDP_ANALYSIS_DATA_MERGE SET
+			ANADM_USER_ID = #{anadmUserId},
+			ANADM_TITLE = #{anadmTitle},
+			ANADM_TABLE1 = #{anadmTable1},
+			ANADM_TABLE1_STAT = #{anadmTable1Stat},
+			ANADM_TABLE1_AND_TERMS = #{anadmTable1AndTerms},
+			ANADM_TABLE1_OR_TERMS = #{anadmTable1OrTerms},
+			ANADM_TABLE1_PARAM_REQ = #{anadmTable1ParamReq},
+			ANADM_TABLE1_COLUMN = #{anadmTable1Column},
+			ANADM_TABLE2 = #{anadmTable2},
+			ANADM_TABLE2_STAT = #{anadmTable2Stat},
+			ANADM_TABLE2_AND_TERMS = #{anadmTable2AndTerms},
+			ANADM_TABLE2_OR_TERMS = #{anadmTable2OrTerms},
+			ANADM_TABLE2_PARAM_REQ = #{anadmTable2ParamReq},
+			ANADM_TABLE2_COLUMN = #{anadmTable2Column},
+			ANADM_MERGE_KEY = #{anadmMergeKey}
+	</insert>
+	
+	<select id="selectBdpAnalysisDataMerge" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_ANALYSIS_DATA_MERGE WHERE 1=1
+	]]>
+	<include refid="sqlSearchAnalysisDataMergeList"></include>
+	<![CDATA[
+		ORDER BY REG_DATE DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+	
+	<select id="selectBdpAnalysisDataMergeCount" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) FROM BDP_ANALYSIS_DATA_MERGE
+		WHERE 1=1
+	]]>
+	<include refid="sqlSearchAnalysisDataMergeList"></include>
+	</select>
+	
+	<select id="selectBdpAnalysisDataMergeRow" parameterType="hashmap" resultType="EntityMap">
+		SELECT * FROM BDP_ANALYSIS_DATA_MERGE WHERE ANADM_IDX = #{anadmIdx}
+		<if test="anadmUserId != null and !anadmUserId.equals('')">
+		AND ANADM_USER_ID = #{anadmUserId}
+		</if>
+	</select>
+	
+	<delete id="deleteBdpAnalysisDataMergeRow" parameterType="string">
+		DELETE FROM BDP_ANALYSIS_DATA_MERGE WHERE ANADM_IDX = #{anadmIdx}
+	</delete>
+	
+	<delete id="deleteUserMergeData" parameterType="string">
+		DELETE FROM BDP_ANALYSIS_DATA_MERGE WHERE ANADM_USER_ID = #{anadmUserId}
+	</delete>
+	
+	<delete id="deleteUserAnalysisData" parameterType="string">
+		DELETE FROM BDP_ANALYSIS WHERE ANA_USER_ID = #{anaUserId}
+	</delete>	
+	
+</mapper>

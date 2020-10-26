@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pilot.dct.mapper.DctMilkTrendAnalysisMapper">
+
+	<select id="selectDctMilkKeywordFrequencyYear" parameterType="map" resultType="egovMap">
+		SELECT 
+			DM_Y,
+			DM_KEY,
+			DM_COUNT,
+			DM_TF,
+			DM_MAG
+		FROM DCTMILK
+		WHERE DM_KEY IN (
+		<foreach collection="keywords" item="key" separator=",">
+			 #{key}
+		</foreach>
+		)
+		ORDER BY DM_Y ASC
+	</select>
+	
+	
+	<select id="selectDctMilkOrderByCount" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DM_Y,
+			DM_KEY,
+			DM_COUNT,
+			DM_TF,
+			DM_MAG
+		FROM DCTMILK
+		WHERE DM_Y = #{year}
+		ORDER BY DM_MAG DESC
+		]]>
+	</select>
+	
+	<select id="selectDctMilkOrderByTf" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DM_Y,
+			DM_KEY,
+			DM_COUNT,
+			DM_TF,
+			DM_MAG
+		FROM DCTMILK
+		WHERE DM_Y = #{year}
+		ORDER BY DM_MAG DESC
+		]]>
+	</select>	
+	
+	<select id="selectDctMilkKeywordComment" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DMK_Y,
+				DMK_COMMENT
+			FROM
+				DCTMILKKEYWORDCOMMENT
+			WHERE DMK_Y = #{year}
+		]]>
+	</select>
+	
+	<select id="selectDctMilkFrequency" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			TRIM(DMF_YM) AS DMF_YM,
+			DMF_KEY,
+			DMF_TYPE,
+			DMF_KEYWORD,
+			DMF_FREQUENCY
+		FROM DCTMILKFREQUENCY
+		WHERE DMF_KEY = #{key}
+		AND DMF_TYPE = #{vtype}
+		ORDER BY DMF_KEYWORD ASC, TRIM(DMF_YM) ASC
+		]]>
+	</select>
+	
+	<select id="selectDctMilkCorrelation" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMC_YM,
+			DMC_MILK_CONSUME,
+			DMC_INSTEAD_BREAKFAST,
+			DMC_HEALTH,
+			DMC_DESSERT,
+			(DMC_POS_DATA/1000000) AS DMC_POS_DATA
+		FROM DCTMILKCORRELATION
+		WHERE DMC_YM >= #{smonth}
+		AND DMC_YM <= #{emonth}
+		ORDER BY DMC_YM ASC
+		]]>
+	</select>
+	
+	<select id="selectDctMilkCorrelationResult" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMCR_INSTEAD_BREAKFAST,
+			DMCR_HEALTH,
+			DMCR_DESSERT,
+			DMCR_POS
+		FROM DCTMILKCORRELATIONRESULTS
+		]]>
+	</select>
+	
+	<select id="selectDctMilkCorrelationResultPos" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMCR_INSTEAD_BREAKFAST,
+			DMCR_HEALTH,
+			DMCR_DESSERT
+		FROM DCTMILKCORRELATIONRESULTSPOS
+		]]>
+	</select>	
+	
+	
+	<select id="selectCorrelation" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DC_YM,
+			DC_TYPE,
+			DC_CONSUME,
+			DC_POS
+		FROM DCTCORRELATION
+		WHERE DC_YM >= #{smonth}
+			AND DC_YM <= #{emonth}
+			AND (DC_TYPE = #{type} OR DC_TYPE = #{type} || 'F')
+		ORDER BY DC_YM ASC
+		]]>
+	</select>	
+	
+	<select id="selectCorrelationStatus" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCS_TYPE,
+			DCS_FACTOR,
+			DCS_CONSUME,
+			DCS_POS
+		FROM DCTCORRELATIONSTATUS
+		WHERE (DCS_TYPE = #{type} OR DCS_TYPE = #{type} || 'F')
+		]]>
+		<choose>
+			<when test='pageType != null and pageType == "C"'>ORDER BY DCS_CONSUME DESC</when>
+			<otherwise>ORDER BY DCS_POS DESC</otherwise>
+		</choose>
+	</select>	
+	
+	<select id="selectCorrelationKeyword" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCK_YM,
+			DCK_TYPE,
+			DCK_FACTOR,
+			DCK_KEYWORD,
+			DCK_COUNT
+		FROM DCTCORRELATIONKEYWORD
+		WHERE DCK_YM >= #{smonth}
+			AND DCK_YM <= #{emonth}
+			AND (DCK_TYPE = #{type} OR DCK_TYPE = #{type} || 'F')
+		ORDER BY DCK_YM ASC
+		]]>
+	</select>			
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+
+</mapper>

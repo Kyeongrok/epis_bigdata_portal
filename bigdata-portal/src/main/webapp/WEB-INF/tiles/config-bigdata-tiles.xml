@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<!-- 빅데이터 포탈 -->
+	<definition name="bigdata/portal/main/main" extends="main.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/main/main.jsp" />
+	</definition>
+	<definition name="bigdata/portal/auth/login" extends="common.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/auth/login.jsp" />
+	</definition>
+
+
+	<!-- 외부페이지 (Ambari / Zeppelin / RStudio) -->
+	<definition name="bigdata/portal/exview/extendUserView" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/exview/extendUserView.jsp" />
+	</definition>
+
+	<definition name="bigdata/portal/exview/rstudio" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/exview/rstudio.jsp" />
+	</definition>
+
+	<definition name="bigdata/portal/auth/login" extends="single.tiles">
+		<put-attribute name="title" value="농식품 빅데이터 포탈" />
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/empty.jsp" />
+		<put-attribute name="left" value="" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/empty.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/auth/login.jsp" />
+	</definition>
+
+
+	<!-- 제주,쌀 -->
+	<definition name="bigdata/portal/svc/*" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/svc/{1}.jsp" />
+	</definition>
+
+	<!-- 귀농 -->
+	<definition name="bigdata/portal/svc/retnFmlg/*" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/svc/retnFmlg/{1}.jsp" />
+	</definition>
+
+
+
+
+	<definition name="bigdata/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/{1}.jsp" />
+	</definition>
+	<definition name="bigdata/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/{1}/{2}.jsp" />
+	</definition>
+	<definition name="bigdata/*/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/{1}/{2}/{3}.jsp" />
+	</definition>
+	<definition name="bigdata/*/*/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	<definition name="bigdata/*/*/*/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/{1}/{2}/{3}/{4}/{5}.jsp" />
+	</definition>
+
+	<definition name="bigdata/message" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/error/message.jsp" />
+	</definition>
+
+
+	<!-- 데이터맵 -->
+	<definition name="bigdata/datamap/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/datamap/{1}.jsp" />
+	</definition>
+	<definition name="bigdata/datamap/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/datamap/{1}/{2}.jsp" />
+	</definition>
+	<definition name="bigdata/datamap/*/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/datamap/{1}/{2}/{3}.jsp" />
+	</definition>
+
+
+</tiles-definitions>

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pilot.dct.mapper.DctMilkTrendMapper">
+	
+	<select id="selectDctMilkProductionYear" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMP_YEAR,
+			SUM(DMP_ALL) AS DMP_ALL,
+			SUM(DMP_KG) AS DMP_KG,
+			SUM(DMP_KW) AS DMP_KW,
+			SUM(DMP_CB) AS DMP_CB,
+			SUM(DMP_CN) AS DMP_CN,
+			SUM(DMP_JB) AS DMP_JB,
+			SUM(DMP_JN) AS DMP_JN,
+			SUM(DMP_KB) AS DMP_KB,
+			SUM(DMP_KN) AS DMP_KN,
+			SUM(DMP_JJ) AS DMP_JJ
+		FROM DCTMILKPRODUCTION
+		WHERE DMP_YEAR >= #{syear}
+		AND DMP_YEAR <= #{eyear}
+		GROUP BY DMP_YEAR
+		]]>
+	</select>
+		
+	<select id="selectDctMilkProduction" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			DMP_ALL,
+			DMP_YM,
+			DMP_KG,
+			DMP_KW,
+			DMP_CB,
+			DMP_CN,
+			DMP_JB,
+			DMP_JN,
+			DMP_KB,
+			DMP_KN,
+			DMP_JJ
+		FROM DCTMILKPRODUCTION
+		WHERE DMP_YM >= #{smonth}
+		AND DMP_YM <= #{emonth}
+		]]>
+	</select>
+
+	<select id="selectDctCowNumYear" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCN_YEAR,
+			SUM(DCN_KG + DCN_KW + DCN_CB + DCN_CN + DCN_JB + DCN_JN + DCN_KB + DCN_KN + DCN_JJ) AS DCN_ALL,
+			SUM(DCN_KG) AS DCN_KG,
+			SUM(DCN_KW) AS DCN_KW,
+			SUM(DCN_CB) AS DCN_CB,
+			SUM(DCN_CN) AS DCN_CN,
+			SUM(DCN_JB) AS DCN_JB,
+			SUM(DCN_JN) AS DCN_JN,
+			SUM(DCN_KB) AS DCN_KB,
+			SUM(DCN_KN) AS DCN_KN,
+			SUM(DCN_JJ) AS DCN_JJ
+		FROM DCTCOWNUM
+		WHERE DCN_YEAR >= #{syear}
+		AND DCN_YEAR <= #{eyear}
+		GROUP BY DCN_YEAR
+		]]>
+	</select>
+	
+	<select id="selectDctCowNum" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			(DCN_KG + DCN_KW + DCN_CB + DCN_CN + DCN_JB + DCN_JN + DCN_KB + DCN_KN + DCN_JJ) AS DCN_ALL,
+			DCN_YM,
+			DCN_KG,
+			DCN_KW,
+			DCN_CB,
+			DCN_CN,
+			DCN_JB,
+			DCN_JN,
+			DCN_KB,
+			DCN_KN,
+			DCN_JJ
+		FROM DCTCOWNUM
+		WHERE DCN_YM >= #{smonth}
+		AND DCN_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctFarmNumYear" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DFN_YEAR,
+			SUM(DFN_ALL) AS DFN_ALL,
+			SUM(DFN_KG) AS DFN_KG,
+			SUM(DFN_KW) AS DFN_KW,
+			SUM(DFN_CB) AS DFN_CB,
+			SUM(DFN_CN) AS DFN_CN,
+			SUM(DFN_JB) AS DFN_JB,
+			SUM(DFN_JN) AS DFN_JN,
+			SUM(DFN_KB) AS DFN_KB,
+			SUM(DFN_KN) AS DFN_KN,
+			SUM(DFN_JJ) AS DFN_JJ
+		FROM DCTFARMNUM
+		WHERE DFN_YEAR >= #{syear}
+		AND DFN_YEAR <= #{eyear}
+		GROUP BY DFN_YEAR
+		]]>
+	</select>
+	
+	<select id="selectDctFarmNum" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DFN_ALL,
+			DFN_YM,
+			DFN_KG,
+			DFN_KW,
+			DFN_CB,
+			DFN_CN,
+			DFN_JB,
+			DFN_JN,
+			DFN_KB,
+			DFN_KN,
+			DFN_JJ
+		FROM DCTFARMNUM
+		WHERE DFN_YM >= #{smonth}
+		AND DFN_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctMilkSupplyStatus" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMSS_YM,
+			DMSS_CARRYOVER,
+			DMSS_DOMESTIC,
+			DMSS_INCOME
+		FROM DCTMILKSUPPLYSTATUS
+		WHERE DMSS_YM >= #{smonth}
+		AND DMSS_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctMilkUsageResults" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMUR_YM,
+			DMUR_USE_DRANK,
+			DMUR_USE_PROCESS,
+			DMUR_TOTAL
+		FROM DCTMILKUSAGERESULTS
+		WHERE DMUR_YM >= #{smonth}
+		AND DMUR_YM <= #{emonth}
+		]]>
+	</select>	
+	
+	<select id="selectDctDairyProductPrice" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DDPP_YM,
+			DDPP_MILK_200ML,
+			DDPP_DRY_MILK,
+			DDPP_SLICED_CHEESE,
+			DDPP_YOGURT,
+			DDPP_CONDENSED_YOGURT,
+			DDPP_MILK_1L
+		FROM DCTDAIRYPRODUCTPRICE
+		WHERE DDPP_YM >= #{smonth}
+		AND DDPP_YM <= #{emonth}
+		]]>
+	</select>	
+	
+	<select id="selectDctMilkConsumeStatus" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMCS_YM,
+			DMCS_DOMESTIC,
+			DMCS_EXPORT
+		FROM DCTMILKCONSUMESTATUS
+		WHERE DMCS_YM >= #{smonth}
+		AND DMCS_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctPosMilk" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DPM_Y,
+			DPM_GANGWON,
+			DPM_GYEONGGI,
+			DPM_GYEONGNAM,
+			DPM_GYEONGBUK,
+			DPM_GWANGJI,
+			DPM_ETC,
+			DPM_DAEGU,
+			DPM_DAEJUN,
+			DPM_BUSAN,
+			DPM_SEOUL,
+			DPM_SEJONG,
+			DPM_ULSAN,
+			DPM_INCHEON,
+			DPM_JUNNAM,
+			DPM_JUNBUK,
+			DPM_JEJU,
+			DPM_CHUNGNAM,
+			DPM_CHUNGBUK
+		FROM DCTPOSMILK
+		WHERE DPM_Y >= #{smonth}
+		AND DPM_Y <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctMilkProductionStatus" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMPS_YM,
+			DMPS_WHITE_MARKET,
+			DMPS_PROCESSED_MARKET
+		FROM DCTMILKPRODUCTIONSTATUS
+		WHERE DMPS_YM >= #{smonth}
+		AND DMPS_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectConsumePrice" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCP_YM,
+			DCP_MILK,
+			DCP_MLIKPOWDER_PRICE,
+			DCP_FERMMILK_PRICE,
+			DCP_CHEESE_PRICE
+		FROM DCTCONSUMEPRICE
+		WHERE DCP_YM >= #{smonth}
+		AND DCP_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctPosMilkProduct" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DPMP_YM,
+			DPMP_GW,
+			DPMP_GG,
+			DPMP_KN,
+			DPMP_KB,
+			DPMP_GJ,
+			DPMP_ETC,
+			DPMP_DG,
+			DPMP_DJ,
+			DPMP_BS,
+			DPMP_SU,
+			DPMP_SJ,
+			DPMP_US,
+			DPMP_IC,
+			DPMP_JN,
+			DPMP_JB,
+			DPMP_JJ,
+			DPMP_CN,
+			DPMP_CB
+		FROM DCTPOSMILKPRODUCT
+		WHERE DPMP_YM >= #{smonth}
+		AND DPMP_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctMilkProdConsumeStatus" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMCPS_Y,
+			DMCPS_MODIFIED_MILK,
+			DCMPS_WHOLE_MILK,
+			DCMPS_NONFAT_MILK,
+			DCMPS_SWEETENED,
+			DCMPS_BUTTER,
+			DCMPS_FERMENTED_MILK
+		FROM DCTMILKPRODCONSUMESTATUS
+		WHERE DMCPS_Y >= #{syear}
+		AND DMCPS_Y <= #{eyear}
+		]]>
+	</select>
+	
+	
+	<select id="selectDctTradeMilk" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DTM_YM,
+			DTM_EXPORT_MILK,
+			DTM_IMPORT_MILK
+		FROM DCTMILKTRADE
+		WHERE DTM_YM >= #{smonth}
+		AND DTM_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctDairyProductPriceAll" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMVP_YM,
+			DMVP_ALL,
+			DMVP_SEOUL,
+			DMVP_BUSAN,
+			DMVP_DAEGU,
+			DMVP_INCHEON,
+			DMVP_GWANGJU,
+			DMVP_DAEJUN,
+			DMVP_ULSAN,
+			DMVP_CHUNCHEON,
+			DMVP_GANGNEUNG,
+			DMVP_CHEONJU,
+			DMVP_JEONJU,
+			DMVP_GUNSAN,
+			DMVP_MOKPO,
+			DMVP_MASAN,
+			DMVP_JEJU
+		FROM DCTMILKVOLONEPRODUCTPRICE
+		WHERE DMVP_YM >= #{smonth}
+		AND DMVP_YM <= #{emonth}
+		]]>
+	</select>
+	
+	
+	<select id="selectDctDairyProductImport" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMIP_YM,
+			DMIP_MILK_SUGER,
+			DMIP_MIX_MILK,
+			DMIP_CASEIN,
+			DMIP_ICECREAM,
+			DMIP_ALBUMIN,
+			DMIP_BUTTER_MILK,
+			DMIP_MODIFIED_BUTTER,
+			DMIP_NONFAT_MILK,
+			DMIP_WHOLE_MILK,
+			DMIP_SWEETENED,
+			DMIP_FERMENTED_MILK,
+			DMIP_DCEQ_WHEY			
+		FROM DCTMILKIMPORTPRODUCT
+		WHERE DMIP_YM >= #{smonth}
+		AND DMIP_YM <= #{emonth}
+		]]>
+	</select>	
+	
+	<select id="selectDctDairyProductExport" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DMEP_YM,
+			DMEP_MILK_SUGER,
+			DMEP_MIX_MILK,
+			DMEP_CASEIN,
+			DMEP_ICECREAM,
+			DMEP_ALBUMIN,
+			DMEP_BUTTER_MILK,
+			DMEP_MODIFIED_BUTTER,
+			DMEP_NONFAT_MILK,
+			DMEP_WHOLE_MILK,
+			DMEP_SWEETENED,
+			DMEP_FERMENTED_MILK,
+			DMEP_DCEQ_WHEY
+		FROM DCTMILKEXPORTPRODUCT
+		WHERE DMEP_YM >= #{smonth}
+		AND DMEP_YM <= #{emonth}
+		]]>
+	</select>
+
+</mapper>

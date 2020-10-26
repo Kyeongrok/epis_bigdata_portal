@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.dmm.mapper.FdmDataMapMapper">
+	<!-- 그래프 노드 정보 저장 VO -->
+	
+	<resultMap id="graphNodeList" type="bigdata.portal.dmm.entity.FdmMetainfoVO">
+		<result property="txnm" column="TXNM"/>
+		<result property="fdmorgNm" column="FDMORG_NM"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="fdmorgCode" column="FDMORG_CODE" />
+		<result property="sysCode" column="SYS_CODE"  />
+		<result property="nodeValue" column="NODE_VALUE"  />
+		<result property="dbType" column="DBTYPE"  />
+		<result property="txnmCode" column="TXNM_CODE" />
+	</resultMap>
+	
+	<resultMap id="erdImage" type="bigdata.portal.dmm.entity.ErdImage">
+		<result property="syslst" column="SYSLST" />
+		<result property="dblist" column="DBLIST"  />
+		<result property="erdImgLogic" column="ERD_IMG_LOGIC"  />
+		<result property="erdImgPhysical" column="ERD_IMG_PHYSICAL"  />
+		<result property="metaSysNm" column="META_SYSNM"  />
+	</resultMap>
+	
+	<resultMap id="dbMetaData" type="bigdata.portal.dmm.entity.DbMetaData">
+		<result property="dblistCode" column="DBLIST_CODE"  />
+		<result property="metaDbNm" column="META_DBNM"  />
+		<result property="metaJson" column="META_JSON"  />		
+		<result property="frstRegistPnttm" column="FRST_REGIST_PNTTM"  />
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"  />
+		<result property="lastUpdtPnttm" column="LAST_UPDT_PNTTM"  />
+		<result property="lastUpdustId" column="LAST_UPDUSR_ID"  />
+		<result property="syslstCode" column="SYSLST_CODE"  />		
+	</resultMap>
+	
+	<resultMap id="fdmorgMap" type="bigdata.portal.dmm.entity.FdmorgMap">
+		<result property="txnm" column="TXNM"  />
+		<result property="sysTo" column="SYSLST_CODE"  />
+		<result property="sysFrom" column="SYS_FROM"  />	
+	</resultMap>
+	
+	<resultMap id="tableInfo" type="bigdata.portal.dmm.entity.TableMetaData">
+		<result property="fdmsTableIdx" column="FDMS_TABLE_IDX"  />
+		<result property="fdmsDblistCode" column="FDMS_DBLIST_CODE"  />
+		<result property="fdmsTableName" column="FDMS_TABLE_NAME"  />		
+		<result property="fdmsTableCollect" column="FDMS_TABLE_COLLECT"  />
+		<result property="fdmsTableUpdate" column="FDMS_TABLE_UPDATE"  />
+		<result property="fdmsTableConmethod" column="FDMS_TABLE_CONMETHOD"  />
+		<result property="fdmsTableOpenName" column="FDMS_TABLE_OPENNAME"  />
+		<result property="fdmsTableUseCase" column="FDMS_TABLE_USECASE"  />
+		<result property="fdmsTableOpenType" column="FDMS_TABLE_OPENTYPE"  />
+		<result property="fdmsTableProvider" column="FDMS_TABLE_PROVIDER"  />
+		<result property="fdmsTableConinfo" column="FDMS_TABLE_CONINFO"  />
+		<result property="fdmsTableCondate" column="FDMS_TABLE_CONDATE"  />
+		<result property="fdmsSysNm" column="FDMS_SYSNM"  />
+		<result property="fdmsDbNm" column="FDMS_DBNM"  />
+		<result property="fdmsTableSubject" column="FDMS_TABLE_SUBJECT"  />
+		<result property="fdmsTableKeyword" column="FDMS_TABLE_KEYWORD"  />
+		<result property="syslstCode" column="SYSLST_CODE"  />
+		<result property="fdmorgCode" column="FDMORG_CODE"  />
+		<result property="publicDataLink" column="PUBLIC_DATA_LINK" />
+		
+	</resultMap>
+	
+	<resultMap id="systemMetaData" type="bigdata.portal.dmm.entity.SysMetaData">
+		<result property="syslstCode" column="SYSLST_CODE"  />
+		<result property="metaSysNM" column="META_SYSNM"  />
+		<result property="metaSysMemo" column="META_SYSMEMO"  />
+		<result property="metaBuildYear" column="META_BUILD_YEAR"  />
+		<result property="metaBuildCost" column="META_BUILD_COST"  />
+		<result property="metaIntroMethod" column="META_INTRO_METHOD"  />
+		<result property="metaAdvanceYear" column="META_ADVANCE_YEAR" />
+		<result property="metaOperStatus" column="META_OPER_STATUS"  />
+		<result property="metaMonthVisitors" column="META_MONTH_VISITORS"  />
+		<result property="metaMonthPageViews" column="META_MONTH_PAGEVIEWS"  />
+		<result property="metaUtilNation" column="META_UTIL_NATION"  />
+		<result property="metaUtilComp" column="META_UTIL_COMP"  />
+		<result property="metaUtilInst" column="META_UTIL_INST"  />
+		<result property="metaUtilInInst" column="META_UTIL_IN_INST"  />
+		<result property="metaManagerDept" column="META_MANAGER_DEPT"  />
+		<result property="metaManagerName" column="META_MANAGER_NAME"  />
+		<result property="metaManagerTel" column="META_MANAGER_TEL" />
+		<result property="metaManagerEmail" column="META_MANAGER_EMAIL"  />
+		<result property="metaMaintenComp" column="META_MAINTEN_COMP"  />
+		<result property="metaMaintenName" column="META_MAINTEN_NAME"  />
+		<result property="metaMaintenTel" column="META_MAINTEN_TEL"  />
+		<result property="metaMaintenEmail" column="META_MAINTEN_EMAIL"  />
+		<result property="metaDBAccess" column="META_DB_ACCESS"  />
+		<result property="metaDBMSName" column="META_DBMS_NAME"  />
+		<result property="metaDBVol" column="META_DB_VOL"  />
+		<result property="metaDBRecord" column="META_DB_RECORD"  />
+		<result property="metaDBGenType" column="META_DB_GENTYPE"  />
+		<result property="metaQualityDiag" column="META_QUALITY_DIAG"  />
+		<result property="metaQualityIssue" column="META_QUALITY_ISSUE"  />
+		<result property="frstRegistPnttm" column="FRST_REGIST_PNTTM"  />
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"  />
+		<result property="lastUpdtPnttm" column="LAST_UPDT_PNTTM"  />
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"  />
+		<result property="fdmorgName" column="FDMORG_NAME"  />
+		<result property="fdmorg" column="FDMORG"  />
+		<result property="metaSubject" column="META_SUBJECT"  />
+		<result property="metaKeyword" column="META_KEYWORD"/>
+		<result property="publicDataLink" column="PUBLIC_DATA_LINK" />
+		
+	</resultMap>
+	
+	<resultMap id="searchSysInfo" type="bigdata.portal.dmm.entity.SearchSysInfo">
+		<result property="metaSysNM" column="META_SYSNM"/>
+		<result property="metaSysMemo" column="META_SYSMEMO" />		
+		<result property="metaDBMSName" column="META_DBMS_NAME"/>
+		<result property="metaDBVol" column="META_DB_VOL" />
+		<result property="metaDBRecord" column="META_DB_RECORD" />
+		<result property="metaManagerTel" column="META_MANAGER_TEL" />
+		<result property="sysCode" column="SYSLST_CODE"/>
+		<result property="fdmorgCode" column="FDMORG" />
+		<result property="fdmorgNM" column="CODE_NM" />
+		<result property="metaSubject" column="META_SUBJECT" />
+		<result property="publicDataLink" column="PUBLIC_DATA_LINK" />
+				
+	</resultMap>
+	
+	<resultMap id="searchDbInfo" type="bigdata.portal.dmm.entity.SearchDbInfo">
+		<result property="dbListCode" column="DBLIST_CODE" />
+		<result property="metaDbNM" column="META_DBNM" />
+		<result property="metaJSON" column="META_JSON" />
+		<result property="frstRegistPnttm" column="FRST_REGIST_PNTTM" />
+		<result property="frstRegisterID" column="FRST_REGISTER_ID" />
+		<result property="lastUpdtPnttm" column="LAST_UPDT_PNTTM" />
+		<result property="lastUpdustID" column="LAST_UPDUSR_ID" />
+		<result property="syslstCode" column="SYSLST_CODE" />				
+	</resultMap>
+	
+	<resultMap id="treeMap" type="bigdata.portal.dmm.entity.TreeMap">
+		<result property="id" column="ID" />
+		<result property="parentId" column="PARENTID" />
+		<result property="name" column="NAME" />
+		<result property="type" column="TYPE" />
+	</resultMap>
+	
+	<select id="selectGraphChildNodeData" parameterType="map" resultMap="graphNodeList">
+		<![CDATA[
+			select 
+			    cd3.CODE_NM as SYS_NM, cd3.CODE as SYS_CODE, 
+			    cd5.CODE_NM as DB_NM, cd5.code as DB_CODE,
+			    map.NODE_VALUE, map.DBTYPE, map.TXNM as TXNM_CODE
+			from FDMSMETAINFOMAP as map
+			    inner join COMTCCMMNDETAILCODE as cd3 on map.SYSLST = cd3.CODE and cd3.CODE_ID = 'SYSLST'
+				 left outer join COMTCCMMNDETAILCODE as cd5 on map.DBLIST = cd5.CODE and cd5.CODE_ID = 'DBLIST'
+			    inner join FDMSSYSMETAINFO as sys on sys.SYSLST_CODE = map.SYSLST
+			    left outer join FDMSDBMETAINFO as db on db.DBLIST_CODE = map.DBLIST
+			    where 1=1		
+		]]>	
+		
+		<if test="codeType == 'SYSLST'">
+			<![CDATA[ and map.SYSLST = #{code}]]>
+		</if>
+		
+	</select>
+	
+	<!-- 그래프 노드 정보 출력 -->
+	<select id="selectLogicERDImgPath" parameterType="map" resultType="string">
+		
+		<![CDATA[ 
+			SELECT 
+				ERD_IMG_LOGIC 
+			FROM 
+				FDMSMETAINFOMAP
+			WHERE 
+				SYSLST = #{sysCode} 
+		]]>
+		
+	</select>
+	
+		<!-- 그래프 노드 정보 출력 -->
+	<select id="selectPhysicalERDImgPath" parameterType="map" resultType="string">
+
+		<![CDATA[ 
+			SELECT 
+				ERD_IMG_PHYSICAL 
+			FROM 
+				FDMSMETAINFOMAP
+			WHERE 
+				SYSLST = #{sysCode}
+		]]>
+		
+	</select>
+	
+	<!-- 그래프 노드 정보 출력 -->
+	<select id="selectGraphNodeData" parameterType="map" resultMap="graphNodeList">
+	
+		<![CDATA[
+			select 
+			    cd1.CODE_NM as TXNM,
+			    cd2.CODE_NM as FDMORG_NM, cd2.code as FDMORG_CODE,
+			    cd3.CODE_NM as SYS_NM, cd3.CODE as SYS_CODE,
+			    map.NODE_VALUE, map.DBTYPE, map.TXNM as TXNM_CODE
+			from FDMSMETAINFOMAP as map
+			   
+			    left outer join COMTCCMMNDETAILCODE as cd1 on map.TXNM = cd1.CODE and cd1.CODE_ID = 'TXNM'
+			    left outer join COMTCCMMNDETAILCODE as cd2 on map.FDMORG = cd2.CODE and cd2.CODE_ID = 'FDMORG'
+			    left outer join COMTCCMMNDETAILCODE as cd3 on map.SYSLST = cd3.CODE and cd3.CODE_ID = 'SYSLST'
+			    left outer join FDMSSYSMETAINFO as sys on sys.SYSLST_CODE = map.SYSLST
+
+			where 1=1
+		]]>
+		
+		<if test="codeType == 'TXNM' and code != null and code != ''">
+			<![CDATA[ and map.TXNM = #{code}]]>
+		</if>
+		
+		<if test="codeType == 'FDMORG' and code != null and code != ''">
+			<![CDATA[ and map.FDMORG = #{code}]]>
+		</if>
+		<![CDATA[
+			order by cd2.code
+		]]>		
+	</select>
+	
+	<!-- 정보시스템 메타데이터 정보 출력 -->
+	<select id="selectSysMetadataInfo" parameterType="map" resultMap="systemMetaData">
+		<![CDATA[
+			SELECT 
+				COMTCCMMNDETAILCODE.CODE_NM AS FDMORG_NAME, 
+				SYSMETA.* 
+			FROM 
+				(select 
+					FDMSMETAINFOMAP.FDMORG, FDMSMETAINFOMAP.PUBLIC_DATA_LINK, 
+					FDMSSYSMETAINFO.SYSLST_CODE, FDMSSYSMETAINFO.META_SYSNM, FDMSSYSMETAINFO.META_SYSMEMO,
+					FDMSSYSMETAINFO.META_BUILD_YEAR, FDMSSYSMETAINFO.META_BUILD_COST, FDMSSYSMETAINFO.META_INTRO_METHOD,
+					FDMSSYSMETAINFO.META_ADVANCE_YEAR, FDMSSYSMETAINFO.META_OPER_STATUS, IFNULL(FDMSSYSMETAINFO.META_MONTH_VISITORS, 0) as META_MONTH_VISITORS,
+					IFNULL(FDMSSYSMETAINFO.META_MONTH_PAGEVIEWS, 0) as META_MONTH_PAGEVIEWS, 
+					FDMSSYSMETAINFO.META_UTIL_NATION, FDMSSYSMETAINFO.META_UTIL_COMP,
+					FDMSSYSMETAINFO.META_UTIL_INST, FDMSSYSMETAINFO.META_UTIL_IN_INST, FDMSSYSMETAINFO.META_MANAGER_DEPT,
+					FDMSSYSMETAINFO.META_MANAGER_NAME, FDMSSYSMETAINFO.META_MANAGER_TEL, FDMSSYSMETAINFO.META_MANAGER_EMAIL,
+					FDMSSYSMETAINFO.META_MAINTEN_COMP, FDMSSYSMETAINFO.META_MAINTEN_NAME, FDMSSYSMETAINFO.META_MAINTEN_TEL,
+					FDMSSYSMETAINFO.META_MAINTEN_EMAIL, FDMSSYSMETAINFO.META_DB_ACCESS, FDMSSYSMETAINFO.META_DBMS_NAME,
+					FDMSSYSMETAINFO.META_DB_VOL, IFNULL(FDMSSYSMETAINFO.META_DB_RECORD, 0) as META_DB_RECORD,
+					FDMSSYSMETAINFO.META_DB_GENTYPE, FDMSSYSMETAINFO.META_QUALITY_DIAG, FDMSSYSMETAINFO.META_QUALITY_ISSUE, 
+					FDMSSYSMETAINFO.FRST_REGIST_PNTTM, FDMSSYSMETAINFO.FRST_REGISTER_ID, 
+					FDMSSYSMETAINFO.LAST_UPDT_PNTTM, FDMSSYSMETAINFO.LAST_UPDUSR_ID, FDMSSYSMETAINFO.META_SUBJECT, FDMSSYSMETAINFO.META_KEYWORD					
+					
+				from 
+					FDMSSYSMETAINFO, FDMSMETAINFOMAP
+				where 
+					FDMSSYSMETAINFO.SYSLST_CODE = fdmsmetainfomap.SYSLST
+				)SYSMETA, COMTCCMMNDETAILCODE
+			WHERE COMTCCMMNDETAILCODE.CODE_ID = 'FDMORG'
+			AND sysmeta.FDMORG = COMTCCMMNDETAILCODE.CODE
+		]]>
+		
+		<if test="code != null and code != ''">
+			<![CDATA[ and SYSLST_CODE = #{code}]]>
+		</if>
+	
+	</select>
+	
+	<!-- 정보시스템 메타데이터 정보 출력 -->
+	<select id="selectFdmorgMapData" parameterType="map" resultMap="fdmorgMap">
+		<![CDATA[
+			select 
+				*
+			from FDMSSYSINFOMAP			
+		]]>
+		<if test="code != null and code != ''">
+			<![CDATA[ 
+				WHERE TXNM = #{code}
+				ORDER BY SYSLST_CODE, SYS_FROM
+			]]>
+		</if>
+	</select>
+	
+	<!-- 분류체계별 그래프 데이터 출력 -->
+	<select id="selectFdmorgNodeData" parameterType="map" resultMap="graphNodeList">
+		<![CDATA[
+			select 
+			    cd1.CODE_NM as TXNM, 
+			    cd2.CODE_NM as FDMORG_NM, cd2.code as FDMORG_CODE,
+			    cd3.CODE_NM as SYS_NM, cd3.CODE as SYS_CODE,
+			    map.NODE_VALUE, map.DBTYPE, map.TXNM as TXNM_CODE
+			from FDMSMETAINFOMAP as map
+			   
+			    inner join COMTCCMMNDETAILCODE as cd1 on map.TXNM = cd1.CODE and cd1.CODE_ID = 'TXNM'
+			    inner join COMTCCMMNDETAILCODE as cd2 on map.FDMORG = cd2.CODE and cd2.CODE_ID = 'FDMORG'
+			    inner join COMTCCMMNDETAILCODE as cd3 on map.SYSLST = cd3.CODE and cd3.CODE_ID = 'SYSLST'
+			    inner join FDMSSYSMETAINFO as sys on sys.SYSLST_CODE = map.SYSLST
+			]]>
+			
+		<if test="keyword != null and keyword != ''">
+			<![CDATA[ WHERE cd1.CODE_NM LIKE CONCAT ('%', #{keyword}, '%') ]]>
+		</if>
+	</select>
+	
+		<!-- 정보시스템 내부 DB 메타데이터 정보 출력 -->
+	<select id="selectDbdataInfo" parameterType="map" resultMap="dbMetaData">
+		<![CDATA[
+			select 
+				DBLIST_CODE, META_DBNM, SYSLST_CODE,
+				META_JSON, 
+				FRST_REGIST_PNTTM, FRST_REGISTER_ID, 
+				LAST_UPDT_PNTTM, LAST_UPDUSR_ID 
+			from FDMSDBMETAINFO
+			where 1=1
+		]]>
+		
+		<if test="code != null and code != ''">
+			<![CDATA[ and SYSLST_CODE = #{code}]]>
+		</if>
+	</select>	
+	
+	
+	<!-- 정보시스템 내부 DB 메타데이터 정보 출력 -->
+	<select id="selectDbMetadataInfo" parameterType="map" resultMap="dbMetaData">
+		<![CDATA[
+			select 
+				*
+			from FDMSDBMETAINFO
+			where 1=1
+		]]>
+		
+		<if test="code != null and code != ''"> 
+			<![CDATA[ and DBLIST_CODE = #{code}]]>
+		</if>
+		<if test="sysCode != null and sysCode != ''"> 
+			<![CDATA[ and SYSLST_CODE = #{sysCode}]]>
+		</if>
+		<![CDATA[ and META_DBNM = #{dbNm}]]>			
+	</select>
+			
+	<select id="selectSearchSysInfo" parameterType="HashMap" resultMap="searchSysInfo">
+		<![CDATA[
+				select 
+					COMTCCMMNDETAILCODE.CODE_NM, 
+					FDMSMETAINFOMAP.FDMORG,
+					FDMSMETAINFOMAP.PUBLIC_DATA_LINK, 
+					FDMSSYSMETAINFO.* 
+				from 
+					FDMSMETAINFOMAP, 
+					FDMSSYSMETAINFO, 
+					COMTCCMMNDETAILCODE
+				where 
+					FDMSMETAINFOMAP.SYSLST = FDMSSYSMETAINFO.SYSLST_CODE
+					and COMTCCMMNDETAILCODE.CODE_ID = 'FDMORG'
+					and COMTCCMMNDETAILCODE.CODE = FDMSMETAINFOMAP.FDMORG
+		]]>
+		
+		<if test="keyword != null and keyword != ''">
+			<![CDATA[ 	
+				and 
+				(
+					FDMSSYSMETAINFO.META_SYSNM LIKE CONCAT('%', #{keyword}, '%')
+					or FDMSSYSMETAINFO.META_KEYWORD LIKE CONCAT('%', #{keyword}, '%')
+					or FDMSSYSMETAINFO.META_SUBJECT LIKE CONCAT('%', #{keyword}, '%')
+					or CODE_NM LIKE CONCAT('%', #{keyword}, '%')
+				)
+			]]>
+		</if>
+		
+		limit #{offset}, #{limit}	
+	</select>
+	
+	<select id="selectSearchSysInfoCount" parameterType="map" resultType="int">
+		<![CDATA[
+			select 
+				count(FDMSSYSMETAINFO.SYSLST_CODE)
+			from 
+				FDMSMETAINFOMAP, 
+				FDMSSYSMETAINFO, 
+				COMTCCMMNDETAILCODE
+			where 
+				FDMSMETAINFOMAP.SYSLST = FDMSSYSMETAINFO.SYSLST_CODE
+				and COMTCCMMNDETAILCODE.CODE_ID = 'FDMORG'
+				and COMTCCMMNDETAILCODE.CODE = FDMSMETAINFOMAP.FDMORG		
+		]]>
+		
+		<if test="keyword != null and keyword != ''">
+			<![CDATA[ 
+				and 
+				(
+					FDMSSYSMETAINFO.META_SYSNM LIKE CONCAT('%', #{keyword}, '%')
+					or FDMSSYSMETAINFO.META_SUBJECT LIKE CONCAT('%', #{keyword}, '%')
+					or FDMSSYSMETAINFO.META_KEYWORD LIKE CONCAT('%', #{keyword}, '%')
+					or CODE_NM LIKE CONCAT('%', #{keyword}, '%')
+				)			
+			 ]]>		
+		</if>	
+	</select>
+	
+	<select id="selectSearchDbInfo" parameterType="map" resultMap="searchDbInfo">
+		<![CDATA[
+			select * from FDMSDBMETAINFO
+		]]>
+		<if test="keyword != null and keyword != ''">
+			<![CDATA[ 
+			WHERE 
+				(
+					META_DBNM LIKE CONCAT('%', #{keyword}, '%')
+					or META_JSON LIKE CONCAT('%', #{keyword}, '%')
+				)
+				
+			]]>
+		</if>	
+	</select>
+	
+	<select id="selectSearchDbInfoCount" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(FDMS_TABLE_IDX) from 
+			(
+				select 	
+					FDMSTABLEINFO.FDMS_TABLE_IDX,
+					FDMSTABLEINFO.FDMS_DBLIST_CODE,
+					FDMSTABLEINFO.FDMS_TABLE_NAME,	
+					FDMSTABLEINFO.FDMS_TABLE_COLLECT,	
+					FDMSTABLEINFO.FDMS_TABLE_UPDATE,
+					FDMSTABLEINFO.FDMS_TABLE_CONMETHOD,
+					FDMSTABLEINFO.FDMS_TABLE_OPENNAME,
+					FDMSTABLEINFO.FDMS_TABLE_USECASE,	
+					FDMSTABLEINFO.FDMS_TABLE_OPENTYPE,	
+					FDMSTABLEINFO.FDMS_TABLE_PROVIDER,
+					FDMSTABLEINFO.FDMS_TABLE_CONINFO,
+					FDMSTABLEINFO.FDMS_TABLE_CONDATE,			
+					FDMSSYSMETAINFO.META_SYSNM as FDMS_SYSNM,
+					FDMSDBMETAINFO.META_DBNM as FDMS_DBNM,	
+					FDMSSYSMETAINFO.META_SUBJECT as FDMS_TABLE_SUBJECT,
+					FDMSSYSMETAINFO.META_KEYWORD as FDMS_TABLE_KEYWORD,
+					FDMSDBMETAINFO.SYSLST_CODE
+				from 
+					FDMSTABLEINFO, FDMSDBMETAINFO, FDMSSYSMETAINFO
+				where 
+					FDMSTABLEINFO.FDMS_DBLIST_CODE = FDMSDBMETAINFO.DBLIST_CODE
+				and FDMSSYSMETAINFO.SYSLST_CODE = FDMSDBMETAINFO.SYSLST_CODE
+			) TABLEMETAINFO
+		]]>
+		<if test="keyword != null and keyword != ''">
+			<![CDATA[ 
+			where 
+				(
+					FDMS_TABLE_NAME LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_DBNM LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_SYSNM LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_TABLE_SUBJECT LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_TABLE_KEYWORD LIKE CONCAT('%', #{keyword}, '%')
+				)
+				
+			]]>
+		</if>	
+					
+	</select>		
+
+	<select id="selectTabledataInfo" parameterType="map" resultMap="tableInfo">
+		<![CDATA[
+			select 
+				FDMSTABLEINFO.FDMS_TABLE_IDX,
+				FDMSTABLEINFO.FDMS_DBLIST_CODE,
+				FDMSMETAINFOMAP.FDMORG as FDMORG_CODE,
+				FDMSMETAINFOMAP.PUBLIC_DATA_LINK,
+				FDMSTABLEINFO.FDMS_TABLE_NAME,	
+				FDMSTABLEINFO.FDMS_TABLE_COLLECT,	
+				FDMSTABLEINFO.FDMS_TABLE_UPDATE,
+				FDMSTABLEINFO.FDMS_TABLE_CONMETHOD,
+				FDMSTABLEINFO.FDMS_TABLE_OPENNAME,
+				FDMSTABLEINFO.FDMS_TABLE_USECASE,	
+				FDMSTABLEINFO.FDMS_TABLE_OPENTYPE,	
+				FDMSTABLEINFO.FDMS_TABLE_PROVIDER,
+				FDMSTABLEINFO.FDMS_TABLE_CONINFO,
+				FDMSTABLEINFO.FDMS_TABLE_CONDATE,			
+				FDMSSYSMETAINFO.META_SYSNM as FDMS_SYSNM,
+				FDMSDBMETAINFO.META_DBNM as FDMS_DBNM,	
+				FDMSTABLEINFO.FDMS_TABLE_NAME,
+				FDMSSYSMETAINFO.META_SUBJECT as FDMS_TABLE_SUBJECT,
+				FDMSSYSMETAINFO.META_KEYWORD as FDMS_TABLE_KEYWORD,
+				FDMSDBMETAINFO.SYSLST_CODE
+			from 
+				FDMSTABLEINFO, FDMSDBMETAINFO, FDMSSYSMETAINFO, FDMSMETAINFOMAP
+			where 
+				FDMSTABLEINFO.FDMS_DBLIST_CODE = FDMSDBMETAINFO.DBLIST_CODE
+			and FDMSSYSMETAINFO.SYSLST_CODE = FDMSDBMETAINFO.SYSLST_CODE
+			and FDMSMETAINFOMAP.SYSLST = FDMSSYSMETAINFO.SYSLST_CODE	
+			]]>	
+			<if test="code != null and code != ''">
+			<![CDATA[
+				and FDMSTABLEINFO.FDMS_DBLIST_CODE = #{code}
+			]]>	
+			</if>
+
+	</select>
+	
+	<select id="selectTableMetadataInfo" parameterType="map" resultMap="tableInfo">
+		<![CDATA[
+			select
+				FDMSTABLEINFO.FDMS_TABLE_IDX,
+				FDMSTABLEINFO.FDMS_DBLIST_CODE,
+				FDMSMETAINFOMAP.FDMORG as FDMORG_CODE,
+				FDMSMETAINFOMAP.PUBLIC_DATA_LINK,
+				FDMSTABLEINFO.FDMS_TABLE_NAME,	
+				FDMSTABLEINFO.FDMS_TABLE_COLLECT,	
+				FDMSTABLEINFO.FDMS_TABLE_UPDATE,
+				FDMSTABLEINFO.FDMS_TABLE_CONMETHOD,
+				FDMSTABLEINFO.FDMS_TABLE_OPENNAME,
+				FDMSTABLEINFO.FDMS_TABLE_USECASE,	
+				FDMSTABLEINFO.FDMS_TABLE_OPENTYPE,	
+				FDMSTABLEINFO.FDMS_TABLE_PROVIDER,
+				FDMSTABLEINFO.FDMS_TABLE_CONINFO,
+				FDMSTABLEINFO.FDMS_TABLE_CONDATE,		
+				FDMSSYSMETAINFO.META_SYSNM as FDMS_SYSNM,
+				FDMSDBMETAINFO.META_DBNM as FDMS_DBNM,	
+				FDMSTABLEINFO.FDMS_TABLE_NAME,
+				FDMSSYSMETAINFO.META_SUBJECT as FDMS_TABLE_SUBJECT,
+				FDMSSYSMETAINFO.META_KEYWORD as FDMS_TABLE_KEYWORD,
+				FDMSDBMETAINFO.SYSLST_CODE
+			from 
+				FDMSTABLEINFO, FDMSDBMETAINFO, FDMSSYSMETAINFO, FDMSMETAINFOMAP
+			where
+				FDMSTABLEINFO.FDMS_DBLIST_CODE = FDMSDBMETAINFO.DBLIST_CODE
+			and FDMSSYSMETAINFO.SYSLST_CODE = FDMSDBMETAINFO.SYSLST_CODE
+			and FDMSMETAINFOMAP.SYSLST = FDMSSYSMETAINFO.SYSLST_CODE
+			]]>
+			<if test="code != null and code != ''">
+				<![CDATA[ and FDMSTABLEINFO.FDMS_TABLE_IDX = #{code}	]]>
+			</if>	
+	</select>
+	
+	<select id="selectSearchTableInfo" parameterType="HashMap" resultMap="tableInfo">	
+		<![CDATA[ 
+			select 
+				TABLEMETAINFO.*
+			from
+			(
+				select 	
+					FDMSTABLEINFO.FDMS_TABLE_IDX,
+					FDMSTABLEINFO.FDMS_DBLIST_CODE,
+					FDMSMETAINFOMAP.FDMORG as FDMORG_CODE,
+					FDMSMETAINFOMAP.PUBLIC_DATA_LINK,
+					FDMSTABLEINFO.FDMS_TABLE_NAME,	
+					FDMSTABLEINFO.FDMS_TABLE_COLLECT,	
+					FDMSTABLEINFO.FDMS_TABLE_UPDATE,
+					FDMSTABLEINFO.FDMS_TABLE_CONMETHOD,
+					FDMSTABLEINFO.FDMS_TABLE_OPENNAME,
+					FDMSTABLEINFO.FDMS_TABLE_USECASE,	
+					FDMSTABLEINFO.FDMS_TABLE_OPENTYPE,	
+					FDMSTABLEINFO.FDMS_TABLE_PROVIDER,
+					FDMSTABLEINFO.FDMS_TABLE_CONINFO,
+					FDMSTABLEINFO.FDMS_TABLE_CONDATE,			
+					FDMSSYSMETAINFO.META_SYSNM as FDMS_SYSNM,
+					FDMSDBMETAINFO.META_DBNM as FDMS_DBNM,	
+					FDMSSYSMETAINFO.META_SUBJECT as FDMS_TABLE_SUBJECT,
+					FDMSSYSMETAINFO.META_KEYWORD as FDMS_TABLE_KEYWORD,
+					FDMSDBMETAINFO.SYSLST_CODE
+				from 
+					FDMSTABLEINFO, FDMSDBMETAINFO, FDMSSYSMETAINFO, FDMSMETAINFOMAP
+				where 
+					FDMSTABLEINFO.FDMS_DBLIST_CODE = FDMSDBMETAINFO.DBLIST_CODE
+				and FDMSSYSMETAINFO.SYSLST_CODE = FDMSDBMETAINFO.SYSLST_CODE
+				and FDMSMETAINFOMAP.SYSLST = FDMSSYSMETAINFO.SYSLST_CODE								
+			) TABLEMETAINFO
+			WHERE 1=1
+		]]>
+			<if test="keyword != null and keyword != ''">
+			<![CDATA[ 
+			AND 
+				(
+					FDMS_TABLE_NAME LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_DBNM LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_SYSNM LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_TABLE_SUBJECT LIKE CONCAT('%', #{keyword}, '%')
+					or FDMS_TABLE_KEYWORD LIKE CONCAT('%', #{keyword}, '%')
+				)
+				
+			]]>
+		</if>
+		
+		limit #{offset}, #{limit}	
+		
+	</select>
+	
+	<select id="selectERDImgInfo" parameterType="map" resultMap="erdImage">
+		<![CDATA[
+			select
+				FDMSSYSMETAINFO.META_SYSNM,
+				FDMSMETAINFOMAP.SYSLST,
+				FDMSMETAINFOMAP.DBLIST,
+				FDMSMETAINFOMAP.ERD_IMG_LOGIC,
+				FDMSMETAINFOMAP.ERD_IMG_PHYSICAL
+			from 
+				FDMSMETAINFOMAP, FDMSSYSMETAINFO
+			WHERE
+				FDMSMETAINFOMAP.SYSLST = FDMSSYSMETAINFO.SYSLST_CODE
+		]]>
+		
+		<if test="codeType == 'SYSLST'">
+			<![CDATA[ AND FDMSMETAINFOMAP.SYSLST = #{code}]]>
+		</if>
+		
+		<if test="codeType == 'DBLIST'">
+			<![CDATA[ AND FDMSMETAINFOMAP.DBLIST = #{code}]]>
+		</if>
+			
+	</select>
+	
+	<select id="selectTreeMapTable" parameterType="map" resultMap="treeMap">
+	<![CDATA[
+		select 
+			FDMS_TABLE_IDX as ID, 
+			FDMS_DBLIST_CODE as PARENTID, 
+			FDMS_TABLE_NAME as NAME,
+			null as TYPE
+		from 
+			FDMSTABLEINFO
+	]]>
+	
+			<if test="dbCode != null and dbCode != ''">
+			<![CDATA[ 
+			where
+				FDMS_DBLIST_CODE = #{dbCode}
+			]]>
+			</if>
+	</select>
+	
+	<select id="selectTreeMapDatabase" parameterType="map" resultMap="treeMap">
+	<![CDATA[	
+		select 
+			DBLIST_CODE as ID,
+			SYSLST_CODE as PARENTID, 
+			META_DBNM as NAME,
+			'database' as TYPE,
+			(select count(*) from FDMSTABLEINFO where FDMSTABLEINFO.FDMS_DBLIST_CODE = FDMSDBMETAINFO.DBLIST_CODE) as cnt
+		from 
+			FDMSDBMETAINFO
+	]]>
+	
+
+	
+	<if test="syslstCode != null and syslstCode != ''">
+			<![CDATA[ 
+			where
+				SYSLST_CODE = #{syslstCode}
+			]]>
+	</if>	
+		<![CDATA[				
+			order by name, cnt desc
+		]]>			
+	</select>
+	
+	<select id="selectTreeMapSysInfo" parameterType="map" resultMap="treeMap">
+		<![CDATA[	
+			select 
+				FDMSSYSMETAINFO.META_SYSNM as NAME,
+				FDMSSYSMETAINFO.SYSLST_CODE as ID,
+				FDMSMETAINFOMAP.FDMORG as PARENTID,
+				'infoSystem' as TYPE,
+				(select count(*) from FDMSDBMETAINFO where FDMSDBMETAINFO.SYSLST_CODE = FDMSSYSMETAINFO.SYSLST_CODE) as cnt
+			from 
+				FDMSSYSMETAINFO, 
+				FDMSMETAINFOMAP
+			where 
+				FDMSSYSMETAINFO.SYSLST_CODE = FDMSMETAINFOMAP.SYSLST
+			]]>
+	<if test="fdmorgCode != null and fdmorgCode != ''">
+		<![CDATA[ 
+			and FDMORG = #{fdmorgCode}
+		]]>
+	</if>
+		<![CDATA[				
+			order by cnt desc, name asc
+		]]>	
+	</select>
+	
+	<select id="selectTreeMapFdmorg" resultMap="treeMap">
+		<![CDATA[		
+			select distinct 
+				FDMSMETAINFOMAP.fdmorg as ID, 
+				COMTCCMMNDETAILCODE.CODE_NM as NAME,
+				null as PARENTID,
+				null as TYPE,
+				case
+					when fdmorg = '07' then 1
+					else 0
+				end as OD				
+			from 
+				FDMSMETAINFOMAP, 
+				COMTCCMMNDETAILCODE
+			where 
+				FDMSMETAINFOMAP.FDMORG = COMTCCMMNDETAILCODE.code
+			and 
+				COMTCCMMNDETAILCODE.CODE_ID = 'FDMORG'			
+			ORDER BY OD DESC
+		]]>				
+	</select>
+	
+	<select id="selectFdmorgList" resultMap="graphNodeList">
+		<![CDATA[
+			select 
+				CODE_NM as FDMORG_NM,
+				CODE as FDMORG_CODE 
+			from COMTCCMMNDETAILCODE where code_id = 'FDMORG'
+		]]>
+		
+	</select>
+	
+</mapper>

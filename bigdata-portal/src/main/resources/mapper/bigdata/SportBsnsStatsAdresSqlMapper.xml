@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.SportBsnsStatsAdresSqlMapper">
+	
+	<!-- 시도별 농업인 건수 목록 -->
+	<select id="getSidos" resultType="map">
+		SELECT SUBSTRING(SIGUNGU_CODE,1,2) AS sidoCode
+				,SUM(FMER_FRE) AS sumFmerFre
+		FROM	T_SPORT_BSNS_STATS_ADRES
+		WHERE	SPORT_BSNS_CODE = #{bsnsCode}
+		GROUP BY	SUBSTRING(SIGUNGU_CODE,1,2)		
+	</select>
+	
+	
+	<!-- 시군구별 농업인 건수 목록 -->
+	<select id="getSigungusBySido" resultType="map">
+		SELECT SIGUNGU_CODE AS sigunguCode
+				,SUM(FMER_FRE) AS sumFmerFre
+		FROM	T_SPORT_BSNS_STATS_ADRES
+		WHERE	SPORT_BSNS_CODE = #{bsnsCode}
+		AND	SIGUNGU_CODE LIKE CONCAT(#{sidoCode}, '%')
+		GROUP BY	SIGUNGU_CODE		
+	</select>
+</mapper>

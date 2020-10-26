@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.NoticeMapper">
+
+
+	<sql id="w">
+		AND	BBS_GBN = #{bbsGbn}
+		AND PARNTSCTT_NO IS NULL
+		<if test="null != nttSj and '' != nttSj">
+ 	    	AND NTT_SJ LIKE CONCAT('%', #{nttSj}, '%')
+ 	 	</if>
+ 	 	<if test="null != ntcrNm and '' != ntcrNm">
+ 	    	AND NTCR_NM LIKE CONCAT('%', #{ntcrNm}, '%')
+ 	 	</if>
+ 	 	<if test="null != ntcrId and '' != ntcrId">
+ 	 		AND NTCR_ID = #{ntcrId}
+ 	 	</if>
+ 	 	<if test='null != bbsGbn and "Q" == bbsGbn'>
+ 	 		AND PARNTSCTT_NO IS NULL
+ 	 	</if>
+	</sql>
+
+
+	<sql id="limit">
+		LIMIT #{limit}
+	</sql>
+
+
+	<!-- 목록 -->
+	<select id="gets" resultType="map">
+		SELECT	NTT_ID AS nttId
+				,BBS_GBN AS bbsGbn
+				,NTT_NO AS nttNo
+				,NTT_SJ AS nttSj
+				,NTT_CN AS nttCn
+				,RDCNT AS rdcnt
+				,ANSWER_AT AS answerAt
+				,NTCR_ID AS ntcrId
+				,NTCR_NM AS ntcrNm
+				,FRST_REGIST_PNTTM AS frstRegistPnttm
+				,ATCH_FILE_ID AS atchFileId
+		FROM	BDP_BBS_NOTICE
+		WHERE	1=1
+		<include refid="w"/>
+		ORDER BY FRST_REGIST_PNTTM DESC
+		<if test="limit == null">
+			LIMIT #{offset}, 10
+		</if>
+		<if test="limit != null">
+			<include refid="limit"/>
+		</if>
+	</select>
+
+	<select id="getsRply" resultType="map">
+		SELECT NTT_CN AS nttCn
+			 , NTCR_ID AS ntcrId
+			 , NTCR_NM AS ntcrNm
+			 , FRST_REGIST_PNTTM AS frstRegistPnttm
+		  FROM BDP_BBS_NOTICE
+		 WHERE PARNTSCTT_NO = #{parntscttNo}
+		   AND BBS_GBN = #{bbsGbn}
+	</select>
+
+
+	<!-- 목록 건수 조회 -->
+	<select id="getsCount" resultType="int">
+		SELECT COUNT(*)
+		FROM	BDP_BBS_NOTICE
+		WHERE	1=1
+		<include refid="w"/>
+	</select>
+
+	<!-- 목록 건수 조회 -->
+	<select id="getNttNo" resultType="int">
+		SELECT IFNULL(MAX(NTT_NO) + 1, 0)
+		FROM	BDP_BBS_NOTICE
+		WHERE	1=1
+		AND 	BBS_GBN = #{bbsGbn}
+	</select>
+
+	<select id="getAnswerLc" resultType="int">
+		SELECT IFNULL(MAX(ANSWER_LC) + 1, 0)
+		  FROM BDP_BBS_NOTICE
+		 WHERE PARNTSCTT_NO = #{parntscttNo}
+		   AND BBS_GBN = #{bbsGbn}
+	</select>
+
+	<!-- 등록 -->
+	<insert id="regist">
+		INSERT INTO BDP_BBS_NOTICE (
+			BBS_GBN
+			,NTT_NO
+			,NTT_SJ
+			,NTT_CN
+			,RDCNT
+			,ATCH_FILE_ID
+			,NTCR_ID
+			,NTCR_NM
+			,FRST_REGIST_PNTTM
+			,FRST_REGISTER_ID
+			,LAST_UPDT_PNTTM
+			,LAST_UPDUSR_ID
+			,USE_AT
+		)
+		VALUES(
+			#{bbsGbn}
+			,#{nttNo}
+			,#{nttSj}
+			,#{nttCn}
+			,0
+			,#{atchFileId}
+			,#{ntcrId}
+			,#{ntcrNm}
+			,NOW()
+			,#{ntcrId}
+			,NOW()
+			,#{ntcrId}
+			,'Y'
+		)
+	</insert>
+
+	<!-- 댓글 등록 -->
+	<insert id="registRply">
+		INSERT INTO BDP_BBS_NOTICE (
+			BBS_GBN
+			,NTT_NO
+			,NTT_SJ
+			,NTT_CN
+			,PARNTSCTT_NO
+			,ANSWER_LC
+			,RDCNT
+			,ATCH_FILE_ID
+			,NTCR_ID
+			,NTCR_NM
+			,FRST_REGIST_PNTTM
+			,FRST_REGISTER_ID
+			,LAST_UPDT_PNTTM
+			,LAST_UPDUSR_ID
+			,USE_AT
+		)
+		VALUES(
+			#{bbsGbn}
+			,#{nttNo}
+			,'reply'
+			,#{nttCn}
+			,#{parntscttNo}
+			,#{answerLc}
+			,0
+			,#{atchFileId}
+			,#{ntcrId}
+			,#{ntcrNm}
+			,NOW()
+			,#{ntcrId}
+			,NOW()
+			,#{ntcrId}
+			,'Y'
+		)
+	</insert>
+
+
+	<!-- 조회 -->
+	<select id="getByNttId" resultType="map">
+		SELECT	NTT_ID AS nttId
+				,BBS_GBN AS bbsGbn
+				,NTT_NO AS nttNo
+				,NTT_SJ AS nttSj
+				,NTT_CN AS nttCn
+				,PARNTSCTT_NO
+				,ANSWER_LC
+				,RDCNT AS rdcnt
+				,NTCR_ID AS ntcrId
+				,NTCR_NM AS ntcrNm
+				,ATCH_FILE_ID AS atchFileId
+				,FRST_REGIST_PNTTM as frstRegistPnttm
+		FROM	BDP_BBS_NOTICE
+		WHERE	NTT_ID = #{nttId}
+	</select>
+
+	<!-- 조회 -->
+	<select id="getByNttNo" resultType="map">
+		SELECT	NTT_ID AS nttId
+				,BBS_GBN AS bbsGbn
+				,NTT_NO AS nttNo
+				,NTT_SJ AS nttSj
+				,NTT_CN AS nttCn
+				,PARNTSCTT_NO
+				,ANSWER_LC
+				,RDCNT AS rdcnt
+				,NTCR_ID AS ntcrId
+				,NTCR_NM AS ntcrNm
+				,ATCH_FILE_ID AS atchFileId
+				,FRST_REGIST_PNTTM as frstRegistPnttm
+		FROM	BDP_BBS_NOTICE
+		WHERE	NTT_NO = #{nttNo}
+		AND		BBS_GBN = #{bbsGbn}
+	</select>
+
+	<!-- 조회수 증가 -->
+	<update id="updateRdcntByNttId">
+		UPDATE	BDP_BBS_NOTICE SET
+			RDCNT = RDCNT + 1
+		WHERE	NTT_ID = #{nttId}
+	</update>
+
+	<!-- 댓글여부확인 -->
+	<update id="updateAnswerByNttId">
+		UPDATE	BDP_BBS_NOTICE SET
+			ANSWER_AT = 'Y'
+		WHERE	NTT_ID = #{nttId}
+	</update>
+
+
+	<!-- 삭제 -->
+	<delete id="deleteByNttId">
+		DELETE FROM	BDP_BBS_NOTICE
+		WHERE	NTT_ID = #{nttId}
+	</delete>
+
+
+	<!-- 수정 -->
+	<update id="update">
+		UPDATE BDP_BBS_NOTICE SET
+			NTT_SJ = #{nttSj}
+			,NTT_CN = #{nttCn}
+			,NTCR_ID = #{ntcrId}
+			,NTCR_NM = #{ntcrNm}
+			,ATCH_FILE_ID = #{atchFileId}
+			,LAST_UPDT_PNTTM = NOW()
+			,LAST_UPDUSR_ID = #{ntcrId}
+		WHERE	NTT_ID = #{nttId}
+	</update>
+
+</mapper>

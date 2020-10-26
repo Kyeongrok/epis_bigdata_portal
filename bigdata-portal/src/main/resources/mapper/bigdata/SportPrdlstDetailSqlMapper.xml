@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.SportPrdlstDetailSqlMapper">
+	
+	
+	<select id="getCountsByBsnsCode" resultType="java.util.Map">
+		SELECT SPORT_BSNS_CODE
+				, COUNT(DISTINCT SPD.FRMER_NO) AS CNT
+		FROM FS_SPORT_PRDLST_DETAIL SPD
+		
+		/*사업*/
+		WHERE SPORT_BSNS_CODE IN <foreach collection="bsnsCodes" item="item" open="(" separator="," close=")">#{item}</foreach>
+		
+		<if test="null != prdlstCode and '' != prdlstCode">
+			/*품목*/
+			AND  EXISTS(SELECT 1
+						FROM FS_CTVT_PRDLST_SUMRY CPS
+						WHERE	CPS.FRMER_NO = SPD.FRMER_NO
+						AND CPS.CTVT_PRDLST_CODE = #{prdlstCode}
+						AND CPS.CTVT_AR &gt;= #{minArOrCo} AND CPS.CTVT_AR &lt; #{maxArOrCo}
+						UNION ALL
+						SELECT 1
+						FROM FS_STALL_DETAIL_STTUS SDS
+						WHERE	SDS.FRMER_NO = SPD.FRMER_NO
+						AND	SDS.BRD_PRDLST_CODE = #{prdlstCode}
+						AND SDS.BRD_HEAD_CO &gt;= #{minArOrCo} AND SDS.BRD_HEAD_CO &lt; #{maxArOrCo}		
+			)		
+		</if>
+
+		AND EXISTS(SELECT 1
+					FROM FS_FRMER_STDR_INFO FSI
+					WHERE SPD.FRMER_NO = FSI.FRMER_NO
+					<if test="null != sexdstn and '' != sexdstn">
+						/*성별*/
+						AND FSI.SEXDSTN = #{sexdstn}
+					</if>
+					<if test="null != minBrthYear and '' != minBrthYear">
+						/*나이*/
+						AND FSI.BRTH_YYYY &gt;= #{minBrthYear} AND FSI.BRTH_YYYY &lt; #{maxBrthYear} 
+					</if> 
+					<if test="null != minFarmCareerYm and '' != minFarmCareerYm">
+						/*영농 경력*/
+						AND FSI.FARM_BEGIN_YM &gt;= #{minFarmCareerYm} AND FSI.FARM_BEGIN_YM &lt; #{maxFarmCareerYm}
+					</if>
+					)		
+	</select>
+</mapper>

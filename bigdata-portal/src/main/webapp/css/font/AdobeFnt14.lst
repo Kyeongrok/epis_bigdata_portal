@@ -1,0 +1,72 @@
+%!Adobe-FontList 1.14
+%Locale:0x412
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\MyriadPro.eot
+FileModTime:1435353724
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:MyriadPro-It
+FamilyName:Myriad Pro
+StyleName:Italic
+FullName:Myriad Pro
+MenuName:Myriad Pro
+StyleBits:1
+WritingScript:Roman
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\MyriadPro.ttf
+DataFormat:sfntData
+FileLength:32332
+FileModTime:1435353724
+WeightClass:400
+WidthClass:5
+AngleClass:1
+DesignSize:110
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\MyriadPro.woff
+FileModTime:1435353724
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\nanumsquareb.eot
+FileModTime:1568001644
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\nanumsquareb.woff
+FileModTime:1568001644
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\nanumsquareb.woff2
+FileModTime:1568001644
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\NanumSquareR.eot
+FileModTime:1568001644
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:C:\Users\Administrator\Documents\카카오톡 받은 파일\farmIntent\Font\NanumSquareR.woff
+FileModTime:1568001644
+%EndFont
+

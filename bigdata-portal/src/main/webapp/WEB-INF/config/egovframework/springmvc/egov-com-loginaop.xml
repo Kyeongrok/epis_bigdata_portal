@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<bean id="logManage" class="egovframework.com.sym.log.service.EgovLogManageAspect" />
+	
+	<aop:config>
+		<aop:aspect id="logManageAspect" ref="logManage">
+			
+			<!-- 로그인  / 로그아읏 -->
+			<aop:after-returning pointcut="execution(public * bigdata.portal.web.LoginController.loginCallback(..))" method="logLogin" />
+			<aop:after-returning pointcut="execution(public * bigdata.portal.web.LoginController.logoutCallback(..))" method="logLogout" />
+			
+			<!-- 패스워드 변경  -->
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.Egov*Controller.updatePassword(..))" method="logPasswordChange" />
+			
+			<!-- 회원 등급 생성 / 수정 -->			
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.ram.web.EgovAuthorManageController.insertAuthor(..))" method="logAuthor"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.ram.web.EgovAuthorManageController.updateAuthor(..))" method="logAuthor"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.ram.web.EgovAuthorManageController.deleteAuthor*(..))" method="logAuthor"/>
+			
+			<!-- 회원 등록/삭제/수정 -->			
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovMberManageController.insertMber(..))" method="logAccount"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovMberManageController.deleteMber(..))" method="logAccount"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovMberManageController.updateMber(..))" method="logAccount"/>	
+			
+			<!-- 회원 등록/삭제/수정 -->			
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovUserManageController.insertUser(..))" method="logAccount"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovUserManageController.deleteUser(..))" method="logAccount"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovUserManageController.updateUser(..))" method="logAccount"/>
+			
+			<!-- 회원 등록/삭제/수정 -->
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovEntrprsManageController.insertEntrprsMber(..))" method="logAccount"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovEntrprsManageController.deleteEntrprsMber(..))" method="logAccount"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.uss.umt.web.EgovEntrprsManageController.updateEntrprsMber(..))" method="logAccount"/>
+			
+			<!-- 회원 삭제 -->
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.rmt.web.EgovRoleManageController.updateRole(..))" method="logRole"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.rmt.web.EgovRoleManageController.insertRole(..))" method="logRole"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.rmt.web.EgovRoleManageController.deleteRole(..))" method="logRole"/>
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.rmt.web.EgovRoleManageController.deleteRoleList(..))" method="logRole"/>
+			
+			<!-- 권한 그룹 변경 -->
+			<aop:after-returning pointcut="execution(public * egovframework.com.sec.rgm.web.EgovAuthorGroupController.insertGroupAuthor(..))" method="logAuthorGroup" />			 
+			
+		</aop:aspect>
+	</aop:config>
+
+</beans>
+
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+	  <setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
+	<typeAliases>
+		<!-- DCT/FRTN 에서 사용 -->
+		<typeAlias type="egovframework.rte.psl.dataaccess.util.EgovMap" alias="egovMap" />
+	
+		<!-- type alias는 아래 선언된것 외에 사용하지 않음 -->
+		<typeAlias type="bigdata.portal.entity.Code" alias="code" />
+		<typeAlias type="bigdata.portal.entity.CodeDetail" alias="CodeDetail" />
+		<!-- 기본 공통 Entity (CamelCase) -->
+		<typeAlias type="bigdata.portal.entity.EntityMap" alias="EntityMap" />		
+		<typeAlias type="java.util.HashMap" alias="hashmap" />
+	</typeAliases>
+</configuration>

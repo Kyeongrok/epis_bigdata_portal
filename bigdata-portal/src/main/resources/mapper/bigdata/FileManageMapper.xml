@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.FileManageMapper">
+
+	<!-- 자동 삭제 될 결합데이터 조회 -->
+	<select id="selectDelToPreviousDay" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			BDP_ANALYSIS_DATA_MERGE
+		WHERE
+			ANADM_MERGE_STAT = 'Y'
+		]]>
+		
+		<if test="term != null and !term.equals('')">
+			<choose>
+				<when test='term.equals("1Y")'>
+					AND
+						UNIX_TIMESTAMP(REG_DATE) <![CDATA[ <= ]]> UNIX_TIMESTAMP(DATE_SUB(now(), INTERVAL 1 YEAR))
+				</when>
+				<when test='term.equals("6M")'>
+					AND
+						UNIX_TIMESTAMP(REG_DATE) <![CDATA[ <= ]]> UNIX_TIMESTAMP(DATE_SUB(now(), INTERVAL 6 MONTH))
+				</when>
+			</choose>
+			
+		</if>
+	</select>
+	
+	
+</mapper>

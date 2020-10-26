@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="egov.propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/egovframework/egovProps/#{systemProperties['spring.profiles.active']}/globals.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 실행환경에서 빈이름 참조(EgovAbstractDAO) -->
+	<bean id="egov.lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"
+		lazy-init="true" />
+
+	<!-- SqlMap setup for iBATIS Database Layer -->
+	<bean id="egov.sqlMapClient" class="egovframework.rte.psl.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:/egovframework/sqlmap/config/${Globals.DbType}/*.xml
+				</value>
+			</list>
+		</property>
+		<property name="dataSource" ref="egov.dataSource" />
+		<property name="lobHandler" ref="egov.lobHandler" />
+	</bean>
+
+	<!-- mybatis hot reload -->
+	<bean id="sqlSession" class="bigdata.portal.cmm.util.RefreshableSqlSessionFactoryBean">
+		<property name="dataSource" ref="egov.dataSource" />
+		<property name="configLocation" value="classpath:/mapper/sql-map-config.xml" />
+		<property name="mapperLocations" value="classpath:/mapper/**/*Mapper.xml" />
+	</bean>
+<!-- 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
+<!-- 		<property name="dataSource" ref="egov.dataSource" /> -->
+<!-- 		<property name="configLocation" value="classpath:/mapper/sql-map-config.xml" /> -->
+<!-- 		<property name="mapperLocations" value="classpath:/mapper/**/*Mapper.xml" /> -->
+<!-- 	</bean> -->
+
+	<bean class="egovframework.rte.psl.dataaccess.mapper.MapperConfigurer">
+		<property name="basePackage" value="bigdata.**.mapper" />
+	</bean>
+
+</beans>

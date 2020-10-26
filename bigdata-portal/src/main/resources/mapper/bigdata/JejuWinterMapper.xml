@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.JejuWinterMapper">
+
+	<!-- 테스트용 임시 아무거나 쿼리 -->
+	<select id="selectJejuWinterCount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*) AS totalCount
+		  FROM BDP_VISUALIZE
+		 WHERE 1 = 1
+	<![CDATA[
+		 AND (VIS_OPEN_AT = "Y" OR USER_ID = #{userId})
+	]]>
+	</select>
+	
+	<!-- 테스트용 임시 아무거나 쿼리 -->
+	<select id="selectJejuWinterList" parameterType="hashmap" resultType="EntityMap">
+		SELECT * FROM BDP_VISUALIZE
+		WHERE 1 = 1
+	<![CDATA[
+		AND (VIS_OPEN_AT = "Y" OR USER_ID = #{userId})
+	]]>
+	</select>
+</mapper>

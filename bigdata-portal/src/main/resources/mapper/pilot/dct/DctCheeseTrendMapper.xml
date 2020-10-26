@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pilot.dct.mapper.DctCheeseTrendMapper">	
+	
+	
+	<select id="selectcheeseProductionResult" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCPR_YEAR,
+				DCPR_PROCESSED_MARKET,
+				DCPR_MODIFIED_MILK,
+				DCPR_WHOLE_MILK,
+				DCPR_NONFAT_MILK,
+				DCPR_SWEETENED,
+				DCPR_BUTTER,
+				DCPR_CHEESE,
+				DCPR_FERMENTED_MILK
+			FROM
+				DCTCHEESEPRODUCTIONRESULT
+			WHERE 1=1
+		]]>
+		
+		<if test="syear != null and syear !='' ">
+			<![CDATA[ 	and DCPR_YEAR between #{syear} and #{eyear}	]]>
+		</if>
+	</select> 
+	
+	<select id="selectcheeseExportQuantity" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCEQ_YM,
+				DCEQ_MILK_SUGER,
+				DCEQ_MIX_MILK,
+				DCEQ_CASEIN,
+				DCEQ_ALBUMIN,
+				DCEQ_MILK,
+				DCEQ_BUTTER_MILK,
+				DCEQ_MODIFIED_BUTTER,
+				DCEQ_NONFAT_MILK,
+				DCEQ_WHOLE_MILK,
+				DCEQ_SWEETENED,
+				DCEQ_FERMENTED_MILK,
+				DCEQ_WHEY,
+				DCEQ_CHEESE
+			FROM
+				DCTCHEESEEXPORTQUANTITY
+			WHERE 1=1
+		]]>
+		<if test="syear != null and syear !='' ">
+				<![CDATA[ 	and DCEQ_YM between #{syear} and #{eyear}	]]>
+		</if>
+	</select> 
+	
+	<select id="selectcheeseExportPrice" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCEP_YM,
+				DCEP_MILK_SUGER,
+				DCEP_MIX_MILK,
+				DCEP_CASEIN,
+				DCEP_ALBUMIN,
+				DCEP_MILK,
+				DCEP_BUTTER_MILK,
+				DCEP_MODIFIED_BUTTER,
+				DCEP_NONFAT_MILK,
+				DCEP_WHOLE_MILK,
+				DCEP_SWEETENED,
+				DCEP_FERMENTED_MILK,
+				DCEP_WHEY,
+				DCEP_CHEESE
+			FROM
+				DCTCHEESEEXPORTPRICE
+			WHERE 1=1
+		]]>
+			<if test="syear != null and syear !='' ">
+				<![CDATA[ 	and DCEP_YM between #{syear} and #{eyear}	]]>
+			</if>
+	</select>
+	
+	<select id="selectcheeseImportPrice" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCIP_YM,
+				DCIP_WHOLE_MILK,
+				DCIP_NONFAT_MILK,
+				DCIP_MODIFIED_BUTTER,
+				DCIP_MOZZARELLA_CHEESE,
+				DCIP_CHEDDAR_CHEESE,
+				DCIP_MIX_MILK
+			FROM
+				DCTCHEESEIMPORTPRICE
+			WHERE 1=1
+		]]>
+			<if test="syear != null and syear !='' ">
+				<![CDATA[ 	and DCIP_YM between #{syear} and #{eyear}	]]>
+			</if>
+	</select>
+	
+	<select id="selectcheeseProductsConsumption" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCPC_YM,
+				DCPC_FERMENTED_MILK,
+				DCPC_BUTTER,
+				DCPC_DRY_MILK,
+				DCPC_MARKET,
+				DCPC_SWEETENED,
+				DCPC_CHEESE,
+				DCPC_CREAM
+			FROM
+				DCTCHEESEPRODUCTSCONSUMPTION
+			WHERE 1=1
+		]]>
+			<if test="syear != null and syear !='' ">
+				<![CDATA[ 	and DCPC_YM between #{syear} and #{eyear}	]]>
+			</if>
+	</select>	
+	
+	<select id="selectcheeseProductMonth" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCPM_M,
+				DCPM_LAPPING,
+				DCPM_TOP,
+				DCPM_ENFANT,
+				DCPM_PHILA,
+				DCPM_IMSIL
+			FROM
+				DCTCHEESEPRODUCTMONTH
+		]]>
+	</select>
+	
+	<select id="selectcheeseProductYear" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCPY_Y,
+				DCPY_LAPPING,
+				DCPY_TOP,
+				DCPY_ENFANT,
+				DCPY_PHILA,
+				DCPY_IMSIL
+			FROM
+				DCTCHEESEPRODUCTYEAR
+		]]>
+	</select>
+	
+	<select id="selectcheeseBusinesMonth" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCBM_M,
+				DCBM_NAMYANG,
+				DCBM_SEOUL,
+				DCBM_MAIL,
+				DCBM_CJ,
+				DCBM_PULMU
+			FROM
+				DCTCHEESEBUSINESMONTH
+		]]>
+	</select>
+	
+	<select id="selectcheeseBusinesYear" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCBY_Y,
+				DCBY_NAMYANG,
+				DCBY_SEOUL,
+				DCBY_MAIL,
+				DCBY_CJ,
+				DCBY_PULMU
+			FROM
+				DCTCHEESEBUSINESYEAR
+		]]>
+	</select>
+	
+	<select id="selectcheeseCountryMonth" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCCM_M,
+				DCCM_JP,
+				DCCM_US,
+				DCCM_IT,
+				DCCM_FR,
+				DCCM_SW,
+				DCCM_EU,
+				DCCM_AU,
+				DCCM_DE,
+				DCCM_TA,
+				DCCM_UK,
+				DCCM_GE,
+				DCCM_CH
+			FROM
+				DCTCHEESECOUNTRYMONTH
+		]]>
+	</select>
+	
+	<select id="selectcheeseCountryYear" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCCY_Y,
+				DCCY_JP,
+				DCCY_IT,
+				DCCY_US,
+				DCCY_FR,
+				DCCY_SW,
+				DCCY_EU,
+				DCCY_AU,
+				DCCY_DE,
+				DCCY_TA,
+				DCCY_UK,
+				DCCY_GE,
+				DCCY_CH
+			FROM
+				DCTCHEESECOUNTRYYEAR
+		]]>
+	</select>
+	
+	<select id="selectcheeseKindMonth" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCKM_M,
+				DCKM_MOZZ,
+				DCKM_CEDAR,
+				DCKM_PARM,
+				DCKM_GORGON,
+				DCKM_CAMEM,
+				DCKM_BLUE,
+				DCKM_PETA,
+				DCKM_GODA,
+				DCKM_MASEU,
+				DCKM_EMMEN,
+				DCKM_RICOTTA,
+				DCKM_PONDUE,
+				DCKM_CREAM
+			FROM
+				DCTCHEESEKINDMONTH 
+		]]>
+	</select>
+	
+	<select id="selectcheeseKindYear" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCKY_Y,
+				DCKY_MOZZ,
+				DCKY_CEDAR,
+				DCKY_PARM,
+				DCKY_GORGON,
+				DCKY_CAMEM,
+				DCKY_BLUE,
+				DCKY_PETA,
+				DCKY_GODA,
+				DCKY_MASEU,
+				DCKY_EMMEN,
+				DCKY_RICOTTA,
+				DCKY_PONDUE,
+				DCKY_CREAM
+			FROM
+				DCTCHEESEKINDYEAR
+		]]>
+	</select>
+	
+	<select id="selectcheeseCorrelation" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCM_YM,
+				DCM_CONSUMPTION_CHEESE,
+				DCM_DESSERT,
+				DCM_CHEESE_KIND,
+				DCM_FOOD_SOURCE,
+				DCM_FOOD,
+				DCM_DESSERT_RESULT,
+				DCM_CHEESE_KIND_RESULT,
+				DCM_FOOD_SOURCE_RESULT,
+				DCM_FOOD_RESULT,
+				DCM_POS,
+				(DCM_POS_DATA/1000000) AS DCM_POS_DATA
+			FROM
+				DCTCHEESEMAIN
+			WHERE 1=1
+		]]>
+			<if test="syear != null and syear !='' ">
+				<![CDATA[ 	and DCM_YM between #{syear} and #{eyear}	]]>
+			</if>
+
+	</select>
+	
+	<select id="selectcheeseCorrelationResult" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCM_DESSERT_RESULT,
+				DCM_CHEESE_KIND_RESULT,
+				DCM_FOOD_SOURCE_RESULT,
+				DCM_FOOD_RESULT,
+				DCM_POS
+			FROM
+				DCTCHEESEMAIN
+			WHERE 1=1
+			LIMIT 1
+		]]>
+	</select>
+	
+	<select id="selectcheeseCorrelationResultPos" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCM_DESSERT_RESULT,
+				DCM_CHEESE_KIND_RESULT,
+				DCM_FOOD_SOURCE_RESULT,
+				DCM_FOOD_RESULT
+			FROM
+				DCTCHEESECORRELATIONRESULTSPOS
+		]]>
+	</select>	
+	
+	<select id="selectcheeseKeyword" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCK_Y,
+				DCK_KEY,
+				DCK_COUNT,
+				DCK_TF,
+				DCK_MAG
+			FROM
+				DCTCHEESEKEYWORD
+			WHERE 1=1
+		]]>
+			<if test="syear != null and syear !='' ">
+				<![CDATA[ 	and DCK_Y = #{syear} 	]]>
+			</if>
+			ORDER BY DCK_MAG DESC
+	</select>
+	
+	<select id="selectCheeseKeywordFrequencyYear" parameterType="map" resultType="egovMap" >
+		SELECT 
+			DCK_Y,
+			DCK_KEY,
+			DCK_COUNT,
+			DCK_TF,
+			DCK_MAG
+		FROM
+			DCTCHEESEKEYWORD
+		WHERE DCK_KEY IN (
+		<foreach collection="keywords" item="key" separator=",">
+			 #{key}
+		</foreach>
+		)
+		ORDER BY DCK_Y ASC
+	</select>
+	
+	<select id="selectCheeseKeywordComment" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCK_Y,
+				DCK_COMMENT
+			FROM
+				DCTCHEESEKEYWORDCOMMENT
+			WHERE DCK_Y = #{syear}
+		]]>
+	</select>
+
+	<select id="cheeseEgoKeyword" parameterType="map" resultType="egovMap" >
+		<![CDATA[
+			SELECT 
+				DCK_Y,
+				DCK_KEY,
+				DCK_COUNT,
+				DCK_TF
+			FROM
+				DCTCHEESEKEYWORD
+			WHERE 1=1
+		]]>
+			<if test="syear != null and syear !='' ">
+				<![CDATA[ 	and DCK_Y = #{syear} 	]]>
+			</if>
+			ORDER BY DCK_COUNT DESC
+	</select>
+	
+	<select id="selectDctPosCheese" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DPC_Y,
+			DPC_GANGWON,
+			DPC_GYEONGGI,
+			DPC_GYEONGNAM,
+			DPC_GYEONGBUK,
+			DPC_GWANGJI,
+			DPC_ETC,
+			DPC_DAEGU,
+			DPC_DAEJUN,
+			DPC_BUSAN,
+			DPC_SEOUL,
+			DPC_SEJONG,
+			DPC_ULSAN,
+			DPC_INCHEON,
+			DPC_JUNNAM,
+			DPC_JUNBUK,
+			DPC_JEJU,
+			DPC_CHUNGNAM,
+			DPC_CHUNGBUK
+		FROM DCTPOSCHEESE
+		WHERE DPC_Y >= #{smonth}
+		AND DPC_Y <= #{emonth}
+		]]>
+	</select>
+	
+	
+	<select id="selectCheeseSupplyStatus" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCSS_YM,
+			DCSS_NATURAL_CHEESE,
+			DCSS_MODIFIED_CHEESE,
+			DCSS_NATURAL_IM_CHEESE,
+			DCSS_MODIFIED_IM_CHEESE,
+			DCSS_TOTAL_CHEESE
+		FROM DCTCHEESESUPPLYSTATUS
+		WHERE DCSS_YM >= #{smonth}
+		AND DCSS_YM <= #{emonth}
+		]]>
+	</select>
+	
+	
+	<select id="selectCheeseConsumptionStatus" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCCS_YM,
+			DCCS_NATURAL_CHEESE,
+			DCCS_MODIFIED_CHEESE,
+			DCCS_NATURAL_EX_CHEESE,
+			DCCS_MODIFIED_EX_CHEESE,
+			DCCS_TOTAL_CHEESE
+		FROM DCTCHEESECONSUMPTIONSTATUS
+		WHERE DCCS_YM >= #{smonth}
+		AND DCCS_YM <= #{emonth}
+		]]>
+	</select>
+
+	
+	<select id="selectDctTradeCheese" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCTI_YM,
+			DCTI_IMPORT,
+			DCTI_EXPORT
+		FROM DCTCHEESETRADEINFO
+		WHERE DCTI_YM >= #{smonth}
+		AND DCTI_YM <= #{emonth}
+		]]>
+	</select>
+	
+	<select id="selectDctCheeseProduct" parameterType="map" resultType="egovMap">
+		<![CDATA[
+		SELECT 
+			DCPP_YM,
+			DCPP_SLICE_CHEESE
+		FROM DCTCHEESEPRODUCTPRICE
+		WHERE DCPP_YM >= #{smonth}
+		AND DCPP_YM <= #{emonth}
+		]]>
+	</select>
+	
+	
+</mapper>

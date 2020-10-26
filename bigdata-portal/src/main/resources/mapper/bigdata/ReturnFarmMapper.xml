@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.ReturnFarmMapper">
+
+	<sql id="SimilrCntTopEmd">
+		/*유사 귀농 그룹을 찾아내고 거기에서 상위 50개 지역을 뽑아낸다*/
+		SELECT ADRES_CODE FROM (SELECT
+								ADRES_CODE
+								,COUNT(ADRES_CODE) CNT
+							FROM T_RTRN_FARMER_DATA_SET
+							WHERE
+								1=1
+								<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(index)">
+									AND INDEX_ = #{index}
+								</if>
+								AND EDC_AVG_ACCES_POSBLTY != 0 /*교육 접근성*/
+								AND EDC_AVG_ACCES_POSBLTY IS NOT NULL
+								AND TRNSPORT_AVG_ACCES_POSBLTY != 0 /*교통 접근성*/
+								AND TRNSPORT_AVG_ACCES_POSBLTY IS NOT NULL
+								AND HSPTL_AVG_ACCES_POSBLTY != 0 /*병원 접근성*/
+								AND HSPTL_AVG_ACCES_POSBLTY IS NOT NULL
+								AND CNVNC_MRKT_AVG_ACCES_POSBLTY != 0 /*편의-마트 접근성*/
+								AND CNVNC_MRKT_AVG_ACCES_POSBLTY IS NOT NULL
+								/*AND DISTB_AVG_CO != 0*/ /*유통 수*/
+								/*AND CNVNC_AVG_CO != 0*/ /*편의 수*/
+								/*AND CLTUR_AVG_CO != 0*/ /*문화 수*/
+								AND LAD_AVRG_DELNG_AMOUNT != 0 /*토지 실거래 금액*/
+								AND LAD_AVRG_DELNG_AMOUNT IS NOT NULL
+								AND LAD_AVRG_RENT_AMOUNT != 0 /*토지 임대 금액*/
+								AND LAD_AVRG_RENT_AMOUNT IS NOT NULL
+								<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtprvn)">
+									AND CTPRVN = #{hopeCtprvn}
+								</if>
+								<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeSigngu)">
+									AND SIGNGU = #{hopeSigngu}
+								</if>
+								<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtvt)">
+									AND CTPRVN IN (SELECT CTPRVN FROM T_RTRN_FARMER_AREA_SPCLIZ_PRDLST WHERE PRDLST_NM = #{hopeCtvt})
+								</if>
+								<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtvt)">
+									AND SIGNGU IN (SELECT SIGNGU FROM T_RTRN_FARMER_AREA_SPCLIZ_PRDLST WHERE PRDLST_NM = #{hopeCtvt})
+								</if>
+							GROUP BY ADRES_CODE
+							ORDER BY CNT DESC
+							LIMIT 50) TOP_50
+	</sql>
+
+	<sql id="AreaSetlCndColumns">
+		/*지역정주여건 컬럼*/
+		A.CODE
+		,A.ADRES_CODE
+		,A.CTPRVN
+		,A.SIGNGU
+		,A.EMD
+		,A.MNGMT_OWNR_AGE /*귀농인 나이*/
+		,A.MNGMT_OWNR_AGE_SCTN /*귀농인 나이 구간*/
+		,A.FRLND_AR /*농지면적*/
+		,A.FCLTY_AR /*시설면적*/
+		,A.ALL_AR /*전체면적*/
+		,A.LAD_BFE_AVRG_DELNG_AMOUNT /*토지 전 평균 실거래*/
+		,A.LAD_RICFLD_AVRG_DELNG_AMOUNT /*토지 답 평균 실거래*/
+		,A.ORCHRD_AVRG_DELNG_AMOUNT /*토지 과수원 평균 실거래*/
+		,A.LAD_BFE_AVRG_RENT_AMOUNT /*토지 전 평균 임대 */
+		,A.LAD_RICFLD_AVRG_RENT_AMOUNT /*토지 답 평균 임대*/
+		,A.ORCHRD_AVRG_RENT_AMOUNT /*토지 과수원 평균 임대*/
+		,A.APC	/*농협*/
+		,A.CVNSTR_CO	/*편의점 수*/
+		,A.LOCAL_FD_AT	/*로컬푸드*/
+		,A.THEAT_CO	/*극장 수*/
+		,A.ARPRT_ACCES_POSBLTY	/*공항 접근성*/
+		,A.BUS_TRMINL_ACCES_POSBLTY	/*버스 접근성*/
+		,A.TRAIN_STATN_ACCES_POSBLTY /*기차 접근성*/
+		,A.ELESCH_ACCES_POSBLTY /*초등학교 접근성*/
+		,A.MSKUL_ACCES_POSBLTY /*중학교 접근성*/
+		,A.HGSCHL_ACCES_POSBLTY /*고등학교 접근성*/
+		,A.PUBLIC_MLFLT_ACCES_POSBLTY /*공공의료 접근성*/
+		,A.GNRL_HSPTL_ACCES_POSBLTY /*일반병원 접근성*/
+		,A.GNRLZ_HSPTL_ACCES_POSBLTY /*종합병원 접근성*/
+		,A.LRSCL_STOR_ACCES_POSBLTY /*대규모점포 접근성*/
+		,A.TRDIT_MRKT_ACCES_POSBLTY /*전통시장 접근성*/
+		,A.INSTUT_CO /*학원 수*/
+		,A.BANK_CO /*은행 수*/
+		,A.RTRN_FRMHS_SPORT_POLICY_CO /*귀농지원정책 수*/
+		,A.CLTUR_HOUSE_CO /*문화의 집 수*/
+		,A.LBRRY_CO /*도서관 수*/
+		,A.LCLTY_CLTUR_HOUSE_CO /*지방문화원 수*/
+		,A.MUSEUM_CO /*박물관 수*/
+		,A.TRNSPORT_AVG_ACCES_POSBLTY /*교통 접근성*/
+		,A.EDC_AVG_ACCES_POSBLTY /*교육접근성*/
+		,A.HSPTL_AVG_ACCES_POSBLTY /*의료 접근성*/
+		,A.CNVNC_MRKT_AVG_ACCES_POSBLTY /*편의 마트 접근성 */
+		,A.CNVNC_AVG_CO /*편의시설 수*/
+		,A.CLTUR_AVG_CO /*문화시설 수*/
+		,A.DISTB_AVG_CO /*유통시설 수*/
+		,A.LAD_AVRG_DELNG_AMOUNT /*토지 평균 실거래 금액*/
+		,A.LAD_AVRG_RENT_AMOUNT /*토지 임대  평균 금액*/
+	</sql>
+
+
+
+	<select id="getsCtvt" parameterType="hashmap" resultType="EntityMap">
+		/*품목리스트 조회*/
+		SELECT * FROM T_RTRN_FARMER_PRDLST
+		WHERE PRDLST_NM like #{keyword}
+	</select>
+
+
+	<select id="getRetnFmlgModelIdx" parameterType="hashmap" resultType="EntityMap">
+		/*유사귀농인 모델 DB에서 index 구하기*/
+		SELECT
+			/*FRMHS_SIGNGU_CODE*/ /*일부데이터 이상함. 미사용 처리 */
+			MVT_SIGNGU
+			,MNGMT_OWNR_AGE_SCTN
+			,SCHBOY_BELOW_CHLDRN_ENNC
+			,MSKLSD_HGSCHST_CHLDRN_ENNC
+			,PARNTS_SUPORT_AT
+			,INDEX_ AS `INDEX`
+		FROM T_RTRN_FARMER_DATA_SET
+		WHERE
+			1=1
+			AND EDC_AVG_ACCES_POSBLTY != 0 /*교육 접근성*/
+			AND EDC_AVG_ACCES_POSBLTY IS NOT NULL
+			AND TRNSPORT_AVG_ACCES_POSBLTY != 0 /*교통 접근성*/
+			AND TRNSPORT_AVG_ACCES_POSBLTY IS NOT NULL
+			AND HSPTL_AVG_ACCES_POSBLTY != 0 /*병원 접근성*/
+			AND HSPTL_AVG_ACCES_POSBLTY IS NOT NULL
+			AND CNVNC_MRKT_AVG_ACCES_POSBLTY != 0 /*편의-마트 접근성*/
+			AND CNVNC_MRKT_AVG_ACCES_POSBLTY IS NOT NULL
+			/*AND DISTB_AVG_CO != 0*/ /*유통 수*/
+			/*AND CNVNC_AVG_CO != 0*/ /*편의 수*/
+			/*AND CLTUR_AVG_CO != 0*/ /*문화 수*/
+			AND LAD_AVRG_DELNG_AMOUNT != 0 /*토지 실거래 금액*/
+			AND LAD_AVRG_DELNG_AMOUNT IS NOT NULL
+			AND LAD_AVRG_RENT_AMOUNT != 0 /*토지 임대 금액*/
+			AND LAD_AVRG_RENT_AMOUNT IS NOT NULL
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(srchMvtCtprvn)">
+				AND MVT_CTPRVN = #{srchMvtCtprvn} /*전출 시,도*/
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(srchMvtSigngu)">
+				AND MVT_SIGNGU = #{srchMvtSigngu} /*전출 시군구*/
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(mngmtOwnrAgeSctn)">
+				AND MNGMT_OWNR_AGE_SCTN = #{mngmtOwnrAgeSctn} /*귀농인 나이 코드*/
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(parntsSuportAt)">
+				AND PARNTS_SUPORT_AT = #{parntsSuportAt} /*동거 부모 여부*/
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(schboyBelowChldrnEnnc)">
+				AND SCHBOY_BELOW_CHLDRN_ENNC = #{schboyBelowChldrnEnnc} /*초등학생 이하 자녀 여부*/
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(msklsdHgschstChldrnEnnc)">
+				AND MSKLSD_HGSCHST_CHLDRN_ENNC = #{msklsdHgschstChldrnEnnc} /*중고등학생 이하 자녀 여부*/
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtprvn)">
+				AND CTPRVN = #{hopeCtprvn}
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeSigngu)">
+				AND SIGNGU = #{hopeSigngu}
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtvt)">
+				AND CTPRVN IN (SELECT CTPRVN FROM T_RTRN_FARMER_AREA_SPCLIZ_PRDLST WHERE PRDLST_NM = #{hopeCtvt})
+			</if>
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtvt)">
+				AND SIGNGU IN (SELECT SIGNGU FROM T_RTRN_FARMER_AREA_SPCLIZ_PRDLST WHERE PRDLST_NM = #{hopeCtvt})
+			</if>
+		GROUP BY MVT_CTPRVN,MVT_SIGNGU,MNGMT_OWNR_AGE_SCTN,SCHBOY_BELOW_CHLDRN_ENNC,MSKLSD_HGSCHST_CHLDRN_ENNC,PARNTS_SUPORT_AT,INDEX_
+		LIMIT 1
+	</select>
+
+	<select id="getSimilrCntTopEmdAvgVal" parameterType="hashmap" resultType="EntityMap">
+	/*유사 귀농인이 많은 상위 50개 지역에서 분야별 평균 데이터를 조회한다.*/
+		SELECT
+			CODE
+			,ADRES_CODE
+			,CTPRVN
+			,SIGNGU
+			,EMD
+			,EDC_AVG_ACCES_POSBLTY /*교육 평균 접근성 데이터*/
+			,TRNSPORT_AVG_ACCES_POSBLTY /*교통 평균 접근성 데이터*/
+			,HSPTL_AVG_ACCES_POSBLTY /*의료 평균 접근성 데이터*/
+			,CNVNC_MRKT_AVG_ACCES_POSBLTY /*편의-마트 평균 접근성 데이터*/
+			,DISTB_AVG_CO /*유통 수 평균 데이터*/
+			,CNVNC_AVG_CO /*편의 수 평균 데이터*/
+			,CLTUR_AVG_CO /*문화 수 평균 데이터*/
+			,INSTUT_CO /*학원 수*/
+			,RTRN_FRMHS_SPORT_POLICY_CO /*귀농 지원정책 수*/
+			,LAD_AVRG_DELNG_AMOUNT /*토지 실거래 평균 데이터*/
+			,LAD_AVRG_RENT_AMOUNT /*토지 임대 평균 데이터*/
+		FROM T_RTRN_FARMER_DATA_SET
+		WHERE
+			ADRES_CODE IN (<include refid="SimilrCntTopEmd"/>)
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(index)">
+				AND INDEX_ = #{index}
+			</if>
+		GROUP BY ADRES_CODE, CTPRVN, SIGNGU, EMD
+	</select>
+
+	<select id="getAreaSetlCnd" parameterType="hashmap" resultType="EntityMap">
+	/*해당지역 정주여건 검색*/
+	SELECT
+		<include refid="AreaSetlCndColumns"/>
+	FROM
+		T_RTRN_FARMER_DATA_SET A
+	WHERE
+		CODE = #{code}
+
+
+	</select>
+
+
+	<select id="getsUpperAreaSetlCnd" parameterType="hashmap" resultType="EntityMap">
+	/*해당지역 상위 지역들의 정주여건 검색*/
+
+	SELECT
+		<include refid="AreaSetlCndColumns"/>
+	FROM
+		T_RTRN_FARMER_DATA_SET A
+	WHERE
+			CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+		AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+		AND EMD != (SELECT EMD FROM T_RTRN_FARMER_DATA_SET	WHERE CODE = #{code} limit 1)
+	GROUP BY CTPRVN, SIGNGU, EMD
+	</select>
+
+
+	<select id="getsUpperAreaAgeSctn" parameterType="hashmap" resultType="EntityMap">
+		/*해당지역(읍면동) 상위지역(시군구) 연령대별 귀농인*/
+		SELECT
+			AGE_SCTN, COUNT(AGE_SCTN) as AGE_SCTN_CNT
+		FROM(
+			SELECT
+				CASE WHEN MNGMT_OWNR_AGE BETWEEN 20 AND 29  THEN '20대'
+						WHEN MNGMT_OWNR_AGE BETWEEN 30 AND 39  THEN '30대'
+						WHEN MNGMT_OWNR_AGE BETWEEN 40 AND 49  THEN '40대'
+						WHEN MNGMT_OWNR_AGE BETWEEN 50 AND 59  THEN '50대'
+						WHEN MNGMT_OWNR_AGE >= 60  THEN'60대 이상'
+				END AS AGE_SCTN
+				FROM
+					T_RTRN_FARMER_DATA_SET A
+				WHERE
+						CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+					AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+		) T
+		WHERE AGE_SCTN IS NOT NULL
+		GROUP BY AGE_SCTN
+	</select>
+
+	<select id="getsUpperAreaMvtInfo" parameterType="hashmap" resultType="EntityMap">
+		/*해당지역(읍면동) 상위지역(시군구) 기준 귀농인 전출지역(상위5개지역 만)*/
+		SELECT
+			MVT_CTPRVN
+			,COUNT(MVT_CTPRVN) AS MVT_CTPRVN_CNT
+		FROM
+			T_RTRN_FARMER_DATA_SET A
+		WHERE
+				CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+			AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+		GROUP BY MVT_CTPRVN
+		ORDER BY MVT_CTPRVN_CNT DESC
+		LIMIT 5
+	</select>
+
+	<select id="getsUpperAreaCtvtInfo" parameterType="hashmap" resultType="EntityMap">
+		/*해당지역(읍면동) 상위지역(시군구) 단위 유사 귀농인이 가장 많이 재배한 품목(상위5개품목만)*/
+		SELECT
+		ITEM_NM,
+		COUNT(ITEM_NM) AS ITEM_NM_CNT
+		FROM
+			T_RTRN_FARMER_DATA_SET A
+		WHERE
+				CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+			AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+		GROUP BY ITEM_NM
+		ORDER BY ITEM_NM_CNT DESC
+		LIMIT 5
+	</select>
+
+	<select id="getsDistbInfoApc" parameterType="hashmap" resultType="EntityMap">
+		/*APC(농산물산지유통정보)*/
+		SELECT CTPRVN
+				, SIGNGU
+				, EMD
+				, BSNM_NM
+				, CASE WHEN TRTMNT_PRDLST_1 != '' THEN
+						CASE WHEN TRTMNT_PRDLST_2 != '' THEN
+							CASE WHEN TRTMNT_PRDLST_3 != '' THEN
+								CASE WHEN TRTMNT_PRDLST_4 != '' THEN CONCAT(TRTMNT_PRDLST_1, '/', TRTMNT_PRDLST_2, '/', TRTMNT_PRDLST_3 , '/', TRTMNT_PRDLST_4)
+								ELSE CONCAT(TRTMNT_PRDLST_1, '/', TRTMNT_PRDLST_2, '/', TRTMNT_PRDLST_3)
+								END
+							ELSE CONCAT(TRTMNT_PRDLST_1, '/', TRTMNT_PRDLST_2)
+							END
+						ELSE CONCAT(TRTMNT_PRDLST_1)
+						END
+					END AS TRTMNT_PRDLST
+				, LOCPLC
+				, CTTPC
+		FROM T_RTRN_FARMER_APC_INFO
+		WHERE
+			CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+			AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+	</select>
+
+	<select id="getsDistbInfoLocal" parameterType="hashmap" resultType="EntityMap">
+		/*로컬푸드 직매장 현황*/
+		SELECT
+			CTPRVN
+			,SIGNGU
+			,EMD
+			,STR_NM
+			,ONSS
+			,CTTPC
+		FROM
+			T_RTRN_FARMER_LOCAL_INFO
+		WHERE
+			CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+			AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+	</select>
+
+
+	<select id="getsAdiInfoAltrvSchul" parameterType="hashmap" resultType="EntityMap">
+		/*대안학교*/
+		SELECT
+			CTPRVN
+			,SIGNGU
+			,EMD
+			,SCHUL_NM
+			,SCHUL_SE
+		FROM T_RTRN_FARMER_ALTRV_SCHUL
+		WHERE
+			CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+			AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+	</select>
+
+
+
+
+	<select id="getsFixesCtvt" parameterType="hashmap" resultType="EntityMap">
+		/*귀농 맞춤 품목을 보여주기 위한 지역별 특화품목 + 품목지수 조인*/
+		SELECT A.CTPRVN
+			, A.SIGNGU
+			, A.PRDLST_CODE_WHSAL
+			, A.PRDLST_NM
+			, A.CTVT_TY
+			, A.CTVT_AR
+			, B.INDEX_1
+			, B.INDEX_2
+			, B.INDEX_3
+		FROM T_RTRN_FARMER_AREA_SPCLIZ_PRDLST A
+				INNER JOIN T_RTRN_FARMER_PRDLST_INDEX B ON A.PRDLST_NM = B.PRDLST_NM
+		WHERE
+			A.CTPRVN = #{ctprvn}
+			AND A.SIGNGU = #{signgu}
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtvt)">
+				AND A.PRDLST_NM = #{hopeCtvt}
+			</if>
+
+		GROUP BY A.PRDLST_NM
+	</select>
+
+	<select id="getsAvgPrdlstIndex" parameterType="hashmap" resultType="EntityMap">
+		/*품목지수 전체 평균*/
+		SELECT
+			AVG(INDEX_1) AS INDEX_1
+			, AVG(INDEX_2) AS INDEX_2
+			, AVG(INDEX_3) AS INDEX_3
+		FROM T_RTRN_FARMER_PRDLST_INDEX
+	</select>
+
+
+	<select id="getsAllRetnYearCtvtAra" parameterType="hashmap" resultType="EntityMap">
+		/*전체 귀농인 년도별 재배 품목별 재배 면적(T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을 년도, 재배품목으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			GIGUN_YEAR
+			, AVG(AVG_OFACT_AGRLD_ARA) AS AVG_OFACT_AGRLD_ARA
+		FROM
+			T_RTRN_FAMER_ALL_AGE_CTVT_AREA
+		WHERE
+			SCLS_CD_NM = #{prdlstNm}
+		GROUP BY GIGUN_YEAR, SCLS_CD_NM
+
+	</select>
+
+
+	<select id="getsBeginRetnYearCtvtAra" parameterType="hashmap" resultType="EntityMap">
+		/*초기 영농인 년도별 재배 품목별 재배 면적*/
+		SELECT
+			GIGUN_YEAR
+			, SCLAS
+			, AVG(AVG_CTVT_AR_SM) AS AVG_CTVT_AR_SM
+		FROM (
+			SELECT
+				2019 - FARM_CAREER_MNGER AS GIGUN_YEAR
+				, SCLAS
+				,  AVG(CTVT_AR_SM) AS AVG_CTVT_AR_SM
+			FROM T_ATMNENT_ERVY_FRMER
+			WHERE
+				FARM_CAREER_MNGER <![CDATA[<]]> 5
+				AND SCLAS = #{prdlstNm}
+			GROUP BY 2019 - FARM_CAREER_MNGER,SCLAS
+			) A
+		GROUP BY GIGUN_YEAR, SCLAS
+	</select>
+
+	<select id="getsAllRetnAgeCtvt" parameterType="hashmap" resultType="EntityMap">
+		/*전체 귀농인 연령대별 재배 품목 인원수(T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을 나이, 재배품목으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			AGE_SCTN
+			, SCLS_CD_NM
+			, SUM(SCLAS_CNT) AS SCLAS_CNT
+		FROM T_RTRN_FAMER_ALL_AGE_CTVT_AREA
+		WHERE
+			SCLS_CD_NM = #{prdlstNm}
+		GROUP BY AGE_SCTN
+	</select>
+
+	<select id="getsBeginRetnAgeCtvt" parameterType="hashmap" resultType="EntityMap">
+		/*초기 영농인  연령대별 재배 품목 인원수*/
+		SELECT
+			CASE WHEN AGE <![CDATA[<]]> 40 THEN '40대 미만'
+				 WHEN AGE BETWEEN 40 AND 49 THEN '40대'
+				 WHEN AGE BETWEEN 50 AND 59 THEN '50대'
+				 WHEN AGE >= 60 THEN '60대 이상' END AS AGE_SCTN
+				 , SUM(SCLAS_CNT) AS SCLAS_CNT
+		FROM
+		(
+			SELECT AGE, SCLAS, COUNT(SCLAS) AS SCLAS_CNT
+			FROM T_ATMNENT_ERVY_FRMER
+			WHERE SCLAS != "" AND SCLAS = #{prdlstNm}
+			GROUP BY AGE, SCLAS
+		) T
+		GROUP BY
+			CASE WHEN AGE <![CDATA[<]]> 40 THEN '40대 미만'
+				 WHEN AGE BETWEEN 40 AND 49 THEN '40대'
+				 WHEN AGE BETWEEN 50 AND 59
+				 THEN '50대' WHEN AGE >= 60 THEN '60대 이상'
+			END
+	</select>
+
+	<select id="getsPrdlstIncome" parameterType="hashmap" resultType="EntityMap">
+		/*추천 재배 품종 별 소득 정보*/
+		SELECT
+			CTPRVN
+			,SIGNGU
+			,MAIN_CROPS_NM
+			,AVG(GR_INCME_AMOUNT) AS AVG_GR_INCME_AMOUNT
+			,AVG(MNGMT_CT) AS AVG_MNGMT_CT
+			,AVG(INCOME_AMOUNT) AS AVG_INCOME_AMOUNT
+			,AVG(INCOME_RATE) AS AVG_INCOME_RATE
+			,AVG(FRMHS_RECEPT_UNTPC) AS AVG_FRMHS_RECEPT_UNTPC
+		FROM T_RTRN_FARMER_PRDLST_INCOME_INFO
+		WHERE
+			MAIN_CROPS_NM != ''
+			AND CTPRVN = (SELECT CTPRVN  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+			AND SIGNGU = (SELECT SIGNGU  FROM T_RTRN_FARMER_DATA_SET WHERE CODE = #{code})
+			AND MAIN_CROPS_NM = #{prdlstNm}
+		ORDER BY MAIN_CROPS_NM
+	</select>
+
+	<select id="getsRetnFmlgTrnsfrnArea" parameterType="hashmap" resultType="EntityMap">
+		/*전체 귀농인 전입 지역*/
+		SELECT
+			CTPRVN
+			, SIGNGU
+			, COUNT(SIGNGU) AS CNT
+		FROM
+			T_RTRN_FARMER_DATA_SET
+		GROUP BY
+			CTPRVN, SIGNGU
+		ORDER BY
+			CNT DESC
+		LIMIT 5
+	</select>
+
+	<select id="getsSimilrRetnFmlgTrnsfrnArea" parameterType="hashmap" resultType="EntityMap">
+		/*유사귀농인 전입지역 정보*/
+		SELECT
+			CTPRVN
+			, SIGNGU
+			, COUNT(SIGNGU) AS CNT
+		FROM
+			T_RTRN_FARMER_DATA_SET
+		WHERE
+			INDEX_ = #{index}
+		GROUP BY CTPRVN, SIGNGU
+		ORDER BY CNT DESC
+		LIMIT 5
+	</select>
+
+	<select id="getsBeginRetnCtvtCnt" parameterType="hashmap" resultType="EntityMap">
+		/*초기영농인 재배품목*/
+		SELECT
+			SCLAS
+			,COUNT(SCLAS) AS SCLAS_CNT
+		FROM T_ATMNENT_ERVY_FRMER
+		WHERE
+			MNGER_CTPRVN_NM = #{ctprvn}
+			AND MNGER_SIGNGU_NM = #{signgu}
+		GROUP BY SCLAS
+		ORDER BY SCLAS_CNT DESC
+		LIMIT 10
+	</select>
+
+	<select id="getsSimilrRetnFmlgCtvt" parameterType="hashmap" resultType="EntityMap">
+		/*유사귀농인 재배품목*/
+		SELECT
+			ITEM_NM
+			, COUNT(ITEM_NM) AS SCLAS_CNT
+		FROM
+			T_RTRN_FARMER_DATA_SET
+		WHERE
+			INDEX_ = #{index}
+		GROUP BY
+			ITEM_NM
+		ORDER BY
+			SCLAS_CNT DESC
+		LIMIT 10
+	</select>
+
+	<select id="getsAllRetnMenSttus" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 농업인 현황 > 재배농업인현황 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			GIGUN_YEAR
+			, SUM(SCLAS_CNT) AS SCLAS_CNT
+		FROM T_RTRN_FAMER_ALL_AGE_CTVT_AREA
+		WHERE
+			SCLS_CD_NM = #{prdlstNm}
+			AND BUBJUNG_SD_NM = #{ctprvn}
+			AND BUBJUNG_SK_NM = #{signgu}
+		GROUP BY GIGUN_YEAR
+	</select>
+
+	<select id="getsAllRetnMenSttusAgeSctn" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 농업인 현황 > 연령대별 재배농업인현황 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			AGE_SCTN
+			, SUM(SCLAS_CNT) AS SCLAS_CNT
+		FROM T_RTRN_FAMER_ALL_AGE_CTVT_AREA
+		WHERE
+			SCLS_CD_NM = #{prdlstNm}
+			AND BUBJUNG_SD_NM = #{ctprvn}
+			AND BUBJUNG_SK_NM = #{signgu}
+		GROUP BY AGE_SCTN
+	</select>
+
+	<select id="getsAllRetnCtvtAreaYear" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 재배면적추이 > 년도별 재배 면적 추이 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			GIGUN_YEAR
+			, AVG(AVG_OFACT_AGRLD_ARA) AS AVG_OFACT_AGRLD_ARA
+		FROM T_RTRN_FAMER_ALL_AGE_CTVT_AREA
+		WHERE
+			1=1
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(prdlstNm)">
+				AND SCLS_CD_NM = #{prdlstNm}
+			</if>
+			AND BUBJUNG_SD_NM = #{ctprvn}
+			AND BUBJUNG_SK_NM = #{signgu}
+
+		GROUP BY GIGUN_YEAR
+	</select>
+
+	<select id="getsAllRetnCtvtAreaAgeSctn" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 재배면적추이> 연령대별 재배 면적 추이 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			AGE_SCTN
+			, AVG(AVG_OFACT_AGRLD_ARA) AS AVG_OFACT_AGRLD_ARA
+		FROM T_RTRN_FAMER_ALL_AGE_CTVT_AREA
+		WHERE
+			SCLS_CD_NM = #{prdlstNm}
+			AND BUBJUNG_SD_NM = #{ctprvn}
+			AND BUBJUNG_SK_NM = #{signgu}
+		GROUP BY AGE_SCTN
+	</select>
+
+	<select id="getsBeginRetnSttusMenCnt" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 초기영농인 영농 현황 > 연령대별 영농인 수 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			CASE WHEN AGE <![CDATA[<]]> 40  THEN '40대 미만'
+					WHEN AGE BETWEEN 40 AND 49  THEN '40대'
+					WHEN AGE BETWEEN 50 AND 59  THEN '50대'
+					WHEN AGE >= 60  THEN '60대 이상'
+			END AS AGE_SCTN
+			, COUNT(AGE) AS AGE_CNT
+		FROM T_ATMNENT_ERVY_FRMER
+		WHERE
+			FARM_CAREER_MNGER <![CDATA[<]]> 5
+			AND SCLAS = #{prdlstNm}
+			AND MNGER_CTPRVN_NM = #{ctprvn}
+			AND MNGER_SIGNGU_NM = #{signgu}
+		GROUP BY
+			CASE WHEN AGE <![CDATA[<]]> 40  THEN '40대 미만'
+						WHEN AGE BETWEEN 40 AND 49  THEN '40대'
+						WHEN AGE BETWEEN 50 AND 59  THEN '50대'
+						WHEN AGE >= 60  THEN '60대 이상'
+			END
+	</select>
+
+
+	<select id="getsBeginRetnSttusThisAreaCnt" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 초기영농인 영농 현황 > 현재 전출지역 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			COUNT(*) AS CNT
+		FROM T_ATMNENT_ERVY_FRMER
+		WHERE
+			FARM_CAREER_MNGER <![CDATA[<]]> 5
+			AND SCLAS = #{prdlstNm}
+			AND MNGER_CTPRVN_NM = #{ctprvn}
+			AND MNGER_SIGNGU_NM = #{signgu}
+			AND FRLND_CTPRVN_NM = #{ctprvn}
+			AND FRLND_SIGNGU_NM = #{signgu}
+	</select>
+
+	<select id="getsBeginRetnSttusEtcAreaCnt" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 초기영농인 영농 현황 > 기타 전출지역 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+		SELECT
+			COUNT(*) AS CNT
+		FROM T_ATMNENT_ERVY_FRMER
+		WHERE
+			FARM_CAREER_MNGER <![CDATA[<]]> 5
+			AND SCLAS = #{prdlstNm}
+			AND MNGER_CTPRVN_NM = #{ctprvn}
+			AND MNGER_SIGNGU_NM = #{signgu}
+<!-- 			/*AND FRLND_CTPRVN_NM != #{ctprvn}*/ -->
+			AND FRLND_SIGNGU_NM != #{signgu}
+	</select>
+
+	<select id="getsBeginRetnSttusCtvt" parameterType="hashmap" resultType="EntityMap">
+		/*선택지역 및 품목 분석 > 초기영농인 영농 현황 > 재배 품목 (T_ATMNENT_CROPS_PRDCTN(농업 귀농인 테이블)을  시도, 시군구, 재배품목, 기준년으로 GROUP BY 해서 생성한 테이블)*/
+
+		SELECT
+			SCLAS
+			, COUNT(SCLAS) AS SCLAS_CNT
+		FROM T_ATMNENT_ERVY_FRMER
+		WHERE
+			FARM_CAREER_MNGER <![CDATA[<]]> 5
+			AND MNGER_CTPRVN_NM = #{ctprvn}
+			AND MNGER_SIGNGU_NM = #{signgu}
+		GROUP BY SCLAS
+		ORDER BY SCLAS_CNT DESC
+		LIMIT 5
+	</select>
+
+	<insert id="registRetnFmlgInfo">
+		INSERT INTO
+			T_RNRN_FAMER_INFO_LOG
+		(IP, FAMER_INFO)
+		VALUES
+		(
+			#{ip},
+			'${retnFmlgInfo}'
+		)
+	</insert>
+
+
+
+</mapper>

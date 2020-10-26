@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- 공통모듈 매치를 위한 코드 레이아웃으로 사용하지 말것 -->
+	<!-- 기본 레이아웃 -->
+	<!-- <definition name="egovframework.tiles" template="/WEB-INF/jsp/layout/commonLayout.jsp"> -->
+	<!-- <put-attribute name="body" value="" /> -->
+	<!-- </definition> -->
+	
+	<!-- 공통레이아웃 -->
+	<definition name="common.tiles" template="/WEB-INF/jsp/layout/commonLayout.jsp">
+		<put-attribute name="body" value="" />
+	</definition>
+	<!-- 에러 -->
+	<definition name="egovframework/com/cmm/egovError" extends="common.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/com/cmm/error/egovError.jsp" />
+	</definition>
+	<definition name="egovframework/com/cmm/error/egovError" extends="common.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/com/cmm/error/egovError.jsp" />
+	</definition>
+	<definition name="error" extends="common.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/com/cmm/error/egovError.jsp" />
+	</definition>	
+	<definition name="error404" extends="common.tiles">
+		<put-attribute name="body" value="/code404.jsp" />
+	</definition>
+
+	<!-- 기본레이아웃 -->
+	<definition name="basic.tiles" template="/WEB-INF/jsp/layout/basicLayout.jsp">
+		<put-attribute name="title" value="농식품 빅데이터 포탈" />
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/basicHeader.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="left" value="/WEB-INF/jsp/layout/basicMenu.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/basicFooter.jsp" />
+	</definition>
+	<definition name="main.tiles" template="/WEB-INF/jsp/layout/basicMainLayout.jsp">
+		<put-attribute name="title" value="농식품 빅데이터 포탈" />
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/basicHeader.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/basicFooter.jsp" />
+	</definition>
+	
+	<definition name="egovframework/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/{1}.jsp" />
+	</definition>
+	<definition name="egovframework/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/{1}/{2}.jsp" />
+	</definition>
+	<definition name="egovframework/*/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/{1}/{2}/{3}.jsp" />
+	</definition>
+	<definition name="egovframework/*/*/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	<definition name="egovframework/*/*/*/*/*" extends="basic.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/{1}/{2}/{3}/{4}/{5}.jsp" />
+	</definition>
+
+	<!-- 단독레이아웃 -->
+	<definition name="single.tiles" template="/WEB-INF/jsp/layout/singleLayout.jsp">
+		<put-attribute name="title" value="농식품 빅데이터 포탈" />
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/empty.jsp" />
+		<put-attribute name="left" value="" />
+		<put-attribute name="body" value="/WEB-INF/jsp/layout/empty.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/empty.jsp" />
+	</definition>
+	<definition name="s:*/*" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+	</definition>
+	<definition name="s:*/*/*" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+	</definition>	
+	<definition name="s:*/*/*/*" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+	</definition>
+	
+	
+	<definition name="bdp/jejuwinter/*" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/jejuwinter/{1}.jsp" />
+	</definition>
+	<definition name="bigdata/jejuwinter/*" extends="single.tiles">
+		<put-attribute name="body" value="/WEB-INF/jsp/bigdata/portal/jejuwinter/{1}.jsp" />
+	</definition>
+
+</tiles-definitions>

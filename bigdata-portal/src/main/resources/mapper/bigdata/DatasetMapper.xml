@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.DatasetMapper">
+
+	<!-- 리스트 검색 -->
+	<sql id="sqlSearchDatasetList">
+		<if test="searchCondition != null and !searchCondition.equals('') and searchKeyword != null and !searchKeyword.equals('')">
+			<choose>
+				<when test='searchCondition.equals("dataList")'>
+					AND DL_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+				</when>
+				<when test='searchCondition.equals("dataSet")'>
+					AND DS_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+				</when>
+				<when test='searchCondition.equals("dataCateDept")'>
+					AND (DL_CATE_DEPT1 LIKE CONCAT('%',#{searchKeyword},'%')
+							OR DL_CATE_DEPT2 LIKE CONCAT('%',#{searchKeyword},'%'))
+				</when>
+				<when test='searchCondition.equals("orgName")'>
+					AND ORG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+				</when>
+				<when test='searchCondition.equals("dsLastUpdateDate")'>
+					AND DS_LAST_UPDATE_DATE = #{searchKeyword}
+				</when>
+				<when test='searchCondition.equals("dataCmtAll")'>
+					AND (
+						DL_NAME LIKE CONCAT('%',#{searchKeyword},'%') OR
+						DS_NAME LIKE CONCAT('%',#{searchKeyword},'%') OR
+						DL_COMMENT LIKE CONCAT('%',#{searchKeyword},'%') OR
+						DS_COMMENT LIKE CONCAT('%',#{searchKeyword},'%')
+					)
+				</when>
+				<when test='searchCondition.equals("all")'>
+					AND (
+						DL_NAME LIKE CONCAT('%',#{searchKeyword},'%') OR
+						DS_NAME LIKE CONCAT('%',#{searchKeyword},'%') OR
+						(DL_CATE_DEPT1 LIKE CONCAT('%',#{searchKeyword},'%')
+							OR DL_CATE_DEPT2 LIKE CONCAT('%',#{searchKeyword},'%')) OR
+						ORG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+					)
+				</when>
+			</choose>
+		</if>
+		<if test="searchType1 != null and !searchType1.equals('')">
+			AND DL_TYPE = #{searchType1}
+		</if>
+		<if test="searchType2 != null and !searchType2.equals('')">
+			AND DL_CATE1 = #{searchType2}
+		</if>
+		<if test="searchType3 != null and !searchType3.equals('')">
+			AND DL_CATE2 = #{searchType3}
+		</if>
+		<if test="dsUseAt != null and !dsUseAt.equals('')">
+			AND DS_USE_AT = #{dsUseAt}
+		</if>
+		<if test="spceDataSe != null and !spceDataSe.equals('')">
+			AND SPCE_DATA_SE = #{spceDataSe}
+		</if>
+	</sql>
+
+	<!-- 빅데이터셋 리스트를 리턴한다 -->
+	<select id="selectDatasetList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			dl.DL_ID,
+			dl.DL_NAME,
+			dl.DL_TYPE,
+			dl.DL_CATE_DEPT1,
+			dl.DL_CATE_DEPT2,
+			ds.DS_ID,
+			ds.DS_NAME,
+			ds.DS_END_POINT,
+			ds.DS_DATA_TYPE,
+			ds.DS_SOURCE_PATH,
+			ds.DS_DATASET_PATH,
+			ds.DS_OPENDATASET_PATH,
+			ds.DS_FILE_PATH,
+			ds.HTBL_ID,
+			ds.HTBL_PARTITION,
+			ds.DS_RELEASE_TERM,
+			ds.DS_FIRST_RELEASE_DATE,
+			ds.DS_LAST_UPDATE_DATE,
+			ds.DS_USE_AT,
+			ds.DS_SOURCE_OPEN,
+			ds.DS_ANALYSIS_OPEN,
+			ds.DS_DATA_OPEN,
+			o.ORG_NAME,
+			ds.ES_INDEX_NM,
+			ds.ES_INDEX_DOC_TOTCNT,
+			ds.SPCE_DATA_SE
+		FROM BDP_DATA_SET AS ds
+			INNER JOIN BDP_DATA_LIST AS dl ON (ds.DL_ID=dl.DL_ID)
+			LEFT OUTER JOIN BDP_ORGANIZATION as o ON (dl.ORG_ID=o.ORG_ID)
+		WHERE 1	= 1
+	]]>
+	<if test="dsSourceOpen != null and !dsSourceOpen.equals('')">
+		AND ds.DS_SOURCE_OPEN = #{dsSourceOpen}
+	</if>
+	<if test="dsAnalysisOpen != null and !dsAnalysisOpen.equals('')">
+		AND ds.DS_ANALYSIS_OPEN = #{dsAnalysisOpen}
+	</if>
+	<if test="dsDataOpen != null and !dsDataOpen.equals('')">
+		AND ds.DS_DATA_OPEN = #{dsDataOpen}
+	</if>
+	<include refid="sqlSearchDatasetList"></include>
+
+	<![CDATA[
+		/*ORDER BY ds.DS_LAST_UPDATE_DATE DESC*/
+		ORDER BY ds.DS_ID DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+
+	<!-- 빅데이터셋 리스트수 조회 -->
+	<select id="getTotalCount" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) AS totalCount
+		FROM BDP_DATA_SET AS ds
+			INNER JOIN BDP_DATA_LIST AS dl ON (ds.DL_ID=dl.DL_ID)
+			LEFT OUTER JOIN BDP_ORGANIZATION AS o on (dl.ORG_ID=o.ORG_ID)
+		WHERE 1	= 1
+	]]>
+	<if test="dsSourceOpen != null and !dsSourceOpen.equals('')">
+		AND DS_SOURCE_OPEN = #{dsSourceOpen}
+	</if>
+	<if test="dsAnalysisOpen != null and !dsAnalysisOpen.equals('')">
+		AND DS_ANALYSIS_OPEN = #{dsAnalysisOpen}
+	</if>
+	<if test="dsDataOpen != null and !dsDataOpen.equals('')">
+		AND DS_DATA_OPEN = #{dsDataOpen}
+	</if>
+	<include refid="sqlSearchDatasetList"></include>
+	</select>
+
+	<!-- 데이터종별/데이터셋별 개수 조회 -->
+	<select id="getTypeCount" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT COUNT(*) AS totalCount, COUNT(DISTINCT dl.DL_ID) AS listCount
+		FROM BDP_DATA_SET AS ds
+			INNER JOIN BDP_DATA_LIST AS dl ON (ds.DL_ID=dl.DL_ID)
+		WHERE 1	= 1
+	]]>
+	<if test="dsSourceOpen != null and !dsSourceOpen.equals('')">
+		AND DS_SOURCE_OPEN = #{dsSourceOpen}
+	</if>
+	<if test="dsAnalysisOpen != null and !dsAnalysisOpen.equals('')">
+		AND DS_ANALYSIS_OPEN = #{dsAnalysisOpen}
+	</if>
+	<if test="dsDataOpen != null and !dsDataOpen.equals('')">
+		AND DS_DATA_OPEN = #{dsDataOpen}
+	</if>
+	<include refid="sqlSearchDatasetList"></include>
+	</select>
+
+
+	<!-- 빅데이터셋 정보를 리턴한다 -->
+	<select id="selectDataset" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			dl.DL_ID,
+			dl.DL_NAME,
+			dl.DL_TYPE,
+			dl.DL_CATE_DEPT1,
+			dl.DL_CATE_DEPT2,
+			dl.CP_ID,
+			ds.DS_ID,
+			ds.DS_NAME,
+			ds.DS_END_POINT,
+			ds.DS_DATA_TYPE,
+			ds.DS_LAST_UPDATE_DATE,
+			ds.DS_FIRST_RELEASE_DATE,
+			o.ORG_NAME
+		FROM BDP_DATA_SET AS ds
+			INNER JOIN BDP_DATA_LIST AS dl ON (ds.DL_ID=dl.DL_ID)
+			LEFT OUTER JOIN BDP_ORGANIZATION as o ON (dl.ORG_ID=o.ORG_ID)
+		WHERE ds.DS_ID=#{dsId}
+	]]>
+	</select>
+
+	<!-- 빅데이터셋 정보를 리턴한다(상세경로포함) -->
+	<select id="selectDatasetDetail" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			dl.DL_ID,
+			dl.DL_NAME,
+			dl.DL_TYPE,
+			dl.DL_CATE_DEPT1,
+			dl.DL_CATE_DEPT2,
+			dl.CP_ID,
+			ds.*,
+			o.ORG_NAME
+		FROM BDP_DATA_SET AS ds
+			INNER JOIN BDP_DATA_LIST AS dl ON (ds.DL_ID=dl.DL_ID)
+			LEFT OUTER JOIN BDP_ORGANIZATION as o ON (dl.ORG_ID=o.ORG_ID)
+		WHERE ds.DS_ID=#{dsId}
+	]]>
+	</select>
+
+
+	<!-- 빅데이터셋목록 정보와 빅데이터셋 row 정보 리턴 -->
+	<select id="selectBdpDataView" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			ds.DS_ID,
+			ds.DL_ID,
+			ds.DS_NAME,
+			ds.DS_COMMENT,
+			ds.DS_END_POINT,
+			ds.DS_STORAGE_TYPE,
+			ds.DS_DATA_TYPE,
+			ds.HTBL_ID,
+			ds.HTBL_PARTITION,
+		    ds.DS_FIRST_RELEASE_DATE,
+			ds.DS_LAST_UPDATE_DATE,
+			ds.DS_HITS,
+			ds.DS_SOURCE_OPEN,
+			ds.DS_ANALYSIS_OPEN,
+			ds.DS_DATA_OPEN,
+			ds.DS_CATE_DEPT1,
+			ds.DS_CATE_DEPT2,
+			ds.DS_REGIST_DTTM,
+			ds.DS_USE_AT,
+			ds.DS_OPEN_LEVEL,
+			ds.ES_INDEX_NM,
+			ds.ES_INDEX_DOC_TOTCNT,
+			dl.DL_NAME,
+			dl.CP_ID,
+			dl.DL_TYPE,
+			MIN(DS_FIRST_RELEASE_DATE) AS DL_FIRST_RELEASE_DATE,
+			MAX(DS_LAST_UPDATE_DATE) AS DL_LAST_UPDATE_DATE,
+			o.ORG_NAME
+		FROM BDP_DATA_SET AS ds
+		LEFT OUTER JOIN BDP_DATA_LIST AS dl
+		ON ds.DL_ID=dl.DL_ID
+		LEFT OUTER JOIN BDP_ORGANIZATION as o
+		ON dl.ORG_ID=o.ORG_ID
+		WHERE ds.DS_ID=#{dsId}
+	]]>
+	</select>
+
+
+	<!-- 빅데이터셋 조회수 업데이트 -->
+	<update id="updateBdpDataViewHits" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BDP_DATA_SET SET
+		DS_HITS = DS_HITS+1
+		WHERE DS_ID=#{dsId}
+	]]>
+	</update>
+
+	<!-- 샘플 : 도매시장 경락가 데이터 -->
+	<select id="selectSampleMarketPriceRawData" parameterType="hashmap" resultType="EntityMap">
+		SELECT
+			DATES, CLASSCO, PRODUCTUNIT, UNITCO, SANCO, MAX_PRICE, AVG_PRICE, MIN_PRICE, TOT_TRADEAMT, SUM_TRADEAMT, TRADE_CNT
+		FROM SAMPLE_RAWDATA ORDER BY DATES DESC LIMIT #{limit}
+	</select>
+
+	<!-- CD_TP_SE 검색하여 OBJ_VAR_ID(분류코드) 종류를 리턴한다 -->
+	<!-- 일단 사용X -->
+	<select id="selectBdpStdCodeInfoCdTpSeList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			OBJ_VAR_ID
+		FROM BDP_STD_CODE_INFO
+		WHERE TBL_ID=#{tblId}
+		AND CD_TP_SE = 'C'
+		ORDER BY CHAR_ITM_SN ASC
+	]]>
+	</select>
+
+	<select id="selectBdpStdDimDtOvCount" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			OV_L1_CLS,
+			OV_L2_CLS,
+			OV_L3_CLS,
+			OV_L4_CLS,
+			OV_L5_CLS,
+			OV_L6_CLS,
+			OV_L7_CLS,
+			OV_L8_CLS
+		FROM BDP_STD_DIM_DT
+		WHERE TBL_ID=#{tblId}
+		AND PRD_DE=#{prdDe}
+		LIMIT 1
+	]]>
+	</select>
+
+	<select id="selectBdpStdDimDtPreDe" parameterType="hashmap" resultType="EntityMap">
+		SELECT
+			PRD_DE
+		FROM BDP_STD_DIM_DT
+		WHERE TBL_ID=#{tblId}
+		ORDER BY PRD_DE DESC
+		LIMIT 1
+	</select>
+
+	<select id="selectBdpStdDimDt" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			PRD_DE,
+			CHAR_ITM_ID,
+			IF(CHAR_ITM_ID='ZZ', '', (SELECT IF(UNIT_NM<>'', CONCAT(CD_NM, "(",UNIT_NM,")"), CD_NM) FROM BDP_STD_CODE_INFO AS CI WHERE CI.TBL_ID=#{tblId} AND CI.ITM_ID=CHAR_ITM_ID LIMIT 1)) AS CHAR_CD_NM,
+			OV_L1_CLS,
+			OV_L1_ID,
+			OV_L2_CLS,
+			OV_L2_ID,
+			OV_L3_CLS,
+			OV_L3_ID,
+			OV_L4_CLS,
+			OV_L4_ID,
+			OV_L5_CLS,
+			OV_L5_ID,
+			OV_L6_CLS,
+			OV_L6_ID,
+			OV_L7_CLS,
+			OV_L7_ID,
+			OV_L8_CLS,
+			OV_L8_ID,
+			DTVAL_CO
+		FROM BDP_STD_DIM_DT
+		WHERE TBL_ID=#{tblId}
+		AND PRD_DE=#{prdDe}
+		ORDER BY OV_L1_ID ASC, OV_L2_ID ASC, OV_L3_ID ASC, CHAR_ITM_ID ASC
+	]]>
+	</select>
+
+	<select id="selectBdpStdCodeInfoWhereItmId" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			CD_NM, ITM_ID, UNIT_NM
+		FROM BDP_STD_CODE_INFO
+		WHERE TBL_ID=#{tblId}
+		AND (
+			ITM_ID=#{itmId1}
+	]]>
+		<if test="itmId2 != null and !itmId2.equals('')">
+			OR ITM_ID=#{itmId2}
+		</if>
+		<if test="itmId3 != null and !itmId3.equals('')">
+			OR ITM_ID=#{itmId3}
+		</if>
+		<if test="itmId4 != null and !itmId4.equals('')">
+			OR ITM_ID=#{itmId4}
+		</if>
+		<if test="itmId5 != null and !itmId5.equals('')">
+			OR ITM_ID=#{itmId5}
+		</if>
+		<if test="itmId6 != null and !itmId6.equals('')">
+			OR ITM_ID=#{itmId6}
+		</if>
+		<if test="itmId7 != null and !itmId7.equals('')">
+			OR ITM_ID=#{itmId7}
+		</if>
+		<if test="itmId8 != null and !itmId8.equals('')">
+			OR ITM_ID=#{itmId8}
+		</if>
+	<![CDATA[
+		)
+		UNION ALL
+		SELECT
+			CD_NM, ITM_ID, UNIT_NM
+		FROM BDP_STD_CODE_INFO
+		WHERE TBL_ID=#{tblId}
+		AND ITM_ID=(
+			SELECT
+				UP_ITM_ID
+			FROM BDP_STD_CODE_INFO
+			WHERE TBL_ID=#{tblId}
+			AND (
+				ITM_ID=#{itmId1}
+	]]>
+		<if test="itmId2 != null and !itmId2.equals('')">
+				OR ITM_ID=#{itmId2}
+		</if>
+		<if test="itmId3 != null and !itmId3.equals('')">
+				OR ITM_ID=#{itmId3}
+		</if>
+		<if test="itmId4 != null and !itmId4.equals('')">
+				OR ITM_ID=#{itmId4}
+		</if>
+		<if test="itmId5 != null and !itmId5.equals('')">
+				OR ITM_ID=#{itmId5}
+		</if>
+		<if test="itmId6 != null and !itmId6.equals('')">
+				OR ITM_ID=#{itmId6}
+		</if>
+		<if test="itmId7 != null and !itmId7.equals('')">
+				OR ITM_ID=#{itmId7}
+		</if>
+		<if test="itmId8 != null and !itmId8.equals('')">
+				OR ITM_ID=#{itmId8}
+		</if>
+	<![CDATA[
+		)
+		AND UP_ITM_ID <> ''
+	)
+	ORDER BY ITM_ID ASC
+	]]>
+	</select>
+
+	<!-- 상위 코드 데이터 리턴한다 -->
+	<select id="selectBdpStdCodeInfoUpItmId" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			CD_NM
+		FROM BDP_STD_CODE_INFO
+		WHERE TBL_ID=#{tblId}
+		AND ITM_ID=#{itmId}
+		LIMIT 1
+	]]>
+	</select>
+
+	<!-- 통계 데이터 시점을 리턴한다 -->
+	<select id="selectStaPrdDeList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT DISTINCT(PRD_DE) AS PRD_DE FROM BDP_STD_DIM_DT WHERE TBL_ID=#{tblId} ORDER BY PRD_DE DESC
+	]]>
+	</select>
+
+	<!-- 통계표 상단 타이틀을 리턴한다 -->
+	<!-- 통계표 obj_var_id 값을 리턴한다 -->
+	<select id="selectStaObjVarId" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT OBJ_VAR_ID FROM BDP_STD_CODE_INFO
+		WHERE TBL_ID=#{tblId} AND CD_NM IN
+	]]>
+		<foreach collection="cdNmAry" item="row" open="(" close=")" separator=",">
+			#{row}
+		</foreach>
+	</select>
+
+	<!-- selectStaLeftTopNames-->
+	<select id="selectStaLeftTopNames" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT OBJ_VAR_ID, CD_NM FROM BDP_STD_CODE_INFO WHERE TBL_ID=#{tblId}
+		AND CD_TP_SE='C'
+		AND OBJ_VAR_ID IN
+	]]>
+		<foreach collection="objVarIdList" item="row" open="(" close=")" separator=",">
+			#{row.objVarId}
+		</foreach>
+	</select>
+
+	<!-- 통계표정보 및 주석 자동수집통계표 정보를 리턴한다 -->
+	<select id="selectBdpStdStblInfo" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_STD_STBL_INFO STBL, BDP_DATA_SET DSET
+		WHERE 1 = 1
+		AND DSET.DS_ID = #{dsId}
+	]]>
+		<if test="tblId != null and !tblId.equals('')">
+			AND STBL.TBL_ID=#{tblId}
+		</if>
+		<if test="limit != null and !limit.equals('')">
+			LIMIT 0, #{limit}
+		</if>
+	</select>
+
+	<select id="selectBdpDataSetRow" parameterType="hashmap" resultType="EntityMap">
+		SELECT * FROM BDP_DATA_SET WHERE DS_ID=#{dsId}
+	</select>
+
+	<!-- 데이터셋 데이터 원천데이터 개방여부 업데이트 -->
+	<update id="updateOpenRangeSource" parameterType="hashmap">
+		UPDATE BDP_DATA_SET SET
+			DS_SOURCE_OPEN = #{val}
+		WHERE DS_ID=#{dsId}
+	</update>
+
+	<!-- 데이터셋 데이터 일반사용자에게 오픈 개방 여부 업데이트 -->
+	<update id="updateOpenRangeDataOpen" parameterType="hashmap">
+		UPDATE BDP_DATA_SET SET
+			DS_DATA_OPEN = #{val}
+		WHERE DS_ID=#{dsId}
+	</update>
+
+	<!-- 데이터셋 데이터 분석 개방여부 업데이트 -->
+	<update id="updateOpenRangeAnalysis" parameterType="hashmap">
+		UPDATE BDP_DATA_SET SET
+			DS_ANALYSIS_OPEN = #{val}
+		WHERE DS_ID=#{dsId}
+	</update>
+
+
+	<!-- 기관 정보 가져오기 -->
+	<select id="selectBdpOrganization" parameterType="hashmap" resultType="EntityMap">
+		SELECT * FROM BDP_ORGANIZATION
+		WHERE 1=1
+		AND ORG_USE_AT= #{orgUseAt}
+		ORDER BY ORG_SORT ASC
+	</select>
+
+	<!-- 데이터목록명 리스트를 가져온다. -->
+	<select id="selectBdpDataList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			dl.*,
+			o.ORG_NAME
+		FROM BDP_DATA_LIST as dl
+		LEFT OUTER JOIN BDP_ORGANIZATION AS o on (dl.ORG_ID=o.ORG_ID)
+		WHERE 1=1
+	]]>
+	<if test="searchType1 != null and !searchType1.equals('')">
+		AND dl.DL_TYPE = #{searchType1}
+	</if>
+	<if test="searchCondition != null and !searchCondition.equals('') and searchKeyword != null and !searchKeyword.equals('')">
+	<choose>
+		<when test='searchCondition.equals("dataList")'>
+			AND dl.DL_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+		</when>
+		<when test='searchCondition.equals("dataCateDept")'>
+			AND (dl.DL_CATE_DEPT1 LIKE CONCAT('%', #{searchKeyword},'%')
+					OR dl.DL_CATE_DEPT2 LIKE CONCAT('%',#{searchKeyword},'%'))
+		</when>
+		<when test='searchCondition.equals("dlTypeName")'>
+			AND dl.DL_TYPE_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+		</when>
+		<when test='searchCondition.equals("orgName")'>
+			AND o.ORG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+		</when>
+		<when test='searchCondition.equals("all")'>
+			AND (
+				dl.DL_NAME LIKE CONCAT('%',#{searchKeyword},'%') OR
+				(dl.DL_CATE_DEPT1 LIKE CONCAT('%',#{searchKeyword},'%')
+					OR dl.DL_CATE_DEPT2 LIKE CONCAT('%',#{searchKeyword},'%')) OR
+				dl.DL_TYPE_NAME LIKE CONCAT('%', #{searchKeyword}, '%') OR
+				o.ORG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+			)
+		</when>
+	</choose>
+	</if>
+	<if test="dlUseAt != null and !dlUseAt.equals('')">
+		AND dl.DL_USE_AT=#{dlUseAt}
+	</if>
+	<if test="startNum != null and !startNum.equals('')">
+		LIMIT #{startNum}, #{endNum}
+	</if>
+	</select>
+
+	<!-- 데이터목록의 행정보를 가져온다. -->
+	<select id="selectBdpDataListRow" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_DATA_LIST WHERE 1=1
+	]]>
+	<if test="dlUseAt != null and !dlUseAt.equals('')">
+		AND DL_USE_AT=#{dlUseAt}
+	</if>
+	<if test="dlId != null and !dlId.equals('')">
+		AND DL_ID=#{dlId}
+	</if>
+	</select>
+
+	<!-- 데이터셋 정보를 수정 -->
+	<update id="updateBdpDatasetRow" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BDP_DATA_SET SET
+			DL_ID = #{dlId},
+			DS_NAME = #{dsName},
+	]]>
+	<if test="dlType != null and !dlType.equals('STA')">
+			DS_CATE_DEPT1 = #{dsCateDept1},
+			DS_CATE_DEPT2 = #{dsCateDept2},
+	</if>
+	<![CDATA[
+			DS_COMMENT = #{dsComment},
+			DS_SOURCE_OPEN = #{dsSourceOpen},
+			DS_ANALYSIS_OPEN = #{dsAnalysisOpen},
+			DS_DATA_OPEN = #{dsDataOpen},
+			DS_STORAGE_TYPE = #{dsStorageType},
+			DS_DATA_TYPE = #{dsDataType},
+			HTBL_PARTITION = #{htblPartition},
+			DS_END_POINT = #{dsEndPoint},
+			DS_USE_AT = #{dsUseAt},
+			DS_UPDATE_DTTM = NOW()
+		WHERE DS_ID = #{dsId}
+	]]>
+	</update>
+
+	<!-- 데이터셋 사용여부를 변경 -->
+	<update id="updateDsUseAt" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BDP_DATA_SET SET
+			DS_USE_AT = #{dsUseAt}
+		WHERE DS_ID = #{dsId}
+	]]>
+	</update>
+
+	<!-- 데이터목록 계수를 리턴 -->
+	<select id="getTotalCountDataList" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) totalCount
+		FROM BDP_DATA_LIST as dl
+		LEFT OUTER JOIN BDP_ORGANIZATION AS o ON (dl.ORG_ID=o.ORG_ID)
+		WHERE 1=1
+	]]>
+		<if test="dlUseAt != null and !dlUseAt.equals('')">
+			AND dl.DL_USE_AT=#{dlUseAt}
+		</if>
+		<if test="searchType1 != null and !searchType1.equals('')">
+			AND dl.DL_TYPE = #{searchType1}
+		</if>
+		<if test="searchCondition != null and !searchCondition.equals('') and searchKeyword != null and !searchKeyword.equals('')">
+		<choose>
+			<when test='searchCondition.equals("dataList")'>
+				AND dl.DL_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+			</when>
+			<when test='searchCondition.equals("dataCateDept")'>
+				AND (dl.DL_CATE_DEPT1 LIKE CONCAT('%', #{searchKeyword},'%')
+						OR dl.DL_CATE_DEPT2 LIKE CONCAT('%',#{searchKeyword},'%'))
+			</when>
+			<when test='searchCondition.equals("dlTypeName")'>
+				AND dl.DL_TYPE_NAME LIKE CONCAT('%', #{searchKeyword}, '%')
+			</when>
+			<when test='searchCondition.equals("orgName")'>
+				AND o.ORG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+			</when>
+			<when test='searchCondition.equals("all")'>
+				AND (
+					dl.DL_NAME LIKE CONCAT('%',#{searchKeyword},'%') OR
+					(dl.DL_CATE_DEPT1 LIKE CONCAT('%',#{searchKeyword},'%')
+						OR dl.DL_CATE_DEPT2 LIKE CONCAT('%',#{searchKeyword},'%')) OR
+					dl.DL_TYPE_NAME LIKE CONCAT('%', #{searchKeyword}, '%') OR
+					o.ORG_NAME LIKE CONCAT('%',#{searchKeyword},'%')
+				)
+			</when>
+		</choose>
+		</if>
+	</select>
+
+	<!-- 데이터목록 사용여부를 변경 -->
+	<update id="updateDlUseAt" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BDP_DATA_LIST SET
+			DL_USE_AT = #{dlUseAt}
+		WHERE DL_ID = #{dlId}
+	]]>
+	</update>
+
+	<!-- 데이터목록 정보를 수정 -->
+	<update id="updateBdpDataListRow" parameterType="hashmap">
+	<![CDATA[
+		UPDATE BDP_DATA_LIST SET
+			DL_NAME = #{dlName},
+			DL_COMMENT = #{dlComment},
+			DL_CATE_DEPT1 = #{dlCateDept1},
+			DL_CATE_DEPT2 = #{dlCateDept2},
+			ORG_ID = #{orgId},
+			CP_DEPT = #{cpDept},
+			CP_NM = #{cpNm},
+			CP_TEL = #{cpTel},
+			ORG_ID = #{orgId},
+			DL_USE_AT = #{dlUseAt}
+		WHERE DL_ID = #{dlId}
+	]]>
+	</update>
+
+	<!-- 빅데이터셋 연관데이터 리스트 출력 -->
+	<select id="selectAssociativeDataset" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			ds.DS_ID, ds.DL_ID, ds.DS_NAME, ds.DS_COMMENT,
+			ds.DS_DATA_TYPE, ds.DS_LAST_UPDATE_DATE, ds.DS_HITS, ds.HTBL_ID,
+			ds.ES_INDEX_NM,
+			dl.DL_NAME, dl.CP_ID, dl.DL_TYPE,
+			o.ORG_NAME
+		FROM BDP_DATA_SET AS ds
+		LEFT OUTER JOIN BDP_DATA_LIST AS dl
+		ON ds.DL_ID=dl.DL_ID
+		LEFT OUTER JOIN BDP_ORGANIZATION as o
+		ON dl.ORG_ID=o.ORG_ID
+		WHERE
+			ds.DL_ID = (
+				select
+					DL_ID
+				FROM
+					BDP_DATA_SET
+				WHERE DS_ID = #{dsId}
+			)
+		AND
+			ds.DS_ID != #{dsId}
+	]]>
+	</select>
+
+
+	<!-- 빅데이터셋 데이터를 리턴 -->
+	<select id="selectTableDatasetList" parameterType="hashmap" resultType="EntityMap">
+		<![CDATA[
+			SELECT ${selectColumns}
+			FROM `${tableNm}`
+			WHERE 1=1
+		]]>
+		<if test="whereStr != null and !whereStr.equals('')">
+			AND ${whereStr}
+		</if>
+			ORDER BY ${orderbyString}
+		<if test="startNum != null and !startNum.equals('')">
+			LIMIT #{startNum}, #{endNum}
+		</if>
+	</select>
+
+	<!-- 빅데이터셋 DB 테이블 총 건수 리턴 -->
+	<select id="getTableDatasetTotalCount" parameterType="hashmap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) AS cnt
+			FROM `${tableNm}`
+			WHERE 1=1
+		]]>
+		<if test="whereStr != null and !whereStr.equals('')">
+			AND ${whereStr}
+		</if>
+	</select>
+
+</mapper>

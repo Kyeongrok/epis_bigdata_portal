@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.UserSettingMapper">
+
+	<!-- 빅데이터 플랫폼 관련 사용자별 세팅값 -->
+	<select id="selectUserSetting" parameterType="hashmap" resultType="EntityMap">
+		SELECT 
+			USER_ID, US_ZPL_SVR, US_RSTD_SVR, US_REGIST_DTTM, US_UPDATE_DTTM
+		FROM BDP_USER_SETTING
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 빅데이터 플랫폼 사용자 정보 -->
+	<select id="selectUserInfo" parameterType="hashmap" resultType="EntityMap">
+           SELECT A.USER_ID, 
+                   A.USER_NM, 
+                   A.GROUP_ID,
+                   A.MBER_TY_CODE,
+                   A.ESNTL_ID,
+                   A.USER_SE,
+                   (SELECT CODE_NM
+                      FROM COMTCCMMNDETAILCODE 
+                     WHERE CODE_ID = 'COM012'
+                       AND CODE = A.MBER_TY_CODE
+                       AND USE_AT = 'Y') AS MBER_TY_NM,
+                   B.AUTHOR_CODE, 
+                   (CASE WHEN B.SCRTY_DTRMN_TRGET_ID IS NULL THEN 'N'
+                         ELSE 'Y' 
+                     END) AS REG_YN,
+                    ESNTL_ID
+              FROM (SELECT MBER_ID USER_ID, MBER_NM USER_NM, GROUP_ID, 'USR01' MBER_TY_CODE, ESNTL_ID, 'GNR' AS USER_SE
+                      FROM COMTNGNRLMBER) A LEFT OUTER JOIN COMTNEMPLYRSCRTYESTBS B
+                ON A.ESNTL_ID = B.SCRTY_DTRMN_TRGET_ID
+             WHERE 1 = 1
+             and A.USER_ID = #{userId}
+	</select>
+	
+	
+</mapper>

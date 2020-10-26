@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+/* 
+ * Nanum Barun Gothic Web Fonts
+ * https://github.com/92sim/NanumGothic
+ *
+ * Created by NAVER. (http://www.naver.com)
+ */
+ 
+@font-face {
+ font-family: 'Nanum Gothic';
+ font-weight: 200;
+ src: url(./NanumGothicLight.eot);
+ src: url(./NanumGothicLight.eot?#iefix) format('embedded-opentype'),
+      url(./NanumGothicLight.woff) format('woff'),
+      url(./NanumGothicLight.ttf) format('truetype');
+}
+@font-face {
+ font-family: 'Nanum Gothic';
+ font-weight: 400;
+ src: url(./NanumGothicRegular.eot);
+ src: url(./NanumGothicRegular.eot?#iefix) format('embedded-opentype'),
+      url(./NanumGothicRegular.woff) format('woff'),
+      url(./NanumGothicRegular.ttf) format('truetype');
+}
+@font-face {
+ font-family: 'Nanum Gothic';
+ font-weight: 700;
+ src: url(./NanumGothicBold.eot);
+ src: url(./NanumGothicBold.eot?#iefix) format('embedded-opentype'),
+      url(./NanumGothicBold.woff) format('woff'),
+      url(./NanumGothicBold.ttf) format('truetype');
+}
+@font-face {
+ font-family: 'Nanum Gothic';
+ font-weight: 800;
+ src: url(./NanumGothicExtraBold.eot);
+ src: url(./NanumGothicExtraBold.eot?#iefix) format('embedded-opentype'),
+      url(./NanumGothicExtraBold.woff) format('woff'),
+      url(./NanumGothicExtraBold.ttf) format('truetype');
+}

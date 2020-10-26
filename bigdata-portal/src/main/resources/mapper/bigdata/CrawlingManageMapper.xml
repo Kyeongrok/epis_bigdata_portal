@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.CrawlingManageMapper">
+	
+	<!-- 데이터 스케줄러  정보를 리턴한다 -->
+	<select id="selectSchedulerList" parameterType="hashmap" resultType="EntityMap">
+		SELECT 
+			DCS_ID, DCS_COLLECT_STATE, DCS_REGIST_DTTM, DCS_LAST_COLLECT_DTTM, DCS_SCHEDULE, DCS_SCHEDULE_ENABLE
+		FROM BDP_DATA_COLLECT_SCHEDULE
+	</select>
+	
+	<!-- 스케줄러 별 수집 히스토리 총 리스트를 리턴한다 (통계데이터)-->
+	<select id="getStaCrawlerTotalcount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*)
+		FROM BDP_DATA_COLLECT_STA_LOG
+	</select>
+	
+	<!-- 스케줄러 별 수집 히스토리 페이지 리스트를 리턴한다 (통계데이터)-->
+	<select id="selectStaCrawlerHistoryList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT 
+			STA_START_DTTM, STA_END_DTTM, STA_UPDATE_TBL_ID, STA_UPDATE_DE, STA_UPDATE_DATA_COUNT, STA_DELETE_DATA_COUNT, STA_UPDATE_STATE
+		FROM BDP_DATA_COLLECT_STA_LOG
+		ORDER BY STA_ID DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+	
+	<!-- 스케줄러 별 수집 히스토리 총 리스트를 리턴한다 (빅데이터셋)-->
+	<select id="getBdsCrawlerTotalcount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*)
+		FROM BDP_DATA_COLLECT_BDS_LOG
+	</select>
+	
+	<!-- 스케줄러 별 수집 히스토리 페이지 리스트를 리턴한다 (빅데이터셋)-->
+	<select id="selectBdsCrawlerHistoryList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT 
+			DCL_START_DTTM, DCL_END_DTTM, DCL_UPDATE_TBL_ID, DCL_TOTAL_DATA_COUNT, DCL_UPDATE_DATA_COUNT, DCL_ERROR_MESSAGE, DCL_UPDATE_RESULT
+		FROM BDP_DATA_COLLECT_BDS_LOG
+		ORDER BY DCL_ID DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+	
+	<!-- 스케줄러 별 수집 히스토리 총 리스트를 리턴한다 (공공데이터)-->
+	<select id="getPdlCrawlerTotalcount" parameterType="hashmap" resultType="int">
+		SELECT COUNT(*)
+		FROM BDP_DATA_COLLECT_PDL_LOG
+	</select>
+	
+	<!-- 스케줄러 별 수집 히스토리 페이지 리스트를 리턴한다 (공공데이터)-->
+	<select id="selectPdlCrawlerHistoryList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT 
+			DCL_START_DTTM, DCL_END_DTTM, DCL_UPDATE_TBL_ID, DCL_TOTAL_DATA_COUNT, DCL_UPDATE_DATA_COUNT, DCL_ERROR_MESSAGE, DCL_UPDATE_RESULT
+		FROM BDP_DATA_COLLECT_PDL_LOG
+		ORDER BY DCL_ID DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+	
+	<!-- 변경된 설정 값 업데이트(수집 주기 / 동작여부)-->
+	<update id="updateSchedulerData" parameterType="hashmap">
+		UPDATE BDP_DATA_COLLECT_SCHEDULE SET DCS_SCHEDULE=#{cronString}, DCS_SCHEDULE_ENABLE=#{scheEnable} WHERE DCS_ID=#{dcsId}
+	</update>
+</mapper>

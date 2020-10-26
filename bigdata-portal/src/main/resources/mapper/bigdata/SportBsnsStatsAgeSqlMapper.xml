@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.SportBsnsStatsAgeSqlMapper">
+	
+	
+	<select id="getDatasByAgeGroup" resultType="map">
+		SELECT A.AGE_GROUP
+			,SUM(SUM_FMER_FRE) AS SUM_FRE
+		FROM (
+			SELECT '40대미만' AS AGE_GROUP, STDR_YEAR, SUM(FMER_FRE) AS SUM_FMER_FRE FROM T_SPORT_BSNS_STATS_AGE WHERE SPORT_BSNS_CODE = #{bsnsCode} AND BRTH_YYYY &gt;= #{year40} GROUP BY STDR_YEAR
+			UNION ALL
+			SELECT '40대', STDR_YEAR, SUM(FMER_FRE) FROM T_SPORT_BSNS_STATS_AGE WHERE SPORT_BSNS_CODE = #{bsnsCode} AND BRTH_YYYY &gt;= #{year50} AND BRTH_YYYY&lt; #{year40} GROUP BY STDR_YEAR
+			UNION ALL
+			SELECT '50대', STDR_YEAR, SUM(FMER_FRE) FROM T_SPORT_BSNS_STATS_AGE WHERE SPORT_BSNS_CODE = #{bsnsCode} AND BRTH_YYYY &gt;= #{year60} AND BRTH_YYYY &lt; #{year50} GROUP BY STDR_YEAR
+			UNION ALL
+			SELECT '60대', STDR_YEAR, SUM(FMER_FRE) FROM T_SPORT_BSNS_STATS_AGE WHERE SPORT_BSNS_CODE = #{bsnsCode} AND BRTH_YYYY &gt;= #{year65} AND BRTH_YYYY &lt; #{year60} GROUP BY STDR_YEAR
+			UNION ALL
+			SELECT '65세 이상', STDR_YEAR, SUM(FMER_FRE) FROM T_SPORT_BSNS_STATS_AGE WHERE SPORT_BSNS_CODE = #{bsnsCode} AND BRTH_YYYY &lt; #{year65}  GROUP BY STDR_YEAR
+		) A
+		GROUP BY AGE_GROUP
+	</select>
+</mapper>

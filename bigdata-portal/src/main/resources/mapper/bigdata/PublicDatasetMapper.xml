@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.PublicDatasetMapper">
+
+	<!-- 리스트 검색 -->
+	<sql id="sqlSearchPublicDatasetList">
+		<if test="searchListSel != null and searchListWord != null">
+			<choose>		
+				<when test='searchListSel.equals("dataList")'>
+				AND KOREAN_NM LIKE CONCAT('%',#{searchListWord},'%')
+				</when>
+				<when test='searchListSel.equals("dataSet")'>
+				AND DATA_NM LIKE CONCAT('%',#{searchListWord},'%')
+				</when>
+				<when test='searchListSel.equals("pdlCateOld")'>
+				-- AND dl.PDL_CATE_OLD LIKE CONCAT('%',#{searchListWord},'%')
+				</when>
+				<when test='searchListSel.equals("pdlOrgName")'>
+				AND INSTT_NM LIKE CONCAT('%', #{searchListWord},'%')
+				</when>				
+				<when test='searchListSel.equals("dataCmtAll")'>
+				AND ( 
+					KOREAN_NM LIKE CONCAT('%',#{searchListWord},'%') OR 
+					DATA_NM LIKE CONCAT('%',#{searchListWord},'%') OR 
+					DC LIKE CONCAT('%',#{searchListWord},'%') OR 
+					DATA_DC LIKE CONCAT('%',#{searchListWord},'%') OR 
+					INSTT_NM LIKE CONCAT('%', #{searchListWord'},'%')
+				)
+				</when>	
+				<when test='searchListSel.equals("all")'>
+				AND (
+					KOREAN_NM LIKE CONCAT('%',#{searchListWord},'%') OR
+					DATA_NM LIKE CONCAT('%',#{searchListWord},'%') OR
+					KWRD_ONE LIKE CONCAT('%',#{searchListWord},'%') OR
+					KWRD_TWO LIKE CONCAT('%',#{searchListWord},'%') OR
+					KWRD_THREE LIKE CONCAT('%', #{searchListWord},'%') OR
+					DC LIKE CONCAT('%',#{searchListWord},'%') OR 
+					DATA_DC LIKE CONCAT('%',#{searchListWord},'%') OR
+					INSTT_NM LIKE CONCAT('%', #{searchListWord},'%') 
+				)
+				</when>
+			</choose>
+		</if>
+	</sql>	
+	
+	
+	<!-- 공공데이터 리스트를 리턴한다 -->
+	<select id="selectPublicDataList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			SORT_ORDR, INSTT_NM, DATASET_ID, KOREAN_NM, DATA_NM,
+			CL_CODE, BRM_CL_CODE, RDCNT, DS_REGIST_DT,DATA_ID,
+			IFNULL(GRID_PROVD_ENNC, 'N') AS GRID_PROVD_ENNC,
+			IFNULL(API_PROVD_ENNC, 'N') AS API_PROVD_ENNC,
+			IFNULL(FILE_PROVD_ENNC, 'N') AS FILE_PROVD_ENNC,
+			IFNULL(LINK_PROVD_ENNC, 'N') AS LINK_PROVD_ENNC,
+			IFNULL(RAW_DATA_PROVD_ENNC, 'N') AS RAW_DATA_PROVD_ENNC,
+			IFNULL(CHART_PROVD_AT,'N') AS CHART_PROVD_AT,
+			IFNULL(MAP_PROVD_ENNC, 'N') AS MAP_PROVD_ENNC			
+		FROM BDP_TN_DATA
+		WHERE 1=1
+	]]>
+		<include refid="sqlSearchPublicDatasetList" />
+	<![CDATA[
+		ORDER BY DS_REGIST_DT DESC		
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+	
+	<select id="getTotalCount" parameterType="hashmap" resultType="int">
+	<![CDATA[		
+		SELECT COUNT(*) AS totalCount
+		FROM BDP_TN_DATA
+	]]>
+		WHERE 1=1
+		<include refid="sqlSearchPublicDatasetList" />
+	</select>
+	
+	<!-- 데이터종별/데이터셋별 개수 조회 -->
+	<select id="getTypeCount" parameterType="hashmap" resultType="EntityMap">
+		SELECT COUNT(*) AS totalCount, COUNT(DISTINCT KOREAN_NM) AS listCount
+		FROM BDP_TN_DATA
+		WHERE 1=1
+		<include refid="sqlSearchPublicDatasetList" />
+	</select>
+	
+	<select id="selectBdpTnDataCodeRow" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT
+			IF(PARENT.CL_NM IS NULL, '', PARENT.CL_NM) AS P_CL_NM,
+			IF(PARENT.UPPER_CL_CODE IS NULL, '', PARENT.UPPER_CL_CODE) AS P_CL_CODE,
+			IF(CHILD.CL_NM IS NULL, '', CHILD.CL_NM) AS CL_NM,
+			IF(CHILD.CL_CODE IS NULL, '', CHILD.CL_CODE) AS CL_CODE
+		FROM
+		(
+			SELECT 
+				CL_CODE, CL_NM, UPPER_CL_CODE, CL_SE_CODE 
+			FROM BDP_TN_DATA_CODE 
+			WHERE CL_CODE = #{clCode}
+		) PARENT, BDP_TN_DATA_CODE CHILD
+		WHERE
+			PARENT.UPPER_CL_CODE = CHILD.CL_CODE
+		AND 
+			PARENT.CL_SE_CODE = #{clSeCode}
+		AND 
+			CHILD.CL_SE_CODE = #{clSeCode}
+	]]>
+	</select>
+</mapper>

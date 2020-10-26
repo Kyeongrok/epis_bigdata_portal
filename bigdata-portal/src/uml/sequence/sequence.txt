@@ -1,0 +1,70 @@
+title Analysis Flow Diagram
+
+User->Analysis: Analysis Request
+
+Analysis->Hive(HDFS): Data Request
+Hive(HDFS)->Analysis: Return Data
+
+Analysis->Analysis: Analysis
+
+Analysis->Hive(HDFS): Analysis Data Insert
+
+Hive(HDFS)->User: Analysis Result Data
+
+
+
+title Visualization Flow Diagram
+
+User->Visualize: visualize Request
+
+Visualize-> Analysis: Analysis Request
+
+Analysis->Hive(HDFS): Data Request
+Hive(HDFS)->Analysis: Return Data
+
+Analysis->Analysis: Analysis
+
+Analysis->Hive(HDFS): Analysis Data Insert
+
+Hive(HDFS)->Visualize: Analysis Result Data
+
+Visualize->User: visualize Result Data
+
+
+
+title Data List Flow Diagram
+
+User->DB: Data Request
+
+DB->DB: Data List Query
+
+DB->Hive(HDFS):List Data Request
+
+Hive(HDFS)->User: Return Data
+
+
+
+
+title External User Flow Diagram
+
+User->Web: Data Request
+
+Web->DB: Data Request
+
+DB->Web: Return Data
+
+Web->User: Return Data
+
+
+
+title Login Flow Diagram
+
+User->Web: Login Request
+
+Web->DB: Login Policy Fiter
+DB->Web: Return Policy Data
+
+Web->DB: Login Security Fiter
+DB->Web: Return Login Data
+
+Web->User: Return Login Data

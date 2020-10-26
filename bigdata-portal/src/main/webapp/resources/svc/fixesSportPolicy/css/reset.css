@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+
+@font-face{
+font-family:'NanumSquare';
+src: url(../font/NanumSquareR.eot);
+src: url(../font/NanumSquareR.eot?#iefix) format('embedded-opentype'),
+     url(../font/NanumSquareR.woff) format('woff'),
+     url(../font/NanumSquareR.ttf) format('truetype');
+}
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,legend,textarea,p,th,td,input,select,textarea,button{margin:0;padding:0;border:0;-webkit-text-size-adjust:none;box-sizing: border-box;}
+html,body{ margin:0;padding:0;border:0; }
+body {font-family:"NanumSquare",'맑은 고딕',"Malgun Gothic",'돋움',"dotum,tahoma","sans-serif";font-size:14px;color:#666;/*letter-spacing:-1px;*/}
+select,
+input[type="text"],[type="search"],[type="email"],
+input[type="password"]{font-family:"NanumSquare",'맑은 고딕',Malgun Gothic,'돋움',dotum,tahoma,sans-serif;font-size:14px;color:#444; height:30px;line-height:23px;  border:1px solid #b9b9b9;
+text-indent: 5px; vertical-align: middle;}
+input[type="checkbox"]{width:15px; height:15px; vertical-align: middle;}
+input[type="radio"]{width:15px; height:15px; vertical-align: middle;}
+select{ height:34px; line-height:23px;appearance:none; /* Firefox */
+-webkit-appearance:none; /* Safari and Chrome */
+appearance:none;}
+caption { display:none;}
+fieldset,img{ border:0 none;}
+dl,ul,ol,menu,li{ list-style:none}
+button{ overflow:visible; border:0 none; background-color:transparent; cursor:pointer; font-family:"NanumSquare",'맑은 고딕',"Malgun Gothic",'돋움',"dotum","tahoma","sans-serif"; letter-spacing:-1px;}
+address,em {font-style:normal}
+a {text-decoration:none; color: inherit;}
+a:focus,a:active,a:hover {text-decoration:none; cursor: pointer; color: inherit;}
+table {border-collapse:collapse; border-spacing:0}
+hr {display:none}
+input::-ms-clear {display: none}
+input,textarea {outline-style:none}
+::-webkit-input-placeholder {color:#aeb2ba}
+:-moz-placeholder {color:#aeb2ba}
+::-moz-placeholder {color:#aeb2ba}
+:-ms-input-placeholder {color:#aeb2ba}
+
+

@@ -1,0 +1,5 @@
+.idea/
+bigdata-portal/target/
+ucsit-liteweb/target/
+*.iml
+ucsit-core/target/

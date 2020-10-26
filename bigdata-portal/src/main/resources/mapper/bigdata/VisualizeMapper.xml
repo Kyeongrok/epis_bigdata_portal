@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.VisualizeMapper">
+
+	<sql id="sqlSearchVisualizeList">
+		<if test="searchKeyword != null and !searchKeyword.equals('')">
+			AND VIS_TITLE LIKE CONCAT('%',#{searchKeyword},'%')
+		</if>
+		<if test="searchType1 != null and !searchType1.equals('')">
+			AND VIS_CATE1 = #{searchType1}
+		</if>
+		<if test="searchType2 != null and !searchType2.equals('')">
+			AND VIS_CATE2 = #{searchType2}
+		</if>
+		<if test='searchMy != null and searchMy.equals("Y")'>
+			AND USER_ID = #{userId}
+		</if>				
+	</sql>
+	
+	<!-- 데이터 분석 설정 저장 -->
+	<insert id="insertVisualize" parameterType="hashmap" useGeneratedKeys="true" keyProperty="visId">
+		INSERT INTO BDP_VISUALIZE SET
+			USER_ID = #{userId},
+			VIS_TITLE = #{visTitle},
+			VIS_DATA_PATH = #{visDataPath},
+			VIS_OPEN_AT = #{visOpenAt},
+			VIS_AUTHOR = #{visAuthor},
+			VIS_EMAIL = #{visEmail},
+			VIS_CATE1 = #{visCate1},
+			VIS_CATE2 = #{visCate2},
+			VIS_CHART_NAME = #{visChartName},
+			VIS_CHART_TYPE = #{visChartType},
+			VIS_CHART_X = #{visChartX},
+			VIS_CHART_Y = #{visChartY},
+			VIS_CHART_Z = #{visChartZ},
+			VIS_CHART_X_LABEL = #{visChartXLabel},
+			VIS_CHART_Y_LABEL = #{visChartYLabel},
+			VIS_CHART_Z_LABEL = #{visChartZLabel},
+			VIS_CHART_PROPERTY = #{visChartProperty},
+			VIS_CHART_DESC = #{visChartDesc},
+			VIS_SOURCE = #{visSource},
+			VIS_THUMB_PATH = #{visThumbPath},
+			VIS_REGIST_DTTM = NOW()
+	</insert>
+	
+	<!-- 데이터 분석 목록 갯수 리턴 -->
+	<select id="selectVisualizeCount" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*) AS totalCount
+		FROM BDP_VISUALIZE
+		WHERE 1 = 1
+	]]>
+	<include refid="sqlSearchVisualizeList" />
+	</select>
+	
+	<!-- 데이터 분석 목록 리턴 -->
+	<select id="selectVisualizeList" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_VISUALIZE
+		WHERE 1=1
+		AND (VIS_OPEN_AT = "Y" OR USER_ID = #{userId})
+	]]>
+	<include refid="sqlSearchVisualizeList" />
+	<![CDATA[
+		ORDER BY VIS_ID DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>
+	
+	<!-- 데이터 분석 목록 리턴 -->
+	<select id="selectVisualize" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_VISUALIZE 
+		WHERE 1=1
+		AND VIS_ID = #{visId}
+		AND (VIS_OPEN_AT = "Y" OR USER_ID = #{userId})
+	]]>
+	</select>
+	
+	<delete id="deleteVisualizeRow" parameterType="hashmap">
+		DELETE FROM BDP_VISUALIZE 
+		WHERE VIS_ID = #{visId}
+		AND USER_ID = #{userId}
+	</delete>
+	
+	
+	<!-- 데이터 분석 목록 리턴 -->
+	<select id="selectVisualizeListMe" parameterType="hashmap" resultType="EntityMap">
+	<![CDATA[
+		SELECT * FROM BDP_VISUALIZE
+		WHERE 1=1
+		AND USER_ID = #{userId}
+	]]>
+	<include refid="sqlSearchVisualizeList" />
+	<![CDATA[
+		ORDER BY VIS_ID DESC
+		LIMIT #{startNum}, #{endNum}
+	]]>
+	</select>	
+</mapper>

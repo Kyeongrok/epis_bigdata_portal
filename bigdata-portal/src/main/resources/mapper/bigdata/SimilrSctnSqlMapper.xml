@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bigdata.portal.mapper.SimilrSctnSqlMapper">
+
+	<select id="getDataByAge" resultType="java.util.Map">
+		SELECT	DIVISION AS gbn
+				,ROADSD_FCLTY AS gbn2
+				,CTVT_PRDLST_CODE AS prdlstCode
+				,`MIN` AS `minValue`
+				,`MAX` AS `maxValue`
+		FROM FS_FRMER_CATEGORY
+		WHERE	DIVISION = 'AGE'
+		AND `MIN` &lt;= #{age} AND #{age} &lt; `MAX`
+		LIMIT 1
+	</select>	
+	
+	
+	<select id="getDataByCareer" resultType="java.util.Map">
+		SELECT	DIVISION AS gbn
+				,ROADSD_FCLTY AS gbn2
+				,CTVT_PRDLST_CODE AS prdlstCode
+				,`MIN` AS `minValue`
+				,`MAX` AS `maxValue`
+		FROM FS_FRMER_CATEGORY
+		WHERE	DIVISION = 'CAREER'"
+		AND `MIN` &lt;= #{career} AND #{career} &lt; `MAX`
+		LIMIT 1
+	</select>
+	
+	
+	<select id="getDataByPrdlst" resultType="java.util.Map">
+		SELECT	DIVISION AS gbn
+				,ROADSD_FCLTY AS gbn2
+				,CTVT_PRDLST_CODE AS prdlstCode
+				,`MIN` AS `minValue`
+				,`MAX` AS `maxValue`
+		FROM FS_FRMER_CATEGORY
+		WHERE	DIVISION = 'PRDLST'"
+		AND	CTVT_PRDLST_CODE = #{prdlstCode}
+		AND `MIN` &lt;= #{arOrCo} AND #{arOrCo} &lt; `MAX`
+		<if test="null != ctvtTyCode and '' != ctvtTyCode">
+			AND	ROADSD_FCLTY = #{ctvtTyCode}
+		</if>
+		LIMIT 1
+	</select>
+</mapper>

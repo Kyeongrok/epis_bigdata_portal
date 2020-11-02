@@ -484,7 +484,7 @@
 			INDEX_ = #{index}
 		GROUP BY CTPRVN, SIGNGU
 		ORDER BY CNT DESC
-		LIMIT 5
+		LIMIT 10
 	</select>
 
 	<select id="getsBeginRetnCtvtCnt" parameterType="hashmap" resultType="EntityMap">

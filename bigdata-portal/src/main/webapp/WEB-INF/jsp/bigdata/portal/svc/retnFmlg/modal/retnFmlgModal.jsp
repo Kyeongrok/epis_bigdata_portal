@@ -6,6 +6,19 @@
 <script src="<c:url value='/js/bigdata/portal/svc/retnFmlg/modal/commonModal.js'/>" defer></script>
 <script src="<c:url value='/js/bigdata/portal/svc/retnFmlg/modal/retnFmlgModal.js'/>" defer></script>
 
+<style>
+table{border-top:1px solid #252525;margin-bottom:16px;color:#212529;border-collapse:collapse;border-spacing:0;border:1px;}
+caption{position: static;top: -10000px;left: -10000px;height: 1px;width: 1px;text-align: left;overflow: hidden;}
+th{text-align:inherit}
+tr{border:1px;}
+table td,table th{padding:15px 10px;line-height:1.42857143;vertical-align:top;border-bottom:1px solid #dee2e6;border-left: 1px solid #dee2e6;}
+table th:first-child,table td:first-child{border-left:0;}
+table thead th{text-align:center;border-bottom:1px solid #bbb}
+.txt-center{text-align:center;}
+.txt-right{text-align:right;}
+.txt-left{text-align:left;}
+</style>
+
 <!-- 주소 검색 모달 -->
 <div id="addrModal" class="layPop">
     <div class="popWrp">
@@ -54,7 +67,7 @@
             	<div class="rowWrap">
 	                <div class="row">
 	                       <input type="text" name="mvtRdNmAdr" class="w80p" placeholder="현거주지 정보를 입력하세요.">
-			             	<button type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="mvt"><span>검색하기</span></button>
+			             	<button id="mvtSrchAddr" type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="mvt"><span>검색하기</span></button>
 	                </div>
 	                <div class="row">
 	                    <p class="w20p">성별</p>
@@ -215,7 +228,7 @@
 		             	<input type="hidden" class="w80p" name="hopeCtprvn" >
 		             	<input type="hidden" class="w80p" name="hopeSigngu" >
 		             	<input type="hidden" class="w80p" name="hopeEmd" >
-		             	<button type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="hope"><span>검색하기</span></button>
+		             	<button id="hopeSrchAddr" type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="hope"><span>검색하기</span></button>
 		             </div>
             </div>
          </div>
@@ -269,7 +282,7 @@
             	<div class="rowWrap">
             		<div class="row">
 	             		<input type="text" class="w80p" name="hopeCtvt" placeholder="희망 재배품목을 입력하세요.">
-	             		<button class="srchCtvt layPopBtn w20p" type="button" data-target="hopeCtvtModal"><span>검색하기</span></button>
+	             		<button id="srchCtvt" class="srchCtvt layPopBtn w20p" type="button" data-target="hopeCtvtModal"><span>검색하기</span></button>
 	             	</div>
 	            </div>
             </div>
@@ -338,3 +351,168 @@
             </div>
         </div>
     </div>
+    
+<!-- 데이터 출처 모달 -->
+<div id="dataSource" class="layPop" >
+    <div class="popDsWrp">
+        <div class="header">
+            <h3>데이터 출처</h3>
+            <button type="button" class="btnClose"><span>닫기</span></button>
+        </div>
+        <div class="body" style="overflow: scroll; height: 500px">
+			<table>
+				<caption>테이블명</caption>
+				<colgroup>
+					<col>
+					<col>
+					<col>
+					<col>
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">연번</th>
+						<th scope="col">자료명</th>
+						<th scope="col">제공기관</th>
+						<th scope="col">데이터범위</th>
+						<th scope="col">기준년도</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="txt-center">1</td>
+						<!-- 정렬은 txt-center  중앙정렬, txt-left 좌측정렬, txt-right 우측정렬로 설정하실수있습니다. -->
+						<td>농업경영체DB</td>
+						<td>농식품부</td>
+						<td>o농업인영농정보</td>
+						<td>2015~2019</td>
+					</tr>
+					<tr>
+						<td class="txt-center">2</td>
+						<td>인구이동통계</td>
+						<td>행정안전부</td>
+						<td>o전입자및전출자정보</td>
+						<td>2015~2019</td>
+					</tr>
+					<tr>
+						<td rowspan="4" class="txt-center">3</td>
+						<td rowspan="4" >교통접근성지표</td>
+						<td rowspan="4">한국교통연구원</td>
+						<td>o교통시설접근성정보</td>
+						<td rowspan="4">2018</td>
+					</tr>
+						<tr><td>o의료시설접근성정보</td></tr>
+						<tr><td>o쇼핑시설접근성정보</td></tr>			
+						<tr><td>o교육시설접근성정보</td></tr>
+					<tr>
+						<td class="txt-center">4</td>
+						<td>학원 및 교습소 정보</td>
+						<td>교육청</td>
+						<td>o학원및교습소정보</td>
+						<td>2020</td>
+					</tr>
+					<tr>
+						<td rowspan="4" class="txt-center">5</td>
+						<td rowspan="4">전국문화기반 시설총람</td>
+						<td rowspan="4">문화체육관광부</td>
+						<td>o문화의집정보</td>
+						<td rowspan="4">2019</td>
+					</tr>
+						<tr><td>o도서관정보</td></tr>
+						<tr><td>o박물관정보</td></tr>
+						<tr><td>o지방문화원정보</td></tr>
+					</tr>
+					<tr>
+						<td class="txt-center" rowspan="2">6</td>
+						<td rowspan="2">편의위락시설정보</td>
+						<td rowspan="2">행정안전부</td>
+						<td>o편의점정보</td>
+						<td rowspan="2">2020</td>
+					</tr>	
+						<tr><td>o영상영화관정보</td></tr>
+					</tr>
+					<tr>
+						<td class="txt-center">7</td>
+						<td>도로명주소DB</td>
+						<td>행정안전부</td>
+						<td>o금융기관정보</td>
+						<td>2020</td>
+					</tr>
+					<tr>
+						<td class="txt-center">8</td>
+						<td>실거래가공개시스템</td>
+						<td>국토교통부</td>
+						<td>o토지/주택 실거래가정보</td>
+						<td>2014~계속</td>
+					</tr>
+					<tr>
+						<td class="txt-center">9</td>
+						<td>로컬푸드매장 현황</td>
+						<td>aT</td>
+						<td>o로컬푸드매장정보</td>
+						<td>2020</td>
+					</tr>
+					<tr>
+						<td class="txt-center">10</td>
+						<td>APC 현황</td>
+						<td>농정원</td>
+						<td>oAPC여부 및 취급품목정보</td>
+						<td>2020</td>
+					</tr>
+					<tr>
+						<td class="txt-center">11</td>
+						<td>귀농지원정책현황</td>
+						<td>귀농귀촌종합센터</td>
+						<td>o지자체별귀농정책정보</td>
+						<td>2020</td>
+					</tr>
+					<tr>
+						<td class="txt-center">12</td>
+						<td>도매시장DB</td>
+						<td>농정원</td>
+						<td>o품목별가격,물동량정보</td>
+						<td>2014~2019</td>
+					</tr>
+					<tr>
+						<td class="txt-center">13</td>
+						<td>일자리 정보</td>
+						<td>워크넷</td>
+						<td>o지역일자리정보</td>
+						<td>2018~계속</td>
+					</tr>
+					<tr>
+						<td class="txt-center">14</td>
+						<td>농지매물 정보</td>
+						<td>농어촌공사</td>
+						<td>o농지매물정보</td>
+						<td>2018~계속</td>
+					</tr>
+					<tr>
+						<td class="txt-center">15</td>
+						<td>소득정보</td>
+						<td>농촌진흥청</td>
+						<td>o주요품목소득정보</td>
+						<td>2019</td>
+					</tr>
+					<tr>
+						<td class="txt-center">16</td>
+						<td>소매가격정보</td>
+						<td>aT</td>
+						<td>o주요품목소매가격정보</td>
+						<td>2018~계속</td>
+					</tr>
+					<tr>
+						<td class="txt-center">17</td>
+						<td>대안학교정보</td>
+						<td>교육청</td>
+						<td>o대안학교정보</td>
+						<td>2020</td>
+					</tr>
+				</tbody>
+			</table>
+        </div>
+        </br>
+        <div class="footer">
+            <button id="closeDataSrc" type="button"><span>닫기</span></button>            
+        </div>
+    </div>
+</div>

@@ -23,6 +23,8 @@
 
     	<div class="gnb">
  		<h1><a href="http://webdev.ucsit.co.kr/2020/BDP/farmIntent/dashboard.html#">bdp</a><span class="hide">빅데이터포털</span></h1>
+ 		<!-- 농업on 로고 추가 -->
+ 		<!--<img src="/images/bigdata/svc/retnFmlg/h1_logo.png" alt="">  -->
 <!--  		<ul class="nav"> -->
 <!--  			<li><a href="http://webdev.ucsit.co.kr/2020/BDP/farmIntent/dashboard.html#"><img src="/images/bigdata/svc/navicon01.png" alt=""></a></li> -->
 <!--  			<li><a href="http://webdev.ucsit.co.kr/2020/BDP/farmIntent/dashboard.html#"><img src="/images/bigdata/svc/navicon02.png" alt=""></a></li> -->
@@ -50,7 +52,7 @@
 			<button type="button" id="showResultBtn" class="showResultBtn"><span>결과보기</span></button>
 		</div> -->
          <div class="formBox">
-             <p>1. 본인 정보를 입력하세요.(<span class="filsu">필수</span>)</p>
+             <p>○ 본인 정보를 입력하세요.(<span class="filsu">필수</span>)</p>
              <div id="selfDiv" class="rowWrap">
 	             <div class="row">
 	             	<input type="text" name="mvtRdNmAdr" class="w80p" placeholder="현거주지 정보를 입력하세요.">
@@ -67,13 +69,16 @@
 	             	<p class="w20p">나이</p>
 	             	<input type="text" class="w80p" name="selfAge">
 	             </div>
+	             <div class="txtR fs10">
+	             	<span style="font-weight: bold">* 개인정보 보호법에 의거하여 상세주소를 입력하여도 시군구 단위까지만 지역이 선택되어 보여집니다</span>
+	             </div>
 	             <div class="txtR fs11">
 	             	<span><a href="http://www.juso.go.kr">www.juso.go.kr</a> API 사용</span>
 	             </div>
              </div>
          </div><!-- //formBox -->
          <div class="formBox">
-             <p>2. 귀농 시<strong>동거가족</strong>을 입력하세요.(<span class="filsu">필수</span>)</p>
+             <p>○ 귀농 시<strong>동거가족</strong>을 입력하세요.(<span class="filsu">필수</span>)</p>
              <div class="relateDiv rowWrap">
 	             <div class="row">
 	             	<p class="w20p">관계</p>
@@ -102,19 +107,22 @@
         	 </div>
          </div><!-- //formBox -->
          <div class="formBox">
-             <p>3. 귀농 시 희망<strong>귀농지역</strong>을 입력하세요.(<span class="sel">선택</span>)</p>
+             <p>○ 귀농 시 희망<strong>귀농지역</strong>을 입력하세요.(<span class="sel">선택</span>)</p>
              <div id="hopeAreaDiv" class="rowWrap">
 	             <div class="row">
 	             	<input type="text" class="w80p" name="hopeRdNmAdr" placeholder="희망 귀농지역을 입력하세요.">
 	             	<button id="hopeSrchAddr" type="button" class="srchAddr layPopBtn w20p" data-target="addrModal" data-addrPrefix="hope"><span>검색하기</span></button>
 	             </div>
              </div>
+             <div class="txtR fs10">
+	             	<span style="font-weight: bold">* 개인정보 보호법에 의거하여 상세주소를 입력하여도 시군구 단위까지만 지역이 선택되어 보여집니다</span>
+	             </div>
              <div class="txtR fs11">
 	             	<span><a href="http://www.juso.go.kr">www.juso.go.kr</a> API 사용</span>
 	             </div>
          </div><!-- //formBox -->
          <div class="formBox">
-             <p>4. 귀농 시 희망<strong>재배품목</strong>을 입력하세요.(<span class="sel">선택</span>)</p>
+             <p>○ 귀농 시 희망<strong>재배품목</strong>을 입력하세요.(<span class="sel">선택</span>)</p>
              <div id="hopeCtvtDiv" class="rowWrap">
 	             <div class="row">
 	             	<input type="text" class="w80p" name="hopeCtvt" placeholder="희망 재배품목을 입력하세요.">
@@ -123,7 +131,7 @@
 	         </div>
          </div><!-- //formBox -->
          <div class="formBox">
-             <p>5. 귀농 시<strong>고려사항</strong>을 입력하세요.(<span class="sel">선택</span>)</p>
+             <p>○ 귀농 시<strong>고려사항</strong>을 입력하세요.(<span class="sel">선택</span>)</p>
              <div id="cnsdrDiv" class="rowWrap">
 	             <div class="row">
 	             	<dl class="layPopBtn" data-level="U" data-target="cnsdrModal">

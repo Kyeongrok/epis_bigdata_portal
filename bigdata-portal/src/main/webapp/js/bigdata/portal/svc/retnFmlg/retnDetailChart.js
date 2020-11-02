@@ -38,7 +38,8 @@ let AreaSetlCndChart = (function() {
 		this.wholeSaleChart(); // 도매시장 경락 가격 현황
 		this.allAgeCtvt(); // 전체 영농인 품목별 연령대별 농가
 		this.beginAgeCtvt(); // 초기 영농인 품목별 연령대별 농가
-		this.avgPrdlstIndex(); // 생산유통안정성
+		/* MK 생산유통안정성 삭제 */
+		/*this.avgPrdlstIndex(); // 생산유통안정성*/
 	}
 
 	/**맞춤 귀농 정보 레이더 차트*/
@@ -239,8 +240,7 @@ let AreaSetlCndChart = (function() {
 			p.datas.push(dataObj.areaInfo[selectAreaInfo.index].upperAreaMvtInfo[i].mvtCtprvnCnt)
 		}
 		p.colors = [ "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)" ];
-		console.log("sc_a_1_1!!!");
-		console.log(dataObj.areaInfo[selectAreaInfo.index].upperAreaMvtInfo);
+		
 		pageObj.drawChart(p);
 	}
 	/**귀농인 > 재배작물*/
@@ -261,8 +261,7 @@ let AreaSetlCndChart = (function() {
 			p.datas.push(dataObj.areaInfo[selectAreaInfo.index].upperAreaCtvtInfo[i].itemNmCnt)
 		}
 		p.colors = [ "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)", "rgb(136, 210, 206)" ];
-		console.log("sc_a_1_2!!!");
-		console.log(dataObj.areaInfo[selectAreaInfo.index].upperAreaCtvtInfo);
+		
 		pageObj.drawChart(p);
 	}
 
@@ -318,8 +317,7 @@ let AreaSetlCndChart = (function() {
 	}
 	
 	/**교육 > 학원 및 교습소 시설 수*/
-	AreaSetlCndChart.prototype.edcCoChart = function(){
-		console.log("학원및교습소!!!");
+	AreaSetlCndChart.prototype.edcCoChart = function(){		
 		let selectAreaInfo = pageObj.getSelectedAreaInfo();
 		let p = {};
 		p.ctx = "sc_a_2_2"
@@ -362,6 +360,7 @@ let AreaSetlCndChart = (function() {
 
 			}
 		}
+		
 		p.innerColors  = ["rgb(136, 210, 206)"];
 		pageObj.drawChart(p);
 	}
@@ -747,7 +746,7 @@ let AreaSetlCndChart = (function() {
 //		p.showText = 'N';
 		p.legend = true;
 		p.deli    = 2;
-		p.labels = ['2018', '2019' , '2020'];
+		p.labels = ['2018', '2019' , '2020(최근3개월)'];
 		p.innerLabels = ["전체", selectCtvtInfo.signgu];
 		p.innerDatas  = [];
 
@@ -813,7 +812,7 @@ let AreaSetlCndChart = (function() {
 	}
 
 	/**재배 품목 > 생산/유통 안정성*/
-	AreaSetlCndChart.prototype.avgPrdlstIndex = function(){
+	/*AreaSetlCndChart.prototype.avgPrdlstIndex = function(){
 		let selectAreaInfo = pageObj.getSelectedAreaInfo();
 		let pageSelectCtvtInfo = pageObj.getSelectCtvtInfo();
 		let selectCtvtInfo = dataObj.areaInfo[selectAreaInfo.index].fixesCtvt[pageSelectCtvtInfo.index];
@@ -848,7 +847,7 @@ let AreaSetlCndChart = (function() {
 		];
 		pageObj.drawChart(p);
 
-	}
+	}*/
 
 
 

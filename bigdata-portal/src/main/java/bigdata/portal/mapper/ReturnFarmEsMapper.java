@@ -1,6 +1,8 @@
 package bigdata.portal.mapper;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,24 @@ public class ReturnFarmEsMapper {
 		String ctprvn = paramMap.get("ctprvn")+"";
 		String signgu = paramMap.get("signgu")+"";
 		String addr = "";
+		
+		/*jhok
+		 * 도매시장 경락가격 2020년도는 최근3개월만 가져오게 변경처리
+		 * 
+		 * */
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdfMonthDate = new SimpleDateFormat("MMdd");
+		
+		String WholSaleStartDate = sdfMonthDate.format(cal.getTime());
+		
+		cal.add(Calendar.MONTH, -3);
+		String WholSaleEndDate = sdfMonthDate.format(cal.getTime());
+		
+		String fromDate = paramMap.get("srchEsYear") + WholSaleEndDate;
+		String toDate =   paramMap.get("srchEsYear") + WholSaleStartDate;
+		
+		
+		
 		if(!"null".equals(ctprvn)) {
 			addr += ctprvn + " ";
 		}
@@ -62,8 +82,13 @@ public class ReturnFarmEsMapper {
 		s += "        {";
 		s += "          \"range\": {";
 		s += "            \"delng_de\": {";
+		if(!"".equals(paramMap.get("srchEsYear")) && "2020".equals(paramMap.get("srchEsYear"))) {
+			s += "              \"gte\": "+ fromDate + ",";
+			s += "              \"lte\": "+ toDate + "";
+		}else {
 		s += "              \"gte\": "+ paramMap.get("srchEsYear") + "0101,";
 		s += "              \"lte\": "+ paramMap.get("srchEsYear") + "1231";
+		}
 		s += "            }";
 		s += "          }";
 		s += "        }";
@@ -79,8 +104,7 @@ public class ReturnFarmEsMapper {
 		s += "        \"avg\" : { \"avg\" : { \"field\" : \"sbid_pric\" } }";
 		s += "    }";
 		s += "}";
-
-		//
+		System.out.println(s);
 		return elasticService.postSearch("bds_wholesale_market_price*", s);
 	}
 
@@ -109,7 +133,13 @@ public class ReturnFarmEsMapper {
 		s += "	  ]";
 		s += "	}";
 
-		return elasticService.postSearch("ds_fmlg_uninhbhous*", s);
+		try{
+			return elasticService.postSearch("ds_fmlg_uninhbhous*", s);
+		}catch (Exception e){
+			return new ElasticResultMap("");
+		}
+
+
 	}
 
 	/**일자리 정보
@@ -146,7 +176,13 @@ public class ReturnFarmEsMapper {
 		s += "	      {\"regDt\" : {\"order\": \"desc\"}}";
 		s += "	    ]";
 		s += "	}";
-		return elasticService.postSearch("ds_keis_empmn_info*", s);
+		System.out.println("es query:" + s);
+		try{
+			return elasticService.postSearch("ds_keis_empmn_info*", s);
+		} catch (Exception e){
+			return new ElasticResultMap("");
+		}
+
 	}
 
 	/**평균 소매 가격 정보
@@ -203,7 +239,10 @@ public class ReturnFarmEsMapper {
 		s +=		"        }\r\n" ;
 		s +=		"    }";
 		s +="	}";
+
 		return elasticService.postSearch("bds_whsal_rtlsal_pc*", s);
+
+
 	}
 
 	/**귀농인 정보 입력 로그 등록
@@ -300,6 +339,7 @@ public class ReturnFarmEsMapper {
 		s +="	  \"selfAge\" : \"" +famerInfoMap.getStringNulltoEmpty("selfAge")+"\",";
 		s +="	  \"mvtAdmCd\" : \"" +famerInfoMap.getStringNulltoEmpty("mvtAdmCd")+"\"";
 		s += "}";
+
 		elasticService.postDoc("return_farm_user_input", s);
 	}
 }

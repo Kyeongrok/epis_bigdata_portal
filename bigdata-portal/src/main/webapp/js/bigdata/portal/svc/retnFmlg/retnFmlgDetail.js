@@ -54,7 +54,57 @@
 			$('#resultColor01').removeClass('tabon');
 			$('#resultColor06').addClass('tabon');
 		});
+		/*
+			jhok 더보기 , 더보기닫기 버튼 생성
+		*/
+		//지역정보 더보기 버튼 클릭
+		$('#moreArea').click(function(){
+			$('#moreInfo').css("display","block");
+			$('#moreArea').css("display","none");
+		});
+		//더보기닫기 버튼 클릭
+		$('#moreAreaClose').click(function(){
+			$('#moreInfo').css("display","none");
+			$('#moreArea').css("display","block");
+		});
+		
  }); 
+
+/**
+ * 차트 예외 처리
+ */
+
+Chart.plugins.register({
+	afterDraw: function(chart) {		
+		var sum = 0;
+		
+		for (var i=0; i<chart.data.datasets.length; i++){
+			for (var j=0; j<chart.data.datasets[i].data.length; j++){
+				sum += chart.data.datasets[i].data[j];
+			}
+		}		
+		
+		if (sum == 0) {			
+			var ctx = chart.chart.ctx;
+			var width = chart.chart.width;
+			var height = chart.chart.height;			
+			//chart.clear();
+			ctx.save();
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.font = "bold 17px NanumSquareR";	
+			ctx.fillStyle="rgba(247,255,255, 0.7)";
+			ctx.fillRect(0,0,ctx.canvas.width,ctx.canvas.height);
+			ctx.fillStyle="#8C8C8C";
+			//ctx.lineWidth = 2;
+			//ctx.strokeStyle = "FF0000";
+			//ctx.strokeRect(0,0,ctx.canvas.width,ctx.canvas.height);
+			
+			ctx.fillText('해당 데이터가 없습니다.', width / 2, height / 2);
+			ctx.restore();
+		}
+	}
+});
 
 /**
  * 상세화면
@@ -98,6 +148,8 @@ let DataObj = (function(){
 		$.post("./retnFmlgDetail.json", function(json){
 			console.log(json);
 			if(json.result == "success"){
+				//20201027 jhok 데이터로드시 로딩바관련 이미지 제
+				$('#loading').css("display","none");
 				dataObj.form = json.dataObj;
 				dataObj.areaInfo = json.areaInfo.datas;
 
@@ -499,8 +551,7 @@ let PageObj = (function(){
 	/**추천 재배 품목 셋팅*/
 	PageObj.prototype.setFixesCtvtTitle = function(){
 		console.log(dataObj);
-		let recomendArea = this.getSelectedAreaInfo();
-		console.log("셋팅!!!");
+		let recomendArea = this.getSelectedAreaInfo();		
 		console.log(dataObj.areaInfo[recomendArea.index]);
 		for(let i=0; i<dataObj.areaInfo[recomendArea.index].fixesCtvt.length; i++){
 			let fixesCtvt = dataObj.areaInfo[recomendArea.index].fixesCtvt[i].prdlstNm;
@@ -829,10 +880,12 @@ let PageObj = (function(){
 		});
 	};
 
-	/**맞춤 귀농 지역 정보 3개소 주소 셋팅 */
+	/**맞춤 귀농 지역 정보 5개소 주소 셋팅 
+	   jhok 귀농지역정보 db에 있는 사이즈만큼 주소 셋팅 변경
+	*/
 	PageObj.prototype.setRecomendAreaTitle = function(){
-
-		let maxCnt = (dataObj.areaInfo.length > 3) ? 3 : dataObj.areaInfo.length;
+		//let maxCnt = (dataObj.areaInfo.length > 3) ? 3 : dataObj.areaInfo.length;
+		let maxCnt = dataObj.areaInfo.length;
 		for(let i=0; i<maxCnt; i++){
 			let recomendArea = dataObj.areaInfo[i];
 			let recomendAreaAddr = recomendArea.ctprvn+ ' ' + recomendArea.signgu + ' ' + recomendArea.emd;
@@ -1256,13 +1309,20 @@ let PageObj = (function(){
 	}
 
 	/*재배 품목 차트 없애기*/
-	PageObj.prototype.clearCtvtChart = function(){
+	/* MK sc_b_0_ 삭제 */
+	/*PageObj.prototype.clearCtvtChart = function(){
 		for(let i=0; i<chartObjArr.length; i++){
 			let chartCanvasId = $(chartObjArr[i].titleBlock.ctx.canvas).attr('id');
 			let ctvtCharCanvasIdArr = ['sc_b_0_0_0'
 									, 'sc_b_0_1_0'
 									, 'sc_b_0_2_0', 'sc_b_0_2_1'
-									, 'sc_b_0_3_0', 'sc_b_0_3_1', 'sc_b_0_3_2']
+									, 'sc_b_0_3_0', 'sc_b_0_3_1', 'sc_b_0_3_2']*/
+	PageObj.prototype.clearCtvtChart = function(){
+		for(let i=0; i<chartObjArr.length; i++){
+			let chartCanvasId = $(chartObjArr[i].titleBlock.ctx.canvas).attr('id');
+			let ctvtCharCanvasIdArr = ['sc_b_0_0_0'
+									, 'sc_b_0_1_0'
+									, 'sc_b_0_2_0', 'sc_b_0_2_1']
 
 			ctvtCharCanvasIdArr.forEach(function(ctvtCharCanvasId){
 				if(ctvtCharCanvasId == chartCanvasId){
@@ -1335,6 +1395,7 @@ let ResultViewOrdrObj = (function(){
 		$('#result03 .tabcontent .w30p, #result03 .tabcontent .w40p').css('display', 'none');
 		$('#result03 .tabcontent .w70p').attr('class', 'w100p w70p');
 		$('#result03 .tabcontent .w60p').attr('class', 'w100p w60p');
+		
 	}
 
 	/**
@@ -1376,7 +1437,9 @@ let ResultViewOrdrObj = (function(){
 		$('#result03 .tabcontent .w30p, #result03 .tabcontent .w40p').css('display', 'none');
 		$('#result03 .tabcontent .w70p').attr('class', 'w100p w70p');
 		$('#result03 .tabcontent .w60p').attr('class', 'w100p w60p');
-
+		
+		//20201028 jhok 희망지역 선택 시 상단 메뉴가운데 정렬
+		$('#menu_top').css('padding-left', '90px');
 	}
 
 	/**

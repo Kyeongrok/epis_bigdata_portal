@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import bigdata.portal.service.ReturnFarmService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +26,12 @@ import bigdata.portal.enums.RetnSimilrTopEmdCmprEnum;
 import bigdata.portal.enums.RetnWghtValEnum;
 import bigdata.portal.mapper.ReturnFarmEsMapper;
 import bigdata.portal.mapper.ReturnFarmMapper;
+import bigdata.portal.service.ReturnFarmService;
 import kr.co.ucsit.core.CsConst;
 import kr.co.ucsit.core.CsTransferObject;
 
 @Service
-public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnFarmService {
+public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnFarmService  {
 
 	private static Logger log = LoggerFactory.getLogger(ReturnFarmServiceImpl.class);
 
@@ -247,7 +247,8 @@ public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnF
 		result.put("similrRetnFmlgTrnsfrnArea", returnFarmMapper.getsSimilrRetnFmlgTrnsfrnArea(dataObjMap)); // 유사 귀농인 전입지역
 		result.put("similrRetnFmlgCtvt", returnFarmMapper.getsSimilrRetnFmlgCtvt(dataObjMap)); // 유사귀농인 재배 품목
 
-		int maxIndex = (areaInfoList.size() > 3 ? 3 : areaInfoList.size());
+		//int maxIndex = (areaInfoList.size() > 3 ? 3 : areaInfoList.size());
+		int maxIndex =  areaInfoList.size();
 		areaInfoList = areaInfoList.subList(0, maxIndex); // 상위3개 지역만 초기영농인 재배품목을 조회한다.
 
 		for(Map<String, Object> areaInfo : areaInfoList) {
@@ -276,7 +277,8 @@ public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnF
 
 		recomendTop5Area = getTop5RadarChartData(recomendTop5Area); // 레이더 차트에 사용될 데이터 입력
 
-		int listSize3 = (recomendTop5Area.size() > 3) ? 3 : recomendTop5Area.size();
+		//int listSize3 = (recomendTop5Area.size() > 3) ? 3 : recomendTop5Area.size();
+		int listSize3 =  recomendTop5Area.size();
 		for(int i=0; i<listSize3; i++) {
 			Map<String, Object> paramMap = new HashMap<>();
 
@@ -337,20 +339,21 @@ public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnF
 				paramMap2.put("srchEsYear", "2019");
 				paramMap2.remove("ctprvn");
 				paramMap2.remove("signgu");
-				fixesCtvt.put("allAvgWholeSale2019", returnFarmEsMapper.getAvgWholeSale(paramMap2)); // 2018년 전체
+				fixesCtvt.put("allAvgWholeSale2019", returnFarmEsMapper.getAvgWholeSale(paramMap2)); // 2019년 전체
 
 				paramMap2.put("ctprvn", paramMap.get("ctprvn"));
 				paramMap2.put("signgu", paramMap.get("signgu"));
-				fixesCtvt.put("areaAvgWholeSale2019", returnFarmEsMapper.getAvgWholeSale(paramMap2)); // 2018년 지역
+				fixesCtvt.put("areaAvgWholeSale2019", returnFarmEsMapper.getAvgWholeSale(paramMap2)); // 2019년 지역
 				
+				//2020년 도매시장 경락가격
 				paramMap2.put("srchEsYear", "2020");
 				paramMap2.remove("ctprvn");
 				paramMap2.remove("signgu");
-				fixesCtvt.put("allAvgWholeSale2020", returnFarmEsMapper.getAvgWholeSale(paramMap2)); // 2018년 전체
+				fixesCtvt.put("allAvgWholeSale2020", returnFarmEsMapper.getAvgWholeSale(paramMap2)); // 2020년 전체
 
 				paramMap2.put("ctprvn", paramMap.get("ctprvn"));
 				paramMap2.put("signgu", paramMap.get("signgu"));
-				fixesCtvt.put("areaAvgWholeSale2020", returnFarmEsMapper.getAvgWholeSale(paramMap2));
+				fixesCtvt.put("areaAvgWholeSale2020", returnFarmEsMapper.getAvgWholeSale(paramMap2)); // 2020년 지역
 
 				//소매 가격 조회
 				Calendar cal = Calendar.getInstance();
@@ -464,8 +467,8 @@ public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnF
 
 
 		}
-
-		similrCntTopEmdAvgValList = getTotalWghtValRank(similrCntTopEmdAvgValList, dataObjMap, 5);
+		//jhok
+		similrCntTopEmdAvgValList = getTotalWghtValRank(similrCntTopEmdAvgValList, dataObjMap, 10);
 
 		log.debug("{}", similrCntTopEmdAvgValList);
 		return similrCntTopEmdAvgValList;

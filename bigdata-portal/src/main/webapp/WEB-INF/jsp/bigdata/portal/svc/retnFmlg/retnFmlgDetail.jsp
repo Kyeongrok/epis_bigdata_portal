@@ -16,8 +16,8 @@
     <script type="text/javascript" src="<c:url value="/js/vendor/jquery/jquery-2.1.4.min.js" />" ></script>
 	<script type="text/javascript" src="<c:url value="/js/bigdata/portal/jquery-cs-0.9a.js" />" ></script>
 
-	<!-- <script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script> -->
-	<script type="text/javascript"	src="/js/bigdata/portal/svc/Chart.bundle.min.js"></script>
+	<script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+	<!-- <script type="text/javascript"	src="/js/bigdata/portal/svc/Chart.bundle.min.js"></script> -->
 
     <script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/retnFmlg/retnFmlgCommon.js'/>" defer></script>
     <script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/retnFmlg/retnDetailChart.js'/>" defer></script>

@@ -23,6 +23,16 @@
 	
 	<script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/riceDetail.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/riceDataObj.js'/>"></script>
+	
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EMQKSH6X9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'G-4EMQKSH6X9');
+    </script>
 </head>
 <body>
 

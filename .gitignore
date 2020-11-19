@@ -3,3 +3,10 @@ bigdata-portal/target/
 ucsit-liteweb/target/
 *.iml
 ucsit-core/target/
+bigdata-portal/.settings/
+bigdata-portal/.classpath
+ucsit-liteweb/.settings/
+ucsit-core/.settings/org.eclipse.jdt.core.prefs
+ucsit-core/.settings/
+*.classpath
+*.project

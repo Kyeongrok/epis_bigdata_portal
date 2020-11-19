@@ -8,6 +8,16 @@
 --%>
 <head>
 	<title>데이터 기반 귀농 지역·품목 안내 서비스</title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4EMQKSH6X9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'G-4EMQKSH6X9');
+    </script>
 </head>
     <link rel="stylesheet" href="<c:url value='/css/bigdata/retnFmlg/info/layout.css'/>">
     <script src="<c:url value='/js/vendor/jquery/jquery-2.1.4.min.js'/>"></script>

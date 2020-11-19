@@ -11,6 +11,16 @@
 <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
 <c:import url="/WEB-INF/jsp/layout/css_script.jsp" />
 <title><t:insertAttribute name="title" ignore="true" /></title>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EMQKSH6X9"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-4EMQKSH6X9');
+</script>
 </head>
 <body>
 <div id="wrap" class="s_body">

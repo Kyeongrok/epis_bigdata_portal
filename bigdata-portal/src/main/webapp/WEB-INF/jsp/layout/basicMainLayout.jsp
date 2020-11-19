@@ -10,6 +10,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <c:import url="/WEB-INF/jsp/layout/css_script.jsp" />
 <title><t:insertAttribute name="title" ignore="true" /></title>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4EMQKSH6X9"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-4EMQKSH6X9');
+</script>
 </head>
 <body>
 <div id="wrap">

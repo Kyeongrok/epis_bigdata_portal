@@ -16,8 +16,11 @@
     <script type="text/javascript" src="<c:url value="/js/vendor/jquery/jquery-2.1.4.min.js" />" ></script>
 	<script type="text/javascript" src="<c:url value="/js/bigdata/portal/jquery-cs-0.9a.js" />" ></script>
 
-	<script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
-	<!-- <script type="text/javascript"	src="/js/bigdata/portal/svc/Chart.bundle.min.js"></script> -->
+	<!-- <script type="text/javascript"	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script> -->
+	<script type="text/javascript"	src="/js/bigdata/portal/svc/Chart.bundle.min.js"></script>
+	
+	<script type="text/javascript"	src="/js/bigdata/portal/svc/sweetalert.min.js"></script>
+	
 
     <script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/retnFmlg/retnFmlgCommon.js'/>" defer></script>
     <script type="text/javascript" src="<c:url value='/js/bigdata/portal/svc/retnFmlg/retnDetailChart.js'/>" defer></script>
@@ -39,7 +42,7 @@
 <!-- 좌측 GNB 영역 -->
         <header>
         	<div class="gnb">
-	    		<h1><a href="#">bdp</a><span class="hide">빅데이터포털</span></h1>
+	    		<h1 onclick="location.href='https://www.agrion.kr'" style="cursor: pointer;"><a href="#">bdp</a><span class="hide">빅데이터포털</span></h1>
 <!-- 	    		<ul class="nav"> -->
 <!-- 	    			<li><a href="#"><img src="" alt="" /></a></li> -->
 <!-- 	    			<li><a href="#"><img src="" alt="" /></a></li> -->
@@ -589,7 +592,7 @@
                 			<div class="row">
                 				<div class="w30p">
                 					<h4 class="hasUnit"><strong><span class="selectEmd"></span> 편의시설 수</strong>
-		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
+		                				<span class="unit">기준년도: 2020년 &nbsp;&nbsp;(단위 : 개)</span>
 		                			</h4>
 		                			<div class="graph">
 		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_2" ></canvas></div>
@@ -597,7 +600,7 @@
                 				</div>
                 				<div class="w70p">
                 					<h4 class="hasUnit"><strong><span class="selectSigngu"></span> 읍면별 편의시설 비교</strong>
-		                				<span class="unit">기준년도: 2019년 &nbsp;&nbsp;(단위 : 개)</span>
+		                				<span class="unit">기준년도: 2020년 &nbsp;&nbsp;(단위 : 개)</span>
 		                			</h4>
 		                			<div class="graph">
 		                				<div class="graphWrap" style="width:100%;float:left;height:250px;"><canvas id="sc_a_4_3" ></canvas></div>

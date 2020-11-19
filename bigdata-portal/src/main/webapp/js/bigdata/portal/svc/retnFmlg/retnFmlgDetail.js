@@ -163,7 +163,8 @@ let DataObj = (function(){
 					dataObj.getSelectAreaCtvtInfo(); // 선택지역재배 품목 정보를 불러온다.
 					console.log(dataObj.form);
 					if(dataObj.form.insteadCtvt != null) {
-						alert("희망 귀농지역에 해당하는 품목이 없어 차순위 품목을 표시합니다\n("+dataObj.form.insteadCtvt+"->"+dataObj.form.hopeCtvt+")");
+						//alert("희망 귀농지역에 해당하는 품목이 없어 차순위 품목을 표시합니다\n("+dataObj.form.insteadCtvt+"->"+dataObj.form.hopeCtvt+")");
+						swal("희망 귀농지역에 해당하는 품목이 없어 차순위 품목을 표시합니다\n("+dataObj.form.insteadCtvt+"->"+dataObj.form.hopeCtvt+")");
 					}
 //					dataObj.updtDataObj(false);
 				}else{
@@ -176,7 +177,9 @@ let DataObj = (function(){
 			}else if(json.result == "fail"){
 				dataObj.form = json.dataObj;
 				myInfoObj.setSideMenuInfo(); // DataObj 데이터를 기준으로 'My 내가 입력한 여건입니다.'를 수정
-				alert(json.msg);
+				$('#loading').css("display","none");
+				alert(json.msg);				
+				history.go(-1);
 			}
 
 		});
@@ -221,7 +224,7 @@ let DataObj = (function(){
 //			console.log("update data : ",json);
 
 			console.log("refresh: "+refresh);
-			if(refresh != false) {
+			if(refresh != false) {				
 				dataObj.refreshDataObj(); // 결과화면 다시 그리기
 			}else {
 				console.log("updtDataObj  ",dataObj);

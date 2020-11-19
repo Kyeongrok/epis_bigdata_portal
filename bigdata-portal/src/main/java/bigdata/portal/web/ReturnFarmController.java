@@ -75,7 +75,7 @@ public class ReturnFarmController extends BigdataController {
 		session.setAttribute("retnFmlgInfo", entityMap);
 		model.addAttribute("dataObj", session.getAttribute("retnFmlgInfo"));
 
-		returnFarmService.registRetnFmlgInfo(request, session); // 귀농 정보 저장
+//		returnFarmService.registRetnFmlgInfo(request, session); // 귀농 정보 저장
 		return JSON_VIEW;
 	}
 
@@ -96,7 +96,7 @@ public class ReturnFarmController extends BigdataController {
 	@RequestMapping(value = "retnFmlgDetail.do", method = RequestMethod.GET)
 	public String retnFmlgDetail(HttpServletRequest request, Model model
 			) {
-
+		log.info("{}", request);
 		return P_BIGDATA_PORTAL + P_BIGDATA_RETURNFARM + "retnFmlgDetail";
 	}
 
@@ -108,15 +108,26 @@ public class ReturnFarmController extends BigdataController {
 	public String retnFmlgDetailJson(HttpServletRequest request, Model model,
 			HttpSession session) throws InstantiationException, IllegalAccessException, IOException {
 		Map<String,Object> dataObjMap = (Map<String, Object>) session.getAttribute("retnFmlgInfo");
-
+		log.info("dataObjMap:{}", dataObjMap);
 		// 귀농인 DB에서 인덱스 조회
 		Map<String, Object> modelIdxMap = CsUtil.getData(returnFarmService.getRetnFmlgModelIdx(dataObjMap));
  		if(modelIdxMap == null) {
 			model.addAttribute("result", "fail");
-			model.addAttribute("msg", "검색된 모델이 없습니다");
-			model.addAttribute("dataObj", session.getAttribute("retnFmlgInfo"));
-			return JSON_VIEW;
+			//model.addAttribute("msg", "검색된 모델이 없습니다.");
+			/* MK 추가 */	
+			dataObjMap.put("reSrch","Y");			
+			modelIdxMap = CsUtil.getData(returnFarmService.getRetnFmlgModelIdx(dataObjMap));
+			log.info("modelIdxMap:{}", modelIdxMap);
+			log.info("value for second query:{}", dataObjMap);
+			
+			if(modelIdxMap == null) {
+				model.addAttribute("msg", "입력하신 정보와 유사한 귀농인 정보가 없습니다.\r다른 지역을 검색해주세요.");
+				model.addAttribute("dataObj", session.getAttribute("retnFmlgInfo"));
+				
+				return JSON_VIEW;
+			}
 		}
+
 		dataObjMap.put("index", modelIdxMap.get("index"));
 		if(modelIdxMap.get("insteadCtvt") != null ) dataObjMap.put("insteadCtvt", modelIdxMap.get("insteadCtvt"));
 
@@ -124,6 +135,7 @@ public class ReturnFarmController extends BigdataController {
 
 		model.addAttribute("dataObj", session.getAttribute("retnFmlgInfo"));
 //		log.debug("{}",session.getAttribute("retnFmlgInfo"));
+//이 아래 두 줄은 다시 푼다. 계속 retry를 해서 걸어놓았음.
 		model.addAttribute("cnsdr", returnFarmService.getsCnsdr(new HashMap<>())); // 고려사항 리스트
 		model.addAttribute("areaInfo", returnFarmService.getRetnFmlgAreaInfo(dataObjMap)); // 지역정보
 
@@ -139,8 +151,9 @@ public class ReturnFarmController extends BigdataController {
 	@SuppressWarnings("unchecked")
 	public String similrRetnFmlgInfo(HttpServletRequest request, Model model, HttpSession session) {
 		Map<String,Object> paramMap = CsWebUtil.toParamMap(request);
-		log.debug("{}",paramMap);
+		log.debug("paramMap:{}",paramMap);
 		Map<String,Object> dataObjMap = (Map<String, Object>) session.getAttribute("retnFmlgInfo");
+		log.info("dataObjMap:{}", dataObjMap);
 		dataObjMap.put("areaInfo", paramMap.get("areaInfo"));
 		model.addAttribute("similrRetnFmlgInfo", returnFarmService.getSimilrRetnFmlgInfo(dataObjMap)); // 유사 귀농인 정보
 		dataObjMap.remove("areaInfo");

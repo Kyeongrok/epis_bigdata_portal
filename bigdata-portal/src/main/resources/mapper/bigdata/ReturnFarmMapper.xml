@@ -14,21 +14,23 @@
 								<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(index)">
 									AND INDEX_ = #{index}
 								</if>
-								AND EDC_AVG_ACCES_POSBLTY != 0 /*교육 접근성*/
-								AND EDC_AVG_ACCES_POSBLTY IS NOT NULL
-								AND TRNSPORT_AVG_ACCES_POSBLTY != 0 /*교통 접근성*/
-								AND TRNSPORT_AVG_ACCES_POSBLTY IS NOT NULL
-								AND HSPTL_AVG_ACCES_POSBLTY != 0 /*병원 접근성*/
-								AND HSPTL_AVG_ACCES_POSBLTY IS NOT NULL
-								AND CNVNC_MRKT_AVG_ACCES_POSBLTY != 0 /*편의-마트 접근성*/
-								AND CNVNC_MRKT_AVG_ACCES_POSBLTY IS NOT NULL
-								/*AND DISTB_AVG_CO != 0*/ /*유통 수*/
-								/*AND CNVNC_AVG_CO != 0*/ /*편의 수*/
-								/*AND CLTUR_AVG_CO != 0*/ /*문화 수*/
-								AND LAD_AVRG_DELNG_AMOUNT != 0 /*토지 실거래 금액*/
-								AND LAD_AVRG_DELNG_AMOUNT IS NOT NULL
-								AND LAD_AVRG_RENT_AMOUNT != 0 /*토지 임대 금액*/
-								AND LAD_AVRG_RENT_AMOUNT IS NOT NULL
+								<if test='reSrch == ""'>
+									AND EDC_AVG_ACCES_POSBLTY != 0 /*교육 접근성*/
+									AND EDC_AVG_ACCES_POSBLTY IS NOT NULL
+									AND TRNSPORT_AVG_ACCES_POSBLTY != 0 /*교통 접근성*/
+									AND TRNSPORT_AVG_ACCES_POSBLTY IS NOT NULL
+									AND HSPTL_AVG_ACCES_POSBLTY != 0 /*병원 접근성*/
+									AND HSPTL_AVG_ACCES_POSBLTY IS NOT NULL
+									AND CNVNC_MRKT_AVG_ACCES_POSBLTY != 0 /*편의-마트 접근성*/
+									AND CNVNC_MRKT_AVG_ACCES_POSBLTY IS NOT NULL
+									/*AND DISTB_AVG_CO != 0*/ /*유통 수*/
+									/*AND CNVNC_AVG_CO != 0*/ /*편의 수*/
+									/*AND CLTUR_AVG_CO != 0*/ /*문화 수*/
+									<!-- AND LAD_AVRG_DELNG_AMOUNT != 0 /*토지 실거래 금액*/
+									AND LAD_AVRG_DELNG_AMOUNT IS NOT NULL
+									AND LAD_AVRG_RENT_AMOUNT != 0 /*토지 임대 금액*/
+									AND LAD_AVRG_RENT_AMOUNT IS NOT NULL -->
+								</if>								
 								<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(hopeCtprvn)">
 									AND CTPRVN = #{hopeCtprvn}
 								</if>
@@ -119,21 +121,23 @@
 		FROM T_RTRN_FARMER_DATA_SET
 		WHERE
 			1=1
-			AND EDC_AVG_ACCES_POSBLTY != 0 /*교육 접근성*/
-			AND EDC_AVG_ACCES_POSBLTY IS NOT NULL
-			AND TRNSPORT_AVG_ACCES_POSBLTY != 0 /*교통 접근성*/
-			AND TRNSPORT_AVG_ACCES_POSBLTY IS NOT NULL
-			AND HSPTL_AVG_ACCES_POSBLTY != 0 /*병원 접근성*/
-			AND HSPTL_AVG_ACCES_POSBLTY IS NOT NULL
-			AND CNVNC_MRKT_AVG_ACCES_POSBLTY != 0 /*편의-마트 접근성*/
-			AND CNVNC_MRKT_AVG_ACCES_POSBLTY IS NOT NULL
-			/*AND DISTB_AVG_CO != 0*/ /*유통 수*/
-			/*AND CNVNC_AVG_CO != 0*/ /*편의 수*/
-			/*AND CLTUR_AVG_CO != 0*/ /*문화 수*/
-			AND LAD_AVRG_DELNG_AMOUNT != 0 /*토지 실거래 금액*/
-			AND LAD_AVRG_DELNG_AMOUNT IS NOT NULL
-			AND LAD_AVRG_RENT_AMOUNT != 0 /*토지 임대 금액*/
-			AND LAD_AVRG_RENT_AMOUNT IS NOT NULL
+			<if test="@bigdata.portal.cmm.util.CommonUtil@isEmpty(reSrch)">
+				AND EDC_AVG_ACCES_POSBLTY != 0 /*교육 접근성*/
+				AND EDC_AVG_ACCES_POSBLTY IS NOT NULL
+				AND TRNSPORT_AVG_ACCES_POSBLTY != 0 /*교통 접근성*/
+				AND TRNSPORT_AVG_ACCES_POSBLTY IS NOT NULL
+				AND HSPTL_AVG_ACCES_POSBLTY != 0 /*병원 접근성*/
+				AND HSPTL_AVG_ACCES_POSBLTY IS NOT NULL
+				AND CNVNC_MRKT_AVG_ACCES_POSBLTY != 0 /*편의-마트 접근성*/
+				AND CNVNC_MRKT_AVG_ACCES_POSBLTY IS NOT NULL
+				/*AND DISTB_AVG_CO != 0*/ /*유통 수*/
+				/*AND CNVNC_AVG_CO != 0*/ /*편의 수*/
+				/*AND CLTUR_AVG_CO != 0*/ /*문화 수*/
+				<!-- AND LAD_AVRG_DELNG_AMOUNT != 0 /*토지 실거래 금액*/
+				AND LAD_AVRG_DELNG_AMOUNT IS NOT NULL
+				AND LAD_AVRG_RENT_AMOUNT != 0 /*토지 임대 금액*/
+				AND LAD_AVRG_RENT_AMOUNT IS NOT NULL -->
+			</if>
 			<if test="@bigdata.portal.cmm.util.CommonUtil@isNotEmpty(srchMvtCtprvn)">
 				AND MVT_CTPRVN = #{srchMvtCtprvn} /*전출 시,도*/
 			</if>
@@ -207,8 +211,7 @@
 
 
 	</select>
-
-
+	
 	<select id="getsUpperAreaSetlCnd" parameterType="hashmap" resultType="EntityMap">
 	/*해당지역 상위 지역들의 정주여건 검색*/
 

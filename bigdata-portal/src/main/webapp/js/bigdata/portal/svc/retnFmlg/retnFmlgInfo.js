@@ -2,22 +2,6 @@
  * 귀농의사결정 서비스
  */
 
-/* MK Input Box 엔터키 입력시 이벤트 실행 추가 */
-$("input[type=text]").keydown(function(e){
-	if(e.keyCode==13){		
-		if($(this).attr("name") == 'mvtRdNmAdr'){
-			$("#mvtSrchAddr").trigger("click");
-		}
-		if($(this).attr("name") == 'hopeRdNmAdr'){
-			$("#hopeSrchAddr").trigger("click");
-		}
-		if($(this).attr("name") == 'hopeCtvt'){
-			$("#srchCtvt").trigger("click");
-		}		
-	}
-});
-
-
 /**
  * 데이터 객체
  *
@@ -238,7 +222,6 @@ let PageObj = (function(){
 
 
 });
-
 
 
 let pageObj = new PageObj();

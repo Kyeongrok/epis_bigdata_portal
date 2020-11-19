@@ -381,6 +381,10 @@ h4+.addEx{font-size:12px;margin-top:-8px;margin-bottom:15px;text-align:center;}
 
 #cnsdrModal .body span:hover{cursor: pointer;}
 
+/* MK 팝업창 디자인 변경 */
+.swal-button{background-color: #89D3CE;}
+.swal-button:not([disabled]):hover{background-color: #00BAAE}
+.swal-text{font-family: 'NanumSquare', sans-serif;}
 
 /*******    GRID   *******/
 .gridWrap{margin-bottom:20px;}

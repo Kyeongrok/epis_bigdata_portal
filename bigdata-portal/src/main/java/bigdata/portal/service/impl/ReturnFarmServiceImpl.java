@@ -156,6 +156,7 @@ public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnF
 		EntityMap modelIdxMap = returnFarmMapper.getRetnFmlgModelIdx(dataObjMap);
 		log.debug("modelIdxMap:{}",modelIdxMap);
 		if(modelIdxMap == null) {
+			//dataObjMap.remove("srchMvtCtprvn");
 			dataObjMap.remove("srchMvtSigngu");
 			modelIdxMap = returnFarmMapper.getRetnFmlgModelIdx(dataObjMap);
 
@@ -178,7 +179,9 @@ public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnF
 						if(!StringUtils.isEmpty(tempHopeCtvt) && !"null".equals(tempHopeCtvt)) { //
 							dataObjMap.put("hopeCtvt", tempHopeCtvt);
 						}
-						log.debug("추천품목!!! : ", tempHopeCtvt);
+						
+						dataObjMap.remove("srchMvtCtprvn");
+						modelIdxMap = returnFarmMapper.getRetnFmlgModelIdx(dataObjMap);
 //						dataObjMap.remove("srchMvtCtprvn"); //전출 시,도 삭제
 					}
 					log.debug("{}",modelIdxMap);
@@ -443,7 +446,7 @@ public class ReturnFarmServiceImpl extends BigdataServiceImpl implements ReturnF
 	public <T extends Map> List<EntityMap> getsRecomendTop5Area(T dataObjMap){
 		List<EntityMap> similrCntTopEmdAvgValList = new ArrayList<>();
 		Map<String, Object> paramMap = new HashMap<>();
-
+		
 		String index = dataObjMap.get("index")+"";
 		if(StringUtils.isEmpty(index)) {
 				return null;

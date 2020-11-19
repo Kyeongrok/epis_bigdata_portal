@@ -226,6 +226,7 @@ let SelfInfoObj = function(){
 			dataObj.updtDataObj(); // dataObj 객체 업데이트 및 수정된 정보로 다시 조회함.
 
 			$('#updtInfoModal').removeClass("on"); // 모달 창 닫기
+			$('#loading').css("display","block");			
 		});
 	};
 }
@@ -323,6 +324,7 @@ let LivtgtObj = (function(){
 			myInfoObj.setSideMenuInfo(); // DataObj 데이터를 기준으로 결과화면 오른쪽의 'My 내가 입력한 여건입니다.'를 수정
 			dataObj.updtDataObj(); // dataObj 객체 업데이트 및 수정된 정보로 다시 조회함.
 			livtgtObj.updtModal.removeClass("on");
+			$('#loading').css("display","block");			
 		});
 
 	} // setEventHandler
@@ -355,7 +357,9 @@ let HopeAreaObj = (function(){
 			});
 			myInfoObj.setSideMenuInfo();
 			hopeAreaObj.updtModal.removeClass("on"); // 모달 창 닫기
+			$('#loading').css("visibility","visible");
 			dataObj.updtDataObj(); // dataObj 객체 업데이트 및 수정된 정보로 다시 조회함.
+			$('#loading').css("display","block");			
 		})
 	}
 
@@ -412,7 +416,8 @@ let HopeCtvtModalObj = (function(){
 			hopeCtvtModalObj.updtModal.removeClass("on");
 			console.log(dataObj.form);
 			dataObj.updtDataObj(); // dataObj 객체 업데이트 및 수정된 정보로 다시 조회함.
-			console.log(dataObj.form);
+			console.log(dataObj.form);			
+			$('#loading').css("display","block");			
 		});
 	} // setEventHandler
 
@@ -584,6 +589,7 @@ let CnsdrObj = (function(){
 			if(typeof myInfoObj != "undefined")  myInfoObj.setSideMenuInfo();  // DataObj 데이터를 기준으로 결과화면 오른쪽의 'My 내가 입력한 여건입니다.'를 수정
 			$('#cnsdrModal').removeClass("on"); // 모달 창 닫기
 			dataObj.updtDataObj(); // dataObj 객체 업데이트 및 수정된 정보로 다시 조회함.
+			$('#loading').css("display","block");			
 		});
 	} // setEventHandler
 
@@ -694,6 +700,7 @@ let JusoModalObj = (function(){
 	JusoModalObj.prototype.setEventHandler = function(){
 
 		// 주소 검색 버튼 클릭 시 주소 검색하기
+		$('.srchAddr').off();
 		$('.srchAddr').on('click', function(){
 			let inputTag = $(this).siblings('input');
 			if($.trim(inputTag.val()) == ""){
@@ -734,7 +741,8 @@ let JusoModalObj = (function(){
 				}
 				dataObj.form[jusoModalObj.prefix + prop] = jusoModalObj[prop];
 				$("input[name='"+ jusoModalObj.prefix + prop+"']").val(jusoModalObj[prop]);
-			});									
+			});				
+			
 
 			jusoModalObj.init(); // 초기화
 
@@ -856,17 +864,21 @@ let ModalPageObj = (function(){
 });
 
 /* MK Input Box 엔터키 입력시 이벤트 실행 추가 */
-$("input[type=text]").keydown(function(e){
-	if(e.keyCode==13){	
-		if($(this).attr("name") == 'mvtRdNmAdr'){			
-			$("#mvtSrchAddr").trigger("click");
-		}
-		if($(this).attr("name") == 'hopeRdNmAdr'){			
-			$("#hopeSrchAddr").trigger("click");			
-		}
-		if($(this).attr("name") == 'hopeCtvt'){			
-			$("#srchCtvt").trigger("click");
-		}		
+$("input[name=mvtRdNmAdr]").keydown(function(e){
+	if(e.keyCode==13){
+		$("#mvtSrchAddr").trigger("click");			
+	}
+});
+
+$("input[name=hopeRdNmAdr]").keydown(function(e){
+	if(e.keyCode==13){
+		$("#hopeSrchAddr").trigger("click");				
+	}
+});
+
+$("input[name=hopeCtvt]").keydown(function(e){
+	if(e.keyCode==13){
+		$("#srchCtvt").trigger("click");	
 	}
 });
 
